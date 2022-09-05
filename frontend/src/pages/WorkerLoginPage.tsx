@@ -36,7 +36,7 @@ export default function WorkerLoginPage() {
 			<Logo />
 			<LoginBox />
 			<span>
-				師傅想加入我們?<NavLink to='/workerRegister'>註冊</NavLink>
+				師傅想加入我們?<NavLink to='/workerRegisterPage'>註冊</NavLink>
 			</span>
 		</div>
 	)

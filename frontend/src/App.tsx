@@ -12,7 +12,6 @@ import {
 import { IonReactRouter } from '@ionic/react-router'
 import { ellipse, square, triangle } from 'ionicons/icons'
 
-
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css'
 
@@ -35,6 +34,7 @@ import HomePage from './pages/HomePage'
 
 // import page
 import WorkerLoginPage from './pages/WorkerLoginPage'
+import WorkerRegisterPage from './pages/WorkerRegisterPage'
 
 setupIonicReact()
 
@@ -47,6 +47,11 @@ const App: React.FC = () => (
 					exact
 					path='/workerLoginPage'
 					component={WorkerLoginPage}
+				/>
+				<Route
+					exact
+					path='/workerRegister'
+					component={WorkerRegisterPage}
 				/>
 			</IonRouterOutlet>
 		</IonReactRouter>
