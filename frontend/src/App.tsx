@@ -37,6 +37,7 @@ import HomePage from './pages/HomePage'
 
 /* import page */
 import WorkerLoginPage from './pages/WorkerLoginPage'
+import WorkerRegisterPage from './pages/WorkerRegisterPage'
 import ChatList from'./pages/ChatList'
 import UncontrolledExample from './components/UncontrolledExample'
 
@@ -46,7 +47,7 @@ const App: React.FC = () => (
 	<IonApp>
 		<IonReactRouter>
 			<IonRouterOutlet>
-				{/* <Route exact path='/' component={HomePage} /> */}
+				<Route exact path='/' component={HomePage} />
 				<Route
 					exact
 					path='/workerLoginPage'
@@ -61,6 +62,11 @@ const App: React.FC = () => (
 					exact
 					path='/test'
 					component={UncontrolledExample}
+				/>
+				<Route
+					exact
+					path='/workerRegister'
+					component={WorkerRegisterPage}
 				/>
 			</IonRouterOutlet>
 		</IonReactRouter>

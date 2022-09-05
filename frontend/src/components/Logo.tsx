@@ -1,10 +1,10 @@
 import React from 'react'
-
+import logo from '../srcImage/logo.png'
 export default function Logo() {
 	return (
 		<>
-			<img src='#' alt='login page img'></img>
-			<h1>師傅易</h1>
+			<img src={logo} alt='login page img'></img>
+			
 		</>
 	)
 }

@@ -11,7 +11,7 @@ ConfigModule.forRoot({
 export class SpeechService {
   
 
-  async findAll() {
+  async googleAPI() {
    
   
 
