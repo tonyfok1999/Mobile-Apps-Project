@@ -9,10 +9,13 @@ export default function WorkerLoginPage() {
 	return (
 		<div
 			css={css`
+				max-width: 100%;
+				max-height: 100%;
 				display: flex;
 				flex-direction: column;
 				img {
 					margin: auto;
+					max-width: 60%;
 				}
 				h1 {
 					margin: auto;
@@ -20,11 +23,21 @@ export default function WorkerLoginPage() {
 				.container {
 					margin: auto;
 				}
+				> span {
+					display: flex;
+					justify-content: center;
+					margin-top: 4rem;
+					a {
+						text-decoration: none;
+						color: #fa7268;
+					}
+				}
 			`}>
 			<Logo />
 			<LoginBox />
-			<span>師傅想加入我們?</span>
-			<NavLink to='/workerLogin'>註冊</NavLink>
+			<span>
+				師傅想加入我們?<NavLink to='/workerRegister'>註冊</NavLink>
+			</span>
 		</div>
 	)
 }

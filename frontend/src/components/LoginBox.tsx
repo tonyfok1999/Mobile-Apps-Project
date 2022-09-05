@@ -2,8 +2,8 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { AiFillLinkedin } from 'react-icons/fa'
-import { AiFillGooglePlusCircle } from 'react-icons/fa'
+import { BsLinkedin } from 'react-icons/bs'
+import { FaGooglePlus } from 'react-icons/fa'
 import { BsFacebook } from 'react-icons/bs'
 
 export default function LoginBox() {
@@ -53,15 +53,38 @@ export default function LoginBox() {
 							rgb(56, 28, 129),
 							rgb(254, 121, 89)
 						);
+						margin-bottom: 0;
 					}
 				}
-				div {
+				> div {
 					display: flex;
 					flex-direction: column;
 					align-items: center;
+					margin: 1rem;
+					div {
+						color: #777777;
+					}
 				}
-				span a {
-					margin-left: 1rem;
+				span {
+					margin-top: 1rem;
+					a {
+						margin-left: 1rem;
+						font-size: 30px;
+
+						:nth-child(1) {
+							color: #007ab9;
+						}
+						:nth-child(2) {
+							color: #dc4e41;
+						}
+						:nth-child(3) {
+							color: #3b5998;
+						}
+					}
+
+					svg {
+						border-radius: 50%;
+					}
 				}
 			`}>
 			<h1>登入</h1>
@@ -74,9 +97,15 @@ export default function LoginBox() {
 			<div>
 				<div>或</div>
 				<span>
-					<a>{AiFillLinkedin}</a>
-					<a>{AiFillGooglePlusCircle}</a>
-					<a>{BsFacebook}</a>
+					<a>
+						<BsLinkedin />
+					</a>
+					<a>
+						<FaGooglePlus />
+					</a>
+					<a>
+						<BsFacebook />
+					</a>
 				</span>
 			</div>
 		</div>
