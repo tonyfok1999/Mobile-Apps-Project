@@ -46,7 +46,7 @@ export class UserService {
       .select('password')
       .from('users')
       .where('email',loginUserDto.email);
-    console.log(result[0].password);
+    // console.log(result[0].password);
     
       if (typeof result[0] != 'undefined') {
         const isMatch = await bcrypt.compare(loginUserDto.password, result[0].password);

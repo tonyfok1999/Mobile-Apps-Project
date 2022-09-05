@@ -9,8 +9,8 @@ export class SpeechController {
 
 
   @Get('/totext')
-  findAll() {
-    return this.speechService.findAll();
+  googleAPI() {
+    return this.speechService.googleAPI();
   }
 
  
