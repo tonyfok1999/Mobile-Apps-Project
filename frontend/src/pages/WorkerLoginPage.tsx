@@ -8,9 +8,7 @@ export default function WorkerLoginPage() {
 		<>
 			<Logo />
 			<LoginBox />
-			<div>
-				師傅想加入我們?<NavLink to=''></NavLink>
-			</div>
+			<NavLink to='/workerLogin'>師傅想加入我們?</NavLink>
 		</>
 	)
 }

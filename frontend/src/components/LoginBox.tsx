@@ -6,15 +6,15 @@ export default function LoginBox() {
 		<div className='container'>
 			<h1>登入</h1>
 			<form action='#'>
-				<input type='text' />
-				<input type='password' />
+				<input type='text' placeholder='電郵' />
+				<input type='password' placeholder='密碼' />
 				<NavLink to='#'>忘記密碼?</NavLink>
 				<input type='submit' />
 			</form>
 			<div>或</div>
-			<span>LinkIn</span>
-			<span>Google</span>
-			<span>Facebook</span>
+			<a>LinkIn</a>
+			<a>Google</a>
+			<a>Facebook</a>
 		</div>
 	)
 }

@@ -33,13 +33,21 @@ import '@ionic/react/css/display.css'
 import './theme/variables.css'
 import HomePage from './pages/HomePage'
 
+// import page
+import WorkerLoginPage from './pages/WorkerLoginPage'
+
 setupIonicReact()
 
 const App: React.FC = () => (
 	<IonApp>
 		<IonReactRouter>
 			<IonRouterOutlet>
-				<Route exact path='/' component={HomePage} />
+				{/* <Route exact path='/' component={HomePage} /> */}
+				<Route
+					exact
+					path='/workerLoginPage'
+					component={WorkerLoginPage}
+				/>
 			</IonRouterOutlet>
 		</IonReactRouter>
 	</IonApp>
