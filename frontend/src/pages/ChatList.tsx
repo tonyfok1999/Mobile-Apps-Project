@@ -7,8 +7,16 @@ import {
 	IonHeader,
 	IonItem,
 	IonList,
-	IonMenu
+	IonMenu,
+	IonPage,
+	IonIcon,
+	IonLabel,
+	IonListHeader,
+	IonMenuToggle,
+	IonApp,
+	IonButton
 } from '@ionic/react'
+import {IoMenuSharp} from "react-icons/io5"
 import React from 'react'
 import styled from 'styled-components'
 import ChatTab from '../components/ChatTab'
@@ -28,39 +36,50 @@ const Title = styled(IonTitle)`
 
 const ChatList: React.FC = () => (
 	<>
-		{/* <IonMenu side='start' menuId='custom' className='my-custom-menu'>
-			<IonHeader>
-				<IonToolbar color='tertiary'>
-					<IonTitle>Custom Menu</IonTitle>
-				</IonToolbar>
-			</IonHeader>
-			<IonContent>
-				<IonList>
-					<IonItem>Menu Item</IonItem>
-					<IonItem>Menu Item</IonItem>
-					<IonItem>Menu Item</IonItem>
-					<IonItem>Menu Item</IonItem>
-					<IonItem>Menu Item</IonItem>
-				</IonList>
-			</IonContent>
-		</IonMenu> */}
 
-		<IonHeader>
-			<IonToolbar>
-				<IonButtons slot='start'>
-					<IonBackButton defaultHref='/' />
-				</IonButtons>
-				<Title>對話</Title>
-			</IonToolbar>
-		</IonHeader>
+			<IonMenu content-id='main-content'>
+				<IonHeader>
+					<IonToolbar>
+						<IonTitle>Menu</IonTitle>
+					</IonToolbar>
+				</IonHeader>
 
-		<IonContent
-			scrollEvents={true}
-			onIonScrollStart={() => {}}
-			onIonScroll={() => {}}
-			onIonScrollEnd={() => {}}>
-			<ChatTab />
-		</IonContent>
+				<IonContent>
+					<IonList>
+						<IonListHeader>Navigate</IonListHeader>
+						<IonMenuToggle auto-hide='false'>
+							<IonItem button>
+								<IonIcon slot='start' name='home'></IonIcon>
+								<IonLabel>Home</IonLabel>
+							</IonItem>
+						</IonMenuToggle>
+					</IonList>
+				</IonContent>
+			</IonMenu>
+
+			<IonPage id='main-content'>
+				<IonHeader>
+					<IonToolbar>
+						<IonButtons slot='start'>
+							<IonMenuToggle>
+								<IonButton>
+									<IoMenuSharp size={35} />
+								</IonButton>
+							</IonMenuToggle>
+						</IonButtons>
+						<Title>對話</Title>
+					</IonToolbar>
+				</IonHeader>
+
+				<IonContent
+					scrollEvents={true}
+					onIonScrollStart={() => {}}
+					onIonScroll={() => {}}
+					onIonScrollEnd={() => {}}>
+					<ChatTab />
+				</IonContent>
+			</IonPage>
+
 	</>
 )
 
