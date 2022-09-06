@@ -50,7 +50,7 @@ const App: React.FC = () => (
 				/>
 				<Route
 					exact
-					path='/workerRegister'
+					path='/workerRegisterPage'
 					component={WorkerRegisterPage}
 				/>
 			</IonRouterOutlet>

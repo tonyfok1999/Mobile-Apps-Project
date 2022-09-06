@@ -24,19 +24,26 @@ export default function WorkerLoginPage() {
 					margin: auto;
 				}
 				> span {
-					display: flex;
-					justify-content: center;
-					margin-top: 4rem;
+					position: absolute;
+					width: 10.5rem;
+					bottom: 1rem;
+					left: 0;
+					right: 0;
+					margin-left: auto;
+					margin-right: auto;
 					a {
+						margin-left: 0.5rem;
 						text-decoration: none;
 						color: #fa7268;
+						font-weight: bold;
 					}
 				}
 			`}>
 			<Logo />
 			<LoginBox />
 			<span>
-				師傅想加入我們?<NavLink to='/workerRegisterPage'>註冊</NavLink>
+				師傅想加入我們?
+				<NavLink to='/workerRegisterPage'>註冊</NavLink>
 			</span>
 		</div>
 	)
