@@ -86,7 +86,7 @@ export default function WorkerRegisterPage() {
 					type='submit'
 					value='下一步'
 					onClick={() => {
-						history.push('/')
+						history.push('/workerRegisterPageForTypeOfService')
 					}}
 				/>
 			</form>

@@ -5424,16 +5424,9 @@ invariant@^2.2.4:
   dependencies:
     loose-envify "^1.0.0"
 
-ionicons@^6.0.2:
+ionicons@^6.0.2, ionicons@^6.0.3:
   version "6.0.3"
   resolved "https://registry.npmjs.org/ionicons/-/ionicons-6.0.3.tgz"
-  integrity sha512-kVOWER991EMqLiVShrCSWKMHkgHZP7XfVdyN6YPMuoO33W7pc5CPNVNfR8OMe/I8rYEbaunyBs6dXNYpR6gGZw==
-  dependencies:
-    "@stencil/core" "~2.16.0"
-
-ionicons@^6.0.3:
-  version "6.0.3"
-  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-6.0.3.tgz#d1610e764109b121ddf006febbda80fcd7db0454"
   integrity sha512-kVOWER991EMqLiVShrCSWKMHkgHZP7XfVdyN6YPMuoO33W7pc5CPNVNfR8OMe/I8rYEbaunyBs6dXNYpR6gGZw==
   dependencies:
     "@stencil/core" "~2.16.0"
