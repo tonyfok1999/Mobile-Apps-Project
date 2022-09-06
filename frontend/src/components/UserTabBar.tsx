@@ -1,27 +1,44 @@
 /** @jsxImportSource @emotion/react */
 import React from 'react'
-import { BsFillMicFill } from 'react-icons/bs'
-import { AiOutlineWechat } from 'react-icons/ai'
+import {
+	IonButtons,
+	IonToolbar,
+	IonBackButton,
+	IonTitle,
+	IonButton,
+	IonIcon,
+	IonMenuButton,
+	IonContent,
+	IonGrid,
+	IonRow,
+	IonCol
+} from '@ionic/react'
+
 import { css } from '@emotion/react'
+import { chatbubblesOutline, micOutline } from 'ionicons/icons'
 
 export default function DetailsOfRecordingContent() {
 	return (
-		<div
-			className='userTabBar'
+		<IonGrid
 			css={css`
-                /* font-size: 350%; */
-                
-            svg {
-                display: block;
-				/* flex-direction: column; */
-				justify-content: space-between;
-                font-size: 350%;
-            }
-               
-
+				.center {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
 			`}>
-			<BsFillMicFill />
-			<AiOutlineWechat />
-		</div>
+			<IonRow>
+				<IonCol size='6' className='center'>
+					<IonButton fill='clear' onClick={() => {}}>
+						<IonIcon className='icon-only' icon={micOutline} />
+					</IonButton>
+				</IonCol>
+				<IonCol size='6' className='center'>
+					<IonButton fill='clear' onClick={() => {}}>
+						<IonIcon slot='icon-only' icon={chatbubblesOutline} />
+					</IonButton>
+				</IonCol>
+			</IonRow>
+		</IonGrid>
 	)
 }

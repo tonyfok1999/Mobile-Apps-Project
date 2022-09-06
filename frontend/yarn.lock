@@ -1413,9 +1413,9 @@
     "@ionic/react" "^6.2.5"
     tslib "*"
 
-"@ionic/react@^6.0.0", "@ionic/react@^6.2.5":
+"@ionic/react@^6.2.5":
   version "6.2.5"
-  resolved "https://registry.npmjs.org/@ionic/react/-/react-6.2.5.tgz"
+  resolved "https://registry.yarnpkg.com/@ionic/react/-/react-6.2.5.tgz#6a9815c3cdbf8a8d48972bcdb9cf82cdccb9c50c"
   integrity sha512-dvne9iY97uCb7+Wen0cRAY0nxL+ecKAMVBK6CLWMLec6Eh8NVE3BU2tG/4ZjheNrclWCPAv20us8zLbJVIht0g==
   dependencies:
     "@ionic/core" "^6.2.5"
@@ -5424,9 +5424,16 @@ invariant@^2.2.4:
   dependencies:
     loose-envify "^1.0.0"
 
-ionicons@^6.0.2, ionicons@^6.0.3:
+ionicons@^6.0.2:
   version "6.0.3"
   resolved "https://registry.npmjs.org/ionicons/-/ionicons-6.0.3.tgz"
+  integrity sha512-kVOWER991EMqLiVShrCSWKMHkgHZP7XfVdyN6YPMuoO33W7pc5CPNVNfR8OMe/I8rYEbaunyBs6dXNYpR6gGZw==
+  dependencies:
+    "@stencil/core" "~2.16.0"
+
+ionicons@^6.0.3:
+  version "6.0.3"
+  resolved "https://registry.yarnpkg.com/ionicons/-/ionicons-6.0.3.tgz#d1610e764109b121ddf006febbda80fcd7db0454"
   integrity sha512-kVOWER991EMqLiVShrCSWKMHkgHZP7XfVdyN6YPMuoO33W7pc5CPNVNfR8OMe/I8rYEbaunyBs6dXNYpR6gGZw==
   dependencies:
     "@stencil/core" "~2.16.0"
@@ -7877,7 +7884,7 @@ react-icons@^4.4.0:
   resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.4.0.tgz#a13a8a20c254854e1ec9aecef28a95cdf24ef703"
   integrity sha512-fSbvHeVYo/B5/L4VhB7sBA1i2tS8MkT0Hb9t2H1AVPkwGfVHLJCqyr2Py9dKMxsyM63Eng1GkdZfbWj+Fmv8Rg==
 
-react-is@^16.13.1, react-is@^16.6.0, react-is@^16.7.0:
+react-is@^16.13.1, react-is@^16.3.2, react-is@^16.6.0, react-is@^16.7.0:
   version "16.13.1"
   resolved "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==

@@ -5,6 +5,7 @@ export default function Logo() {
 		<>
 			<img src={logo} alt='login page img'></img>
 			
+			
 		</>
 	)
 }
