@@ -1,11 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import {
-	IonContent,
-	IonHeader,
-	IonPage,
-	IonTitle,
-	IonToolbar
-} from '@ionic/react'
+
 import Logo from '../components/Logo'
 import { css } from '@emotion/react'
 import UserTabBar from '../components/UserTabBar'
@@ -14,11 +8,13 @@ export default function HomePage() {
 	return (
 		<div
 			css={css`
+				min-height: 100%;
 				display: flex;
-				justify-content: center;
-				align-items: center;
 				flex-direction: column;
-				padding: 1%;
+				justify-content: space-between;
+				align-items: center;
+				
+			
 
 				img {
 					max-width: 60%;
@@ -28,18 +24,10 @@ export default function HomePage() {
 
 					text-align: center;
 					display: table-cell;
-					/* vertical-align: middle; */
 					font-weight: bold;
-					/* background: linear-gradient(
-						to right,
-						rgb(56, 28, 129),
-						rgb(254, 121, 89)
-					);
-					-webkit-background-clip: text;
-					color: transparent; */
 				}
 				h3 {
-					font-size:bold ;
+					font-size: bold;
 					background: linear-gradient(
 						45deg,
 						rgb(56, 28, 129),
@@ -47,13 +35,18 @@ export default function HomePage() {
 					);
 					-webkit-background-clip: text;
 					color: transparent;
-
 				}
+				.userTabBar{
+					max-height: 20%;
+					display: flex;
+					
+				}
+				
 			`}>
 			<Logo />
 			<h1>只需要以語音說明你所需要的服務便可</h1>
 			<h3>按一下開始</h3>
-			<UserTabBar/>
+			<UserTabBar />
 		</div>
 	)
 }
