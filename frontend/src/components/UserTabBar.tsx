@@ -30,12 +30,12 @@ export default function DetailsOfRecordingContent() {
 			<IonRow>
 				<IonCol size='6' className='center'>
 					<IonButton fill='clear' onClick={() => {}}>
-						<IonIcon className='mic icon' icon={micOutline} />
+						<IonIcon className='micIcon' icon={micOutline} />
 					</IonButton>
 				</IonCol>
 				<IonCol size='6' className='center'>
 					<IonButton fill='clear' onClick={() => {}}>
-						<IonIcon slot='chat-icon' icon={chatbubblesOutline} />
+						<IonIcon slot='chatIcon' icon={chatbubblesOutline} />
 					</IonButton>
 				</IonCol>
 			</IonRow>
