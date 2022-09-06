@@ -52,14 +52,15 @@ const App: React.FC = () => (
 		<IonReactRouter>
 			<IonRouterOutlet>
 				<Route exact path='/' >
-				<Redirect to="/tabs/homePage" /> 
+					<Redirect to="/tabs" /> 
 				</Route>
+
 				<Route
 					exact
 					path='/workerLoginPage'
 					component={WorkerLoginPage}
 				/>
-				<Route exact path='/tabs' component={ClientTabBar} />
+				<Route exact path='/tabs' render={() =><AllTabs/>} />
 
 				<Route exact path='/test' component={InfiniteScrollExample} />
 				<Route
