@@ -12,6 +12,8 @@ import {
 import { IonReactRouter } from '@ionic/react-router'
 import { ellipse, square, triangle } from 'ionicons/icons'
 
+/* Import Bootstrap */
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css'
@@ -33,8 +35,11 @@ import '@ionic/react/css/display.css'
 import './theme/variables.css'
 import HomePage from './pages/HomePage'
 
-// import page
+/* import page */
 import WorkerLoginPage from './pages/WorkerLoginPage'
+import WorkerRegisterPage from './pages/WorkerRegisterPage'
+import ChatList from'./pages/ChatList'
+import UncontrolledExample from './components/UncontrolledExample'
 
 setupIonicReact()
 
@@ -47,6 +52,21 @@ const App: React.FC = () => (
 					exact
 					path='/workerLoginPage'
 					component={WorkerLoginPage}
+				/>
+        <Route
+					exact
+					path='/chatlist'
+					component={ChatList}
+				/>
+        <Route
+					exact
+					path='/test'
+					component={UncontrolledExample}
+				/>
+				<Route
+					exact
+					path='/workerRegister'
+					component={WorkerRegisterPage}
 				/>
 			</IonRouterOutlet>
 		</IonReactRouter>
