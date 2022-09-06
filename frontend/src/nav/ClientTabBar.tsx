@@ -34,15 +34,15 @@ const ClientTabBar: React.FC = () => {
 			<IonReactRouter>
 				<IonTabs>
 					<IonRouterOutlet>
-						{/* <Route exact path='/'>
+						<Route exact path='/tabs/homePage'>
 							<HomePage />
-						</Route> */}
+						</Route>
 						<Route exact path='/tabs/chatlist'>
                             <ChatList/>
 						</Route>
 					</IonRouterOutlet>
 					<IonTabBar slot='bottom'>
-						<IonTabButton tab='home' href='/'>
+						<IonTabButton tab='homepage' href='/tabs/homePage'>
 							<IonIcon icon={triangle} />
 						</IonTabButton>
 						<IonTabButton tab='chatlist' href='/tabs/chatlist'>

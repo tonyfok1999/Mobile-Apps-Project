@@ -16,6 +16,7 @@ import {
 	IonRow,
 	IonCol
 } from '@ionic/react'
+import ClientTabBar from '../nav/ClientTabBar'
 
 export default function HomePage() {
 	return (
@@ -83,6 +84,7 @@ export default function HomePage() {
 					<UserTabBar />
 				</IonRow>
 			</IonGrid>
+
 		</IonContent>
 	)
 }
