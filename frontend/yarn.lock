@@ -1413,9 +1413,9 @@
     "@ionic/react" "^6.2.5"
     tslib "*"
 
-"@ionic/react@^6.0.0", "@ionic/react@^6.2.5":
+"@ionic/react@^6.2.5":
   version "6.2.5"
-  resolved "https://registry.npmjs.org/@ionic/react/-/react-6.2.5.tgz"
+  resolved "https://registry.yarnpkg.com/@ionic/react/-/react-6.2.5.tgz#6a9815c3cdbf8a8d48972bcdb9cf82cdccb9c50c"
   integrity sha512-dvne9iY97uCb7+Wen0cRAY0nxL+ecKAMVBK6CLWMLec6Eh8NVE3BU2tG/4ZjheNrclWCPAv20us8zLbJVIht0g==
   dependencies:
     "@ionic/core" "^6.2.5"

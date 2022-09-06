@@ -1,13 +1,44 @@
+/** @jsxImportSource @emotion/react */
+import React from 'react'
+import {
+	IonButtons,
+	IonToolbar,
+	IonBackButton,
+	IonTitle,
+	IonButton,
+	IonIcon,
+	IonMenuButton,
+	IonContent,
+	IonGrid,
+	IonRow,
+	IonCol
+} from '@ionic/react'
 
-import React from 'react';
-import { BsFillMicFill } from 'react-icons/bs';
-export default  function DetailsOfRecordingContent() {
-  
+import { css } from '@emotion/react'
+import { chatbubblesOutline, micOutline } from 'ionicons/icons'
 
-    return (   
-    <div>
-        <BsFillMicFill />
-    </div>
-   
-      )
+export default function DetailsOfRecordingContent() {
+	return (
+		<IonGrid
+			css={css`
+				.center {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+			`}>
+			<IonRow>
+				<IonCol size='6' className='center'>
+					<IonButton fill='clear' onClick={() => {}}>
+						<IonIcon className='icon-only' icon={micOutline} />
+					</IonButton>
+				</IonCol>
+				<IonCol size='6' className='center'>
+					<IonButton fill='clear' onClick={() => {}}>
+						<IonIcon slot='icon-only' icon={chatbubblesOutline} />
+					</IonButton>
+				</IonCol>
+			</IonRow>
+		</IonGrid>
+	)
 }
