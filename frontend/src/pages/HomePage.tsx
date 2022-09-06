@@ -21,11 +21,7 @@ export default function HomePage() {
 	return (
 		<IonContent
 			css={css`
-				min-height: 100%;
-				/* display: flex; */
-				/* flex-direction: column; */
-				/* justify-content: space-between; */
-				/* align-items: center; */
+				
 
 				img {
 					width: 60%;
@@ -76,7 +72,7 @@ export default function HomePage() {
 						<h1>只需要以語音說明你所需要的服務便可</h1>
 					</IonCol>
 				</IonRow>
-				<IonRow className='infoCol'>
+				<IonRow className='info2Col'>
 					<IonCol className='center'>
 						<IonButton fill='clear' onClick={() => {}}>
 							<h3>按一下開始</h3>
