@@ -3,7 +3,7 @@ import { IonList, IonItemSliding, IonItem, IonLabel, IonItemOptions, IonItemOpti
 
 import { heart, trash, star, archive, ellipsisHorizontal, ellipsisVertical } from 'ionicons/icons';
 
-export const UncontrolledExample: React.FC = () => (
+export const Chats: React.FC = () => (
   <>
     <IonList>
       {/* Sliding item with text options on both sides */}
@@ -563,4 +563,4 @@ export const UncontrolledExample: React.FC = () => (
   </>
 );
 
-export default UncontrolledExample;
+export default Chats;
