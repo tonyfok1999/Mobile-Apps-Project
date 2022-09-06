@@ -35,12 +35,15 @@ import '@ionic/react/css/display.css'
 import './theme/variables.css'
 import HomePage from './pages/HomePage'
 
+/* import components */
+import InfiniteScrollExample from './components/InfiniteScrollExample'
+
 /* import page */
 import WorkerLoginPage from './pages/WorkerLoginPage'
 import WorkerRegisterPage from './pages/WorkerRegisterPage'
 import ChatList from './pages/ChatList'
-import UncontrolledExample from './components/UncontrolledExample'
-import SpeakPage from './pages/SpeakPage'
+import ClientTabBar from './nav/ClientTabBar'
+import WorkerRegisterPageForTypeOfService from './pages/WorkerRegisterPageForTypeOfService'
 
 setupIonicReact()
 
@@ -54,14 +57,19 @@ const App: React.FC = () => (
 					path='/workerLoginPage'
 					component={WorkerLoginPage}
 				/>
-				<Route exact path='/chatlist' component={ChatList} />
-				<Route exact path='/test' component={UncontrolledExample} />
+				<Route exact path='/tabs' component={ClientTabBar} />
+
+				<Route exact path='/test' component={InfiniteScrollExample} />
 				<Route
 					exact
-					path='/workerRegister'
+					path='/workerRegisterPage'
 					component={WorkerRegisterPage}
 				/>
-				<Route exact path='/speakPage' component={SpeakPage} />
+				<Route
+					exact
+					path='/workerRegisterPageForTypeOfService'
+					component={WorkerRegisterPageForTypeOfService}
+				/>
 			</IonRouterOutlet>
 		</IonReactRouter>
 	</IonApp>

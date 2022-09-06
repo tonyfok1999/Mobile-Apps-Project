@@ -2,9 +2,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import { css } from '@emotion/react'
-import { BsLinkedin } from 'react-icons/bs'
-import { FaGooglePlus } from 'react-icons/fa'
-import { BsFacebook } from 'react-icons/bs'
+import LoginMethods from './LoginMethods'
 
 export default function LoginBox() {
 	return (
@@ -53,7 +51,6 @@ export default function LoginBox() {
 							rgb(56, 28, 129),
 							rgb(254, 121, 89)
 						);
-						margin-bottom: 0;
 					}
 				}
 				> div {
@@ -63,27 +60,6 @@ export default function LoginBox() {
 					margin: 1rem;
 					div {
 						color: #777777;
-					}
-				}
-				span {
-					margin-top: 1rem;
-					a {
-						margin-left: 1rem;
-						font-size: 30px;
-
-						:nth-child(1) {
-							color: #007ab9;
-						}
-						:nth-child(2) {
-							color: #dc4e41;
-						}
-						:nth-child(3) {
-							color: #3b5998;
-						}
-					}
-
-					svg {
-						border-radius: 50%;
 					}
 				}
 			`}>
@@ -96,17 +72,7 @@ export default function LoginBox() {
 			</form>
 			<div>
 				<div>或</div>
-				<span>
-					<a>
-						<BsLinkedin />
-					</a>
-					<a>
-						<FaGooglePlus />
-					</a>
-					<a>
-						<BsFacebook />
-					</a>
-				</span>
+				<LoginMethods />
 			</div>
 		</div>
 	)

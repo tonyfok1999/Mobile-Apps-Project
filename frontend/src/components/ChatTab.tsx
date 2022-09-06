@@ -8,7 +8,7 @@ import { css } from '@emotion/react'
 
 
 import React, { useState } from 'react'
-import UncontrolledExample from './UncontrolledExample'
+import Chats from './Chats'
 
 // export default function ChatTab() {
 //   return (
@@ -27,10 +27,10 @@ const ChatTab: React.FC = () => {
 			onSelect={(k) => setKey(k!)}
 			className='mb-3'>
 			<Tab eventKey='allChats' title='全部對話'>
-			<UncontrolledExample/>
+			<Chats/>
 			</Tab>
 			<Tab eventKey='storedChats' title='已收藏對話'>
-			<UncontrolledExample/>
+			<Chats/>
 			</Tab>
 		</Tabs>
 	</>
