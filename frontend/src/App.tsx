@@ -36,13 +36,12 @@ import './theme/variables.css'
 import HomePage from './pages/HomePage'
 
 /* import components */
-import UncontrolledExample from './components/UncontrolledExample'
+import InfiniteScrollExample from './components/InfiniteScrollExample'
 
 /* import page */
 import WorkerLoginPage from './pages/WorkerLoginPage'
 import WorkerRegisterPage from './pages/WorkerRegisterPage'
 import ChatList from './pages/ChatList'
-import InfiniteScrollExample from './components/InfiniteScrollExample'
 import ClientTabBar from './nav/ClientTabBar'
 import WorkerRegisterPageForTypeOfService from './pages/WorkerRegisterPageForTypeOfService'
 
@@ -77,7 +76,6 @@ const App: React.FC = () => (
 )
 
 export default App
-
 {
 	/* <IonReactRouter>
       <IonTabs>
