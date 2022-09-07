@@ -33,7 +33,6 @@ import '@ionic/react/css/display.css'
 
 /* Theme variables */
 import './theme/variables.css'
-import HomePage from './pages/HomePage'
 
 /* import components */
 import InfiniteScrollExample from './components/InfiniteScrollExample'
@@ -41,7 +40,6 @@ import InfiniteScrollExample from './components/InfiniteScrollExample'
 /* import page */
 import WorkerLoginPage from './pages/WorkerLoginPage'
 import WorkerRegisterPage from './pages/WorkerRegisterPage'
-import ChatList from './pages/ChatList'
 import ClientTabBar from './nav/ClientTabBar'
 import WorkerRegisterPageForTypeOfService from './pages/WorkerRegisterPageForTypeOfService'
 
@@ -51,18 +49,18 @@ const App: React.FC = () => (
 	<IonApp>
 		<IonReactRouter>
 			<IonRouterOutlet>
-				<Route exact path='/' >
-					<Redirect to="/tabs" /> 
+				<Route exact path='/'>
+					<Redirect to='/tabs' />
 				</Route>
+
+				<Route path='/tabs' component={ClientTabBar} />
 
 				<Route
 					exact
 					path='/workerLoginPage'
 					component={WorkerLoginPage}
 				/>
-				<Route exact path='/tabs' render={() =><AllTabs/>} />
 
-				<Route exact path='/test' component={InfiniteScrollExample} />
 				<Route
 					exact
 					path='/workerRegisterPage'
@@ -73,6 +71,7 @@ const App: React.FC = () => (
 					path='/workerRegisterPageForTypeOfService'
 					component={WorkerRegisterPageForTypeOfService}
 				/>
+				<Route exact path='/test' component={InfiniteScrollExample} />
 			</IonRouterOutlet>
 		</IonReactRouter>
 	</IonApp>

@@ -1,8 +1,6 @@
-/** @jsxImportSource @emotion/react */
 import {
 	IonToolbar,
 	IonButtons,
-	IonBackButton,
 	IonTitle,
 	IonContent,
 	IonHeader,
@@ -14,51 +12,13 @@ import {
 	IonLabel,
 	IonListHeader,
 	IonMenuToggle,
-	IonApp,
 	IonButton,
-	IonRouterOutlet,
-	IonTabBar,
-	IonTabButton,
-	IonTabs,
-	IonFooter
+
 } from '@ionic/react'
 import { IoMenuSharp } from 'react-icons/io5'
 import React from 'react'
-import styled from 'styled-components'
 import ChatTab from '../components/ChatTab'
-import { IonReactRouter } from '@ionic/react-router'
-import {
-	triangle,
-	ellipse,
-	square,
-	call,
-	person,
-	settings
-} from 'ionicons/icons'
-import { Route, Redirect } from 'react-router'
-import Tab1 from './Tab1'
-import Tab3 from './Tab3'
-import ClientTabBar from '../nav/ClientTabBar'
-import { css } from '@emotion/react'
 
-// export default function ChatList() {
-//   return (
-//     <div>ChatList</div>
-//   )
-// }
-
-// const Toolbar = styled(IonToolbar)`height: 5vh`
-const Title = styled(IonTitle)`
-	position: absolute;
-	text-align: center;
-	font-weight: bold;
-	font-size: 1.5rem;
-`
-
-const Header = styled(IonHeader)`
-	display: flex;
-	position: relative;
-`
 
 const ChatList: React.FC = () => {
 	return (<>
@@ -84,17 +44,18 @@ const ChatList: React.FC = () => {
 
 		<IonPage id='main-content'>
 			
-			<Header>
+			<IonHeader>
 				<IonToolbar>
+					<IonTitle>對話</IonTitle>
 					<IonButtons slot='start'>
 						<IonMenuToggle>
 							<IonButton>
 								<IoMenuSharp size={35} />
 							</IonButton>
 						</IonMenuToggle>
-					</IonButtons><Title>對話</Title>
+					</IonButtons>
 				</IonToolbar>
-			</Header>
+			</IonHeader>
 
 			<IonContent
 				fullscreen={true}
@@ -104,6 +65,7 @@ const ChatList: React.FC = () => {
 				onIonScrollEnd={() => {}}>
 				<ChatTab />
 			</IonContent>
+
 		</IonPage>
 	</>
 )}

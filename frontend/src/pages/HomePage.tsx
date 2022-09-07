@@ -14,13 +14,19 @@ import {
 	IonContent,
 	IonGrid,
 	IonRow,
-	IonCol
+	IonCol,
+	IonBadge,
+	IonLabel,
+	IonTabBar,
+	IonTabButton,
+	IonTabs,
+	IonPage
 } from '@ionic/react'
 import ClientTabBar from '../nav/ClientTabBar'
 
-export default function HomePage() {
+const HomePage: React.FC = () =>{
 	return (
-		<IonContent
+		<IonPage><IonContent
 			css={css`
 				
 
@@ -81,10 +87,14 @@ export default function HomePage() {
 					</IonCol>
 				</IonRow>
 				<IonRow className='UserTabBarRow'>
-					<UserTabBar />
+					
+					{/* <ClientTabBar/> */}
+					
 				</IonRow>
 			</IonGrid>
-
 		</IonContent>
+		</IonPage>
 	)
 }
+
+export default HomePage

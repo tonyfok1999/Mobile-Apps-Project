@@ -1,10 +1,8 @@
-
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
-
-/** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
 
 
 import React, { useState } from 'react'
@@ -25,11 +23,13 @@ const ChatTab: React.FC = () => {
 			defaultActiveKey={key}
             activeKey={key}
 			onSelect={(k) => setKey(k!)}
-			className='mb-3'>
-			<Tab eventKey='allChats' title='全部對話'>
+			className='mb-3'
+			css={css`display: flex; justify-content: center;`}
+			>
+			<Tab eventKey='allChats' title='全部對話' css={css`flex:1;`}>
 			<Chats/>
 			</Tab>
-			<Tab eventKey='storedChats' title='已收藏對話'>
+			<Tab eventKey='storedChats' title='已收藏對話' css={css`flex:1;`}>
 			<Chats/>
 			</Tab>
 		</Tabs>
