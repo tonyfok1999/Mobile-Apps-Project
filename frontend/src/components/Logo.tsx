@@ -3,9 +3,7 @@ import logo from '../srcImage/logo.png'
 export default function Logo() {
 	return (
 		<>
-			<img src={logo} alt='login page img'></img>
-			
-			
+			<img src={logo} alt='logo img'></img>
 		</>
 	)
 }
