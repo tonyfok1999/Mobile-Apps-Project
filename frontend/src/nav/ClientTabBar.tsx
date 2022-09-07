@@ -16,7 +16,12 @@ import {
 	IonBadge
 } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
-import { chatbubbleEllipses, chatbubblesOutline, mic, micOutline } from 'ionicons/icons'
+import {
+	chatbubbleEllipses,
+	chatbubblesOutline,
+	mic,
+	micOutline
+} from 'ionicons/icons'
 import { Route, Redirect } from 'react-router'
 
 import ChatTab from '../components/ChatTab'
@@ -35,7 +40,6 @@ import SpeakPage from '../pages/SpeakPage'
 const ClientTabBar: React.FC = () => {
 	return (
 		<IonReactRouter>
-
 			<IonTabs>
 				<IonRouterOutlet>
 			
@@ -48,18 +52,22 @@ const ClientTabBar: React.FC = () => {
 				</IonRouterOutlet>
 
 				<IonTabBar slot='bottom'>
-					<IonTabButton tab='homepage' className="home-icon" href='/tabs/homepage'>
-					<IonIcon size="large" icon={mic} />
+					<IonTabButton
+						tab='homepage'
+						className='home-icon'
+						href='/tabs/homePage'>
+						<IonIcon size='large' icon={mic} />
 					</IonTabButton>
-					<IonTabButton tab='chatlist' href='/tabs/chatlist'>
-					<IonIcon size="large" className="chat-icon" icon={chatbubbleEllipses} />
+					<IonTabButton tab='chatlist' href='/tabs/chatList'>
+						<IonIcon
+							size='large'
+							className='chat-icon'
+							icon={chatbubbleEllipses}
+						/>
 					</IonTabButton>
 				</IonTabBar>
-
 			</IonTabs>
 		</IonReactRouter>
-
-
 	)
 }
 

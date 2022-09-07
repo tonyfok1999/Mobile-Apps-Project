@@ -1,7 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import {
+	IonBackButton,
+	IonButton,
+	IonButtons,
+	IonHeader,
+	IonIcon,
+	IonPage,
+	IonToolbar
+} from '@ionic/react'
+import { arrowBackOutline } from 'ionicons/icons'
 import React from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
+import BackIcon from '../components/BackIcon'
 import LoginMethods from '../components/LoginMethods'
 
 export default function WorkerRegisterPage() {
@@ -12,13 +23,24 @@ export default function WorkerRegisterPage() {
 	const history = useHistory()
 
 	return (
-		<div
+		<IonPage
 			css={css`
 				display: flex;
 				flex-direction: column;
 				align-items: center;
+				justify-content: stretch;
+
 				div:nth-of-type(1) {
-					margin-left: 60%;
+					display: flex;
+
+					ion-button {
+						position: absolute;
+						left: 0;
+					}
+					span {
+						position: absolute;
+						right: 0;
+					}
 					a {
 						text-decoration: none;
 						color: #fa7268;
@@ -28,6 +50,10 @@ export default function WorkerRegisterPage() {
 				h1 {
 					color: #fa7268;
 					font-weight: bold;
+					margin-top: 5rem;
+				}
+				span:nth-of-type(1) {
+					margin: 1rem;
 				}
 				div:nth-of-type(2) {
 					color: #777777;
@@ -70,9 +96,24 @@ export default function WorkerRegisterPage() {
 					}
 				}
 			`}>
-			<div>
-				已經註冊? <NavLink to='/workerLoginPage'>登入</NavLink>
-			</div>
+			{/* <div>
+				<IonButton
+					size='large'
+					fill='clear'
+					routerLink='/workerLoginPage'>
+					<IonIcon className='icon' icon={arrowBackOutline} />
+				</IonButton>
+				<span>
+					已經註冊? <NavLink to='/workerLoginPage'>登入</NavLink>
+				</span>
+			</div> */}
+			{/* <IonHeader>
+				<IonToolbar>
+					<IonButtons slot='start'>
+						<IonBackButton />
+					</IonButtons>
+				</IonToolbar>
+			</IonHeader> */}
 			<h1>師傅註冊</h1>
 			<LoginMethods />
 			<div>或</div>
@@ -90,6 +131,6 @@ export default function WorkerRegisterPage() {
 					}}
 				/>
 			</form>
-		</div>
+		</IonPage>
 	)
 }

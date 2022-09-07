@@ -1,28 +1,44 @@
 /** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 import LoginBox from '../components/LoginBox'
 import Logo from '../components/Logo'
-import { css } from '@emotion/react'
-import { IonPage } from '@ionic/react'
+
+import {
+	IonButton,
+	IonHeader,
+	IonIcon,
+	IonPage,
+	IonTitle,
+	IonToolbar
+} from '@ionic/react'
+import { arrowBackOutline } from 'ionicons/icons'
 
 export default function WorkerLoginPage() {
 	return (
 		<IonPage
 			css={css`
-				max-width: 100%;
-				max-height: 100%;
 				display: flex;
 				flex-direction: column;
+				justify-content: stretch;
+
+				ion-button {
+					width: 5rem;
+				}
 				img {
-					margin: auto;
-					max-width: 60%;
+					margin-left: auto;
+					margin-right: auto;
+					margin-top: 3rem;
+					max-width: 40%;
 				}
-				h1 {
-					margin: auto;
-				}
+
 				.container {
-					margin: auto;
+					margin-left: auto;
+					margin-right: auto;
+					h1 {
+						margin: auto;
+					}
 				}
 				> span {
 					position: absolute;
@@ -40,6 +56,9 @@ export default function WorkerLoginPage() {
 					}
 				}
 			`}>
+			<IonButton size='large' fill='clear' routerLink='/'>
+				<IonIcon className='icon' icon={arrowBackOutline} />
+			</IonButton>
 			<Logo />
 			<LoginBox />
 			<span>

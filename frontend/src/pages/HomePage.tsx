@@ -3,10 +3,24 @@
 import Logo from '../components/Logo'
 import { css } from '@emotion/react'
 import UserTabBar from '../components/UserTabBar'
-import { IonButton, IonGrid, IonRow, IonCol, IonPage } from '@ionic/react'
+import {
+	IonButton,
+	IonGrid,
+	IonRow,
+	IonCol,
+	IonPage,
+	IonContent,
+	useIonRouter
+} from '@ionic/react'
 
+const HomePage: React.FC = () => {
+	const navigation = useIonRouter()
 
-const HomePage: React.FC = () =>{
+	const doNavigate = () => {
+		navigation.push('/SpeakPage', 'root', 'replace')
+		console.log('navigation done')
+	}
+
 	return (
 		<IonPage
 			css={css`
@@ -48,10 +62,9 @@ const HomePage: React.FC = () =>{
 					height: 30vh;
 				}
 				.UserTabBarRow {
-					
 					height: 5vh;
 				}
-				*{
+				* {
 					padding: 0;
 					margin: 0;
 				}

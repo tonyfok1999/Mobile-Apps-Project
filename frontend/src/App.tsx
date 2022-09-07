@@ -44,6 +44,7 @@ import ClientTabBar from './nav/ClientTabBar'
 import WorkerRegisterPageForTypeOfService from './pages/WorkerRegisterPageForTypeOfService'
 import SpeakPage from './pages/SpeakPage'
 import SpeakTest from './pages/SpeakRecord'
+import HomePage from './pages/HomePage'
 
 setupIonicReact()
 
