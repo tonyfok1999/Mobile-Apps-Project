@@ -23,6 +23,8 @@ import ChatTab from '../components/ChatTab'
 import HomePage from '../pages/HomePage'
 import ChatList from '../pages/ChatList'
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace'
+import SpeakTest from '../pages/SpeakRecord'
+import SpeakPage from '../pages/SpeakPage'
 
 // export default function ChatTab() {
 //   return (
@@ -36,12 +38,13 @@ const ClientTabBar: React.FC = () => {
 
 			<IonTabs>
 				<IonRouterOutlet>
-				<Route exact path='/tabs'>
-					<Redirect to='/tabs/homepage' />
-				</Route>
+			
 					<Route key='chat' path='/tabs/chatlist' component={ChatList}/>
 					<Route key='homepage' path='/tabs/homepage' component={HomePage}/>
-		                
+					<Route exact path='/SpeakPage'>
+					<Redirect  to='/SpeakPage' />
+				</Route>
+				
 				</IonRouterOutlet>
 
 				<IonTabBar slot='bottom'>
