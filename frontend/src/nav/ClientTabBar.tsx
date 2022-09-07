@@ -39,35 +39,52 @@ import SpeakPage from '../pages/SpeakPage'
 
 const ClientTabBar: React.FC = () => {
 	return (
-		<IonReactRouter>
-			<IonTabs>
-				<IonRouterOutlet>
-			
-					<Route key='chat' path='/tabs/chatlist' component={ChatList}/>
-					<Route key='homepage' path='/tabs/homepage' component={HomePage}/>
-					{/* <Route exact path='/SpeakPage'>
-					<Redirect  to='/SpeakPage' />
-					</Route> */}
-				
-				</IonRouterOutlet>
+		// <IonReactRouter>
+		// 	<IonTabs>
+		// 		<IonRouterOutlet>
 
-				<IonTabBar slot='bottom'>
-					<IonTabButton
-						tab='homepage'
-						className='home-icon'
-						href='/tabs/homePage'>
-						<IonIcon size='large' icon={mic} />
-					</IonTabButton>
-					<IonTabButton tab='chatlist' href='/tabs/chatList'>
-						<IonIcon
-							size='large'
-							className='chat-icon'
-							icon={chatbubbleEllipses}
-						/>
-					</IonTabButton>
-				</IonTabBar>
-			</IonTabs>
-		</IonReactRouter>
+		// 			<Route key='chat' path='/tabs/chatlist' component={ChatList}/>
+		// 			<Route key='homepage' path='/tabs/homepage' component={HomePage}/>
+		// 			{/* <Route exact path='/SpeakPage'>
+		// 			<Redirect  to='/SpeakPage' />
+		// 			</Route> */}
+
+		// 		</IonRouterOutlet>
+
+		// 		<IonTabBar slot='bottom'>
+		// 			<IonTabButton
+		// 				tab='homepage'
+		// 				className='home-icon'
+		// 				href='/tabs/homePage'>
+		// 				<IonIcon size='large' icon={mic} />
+		// </IonTabButton>
+		// <IonTabButton tab='chatlist' href='/tabs/chatList'>
+		// 	<IonIcon
+		// 		size='large'
+		// 		className='chat-icon'
+		// 		icon={chatbubbleEllipses}
+		// 	/>
+		// </IonTabButton>
+		// 		</IonTabBar>
+		// 	</IonTabs>
+		// </IonReactRouter>
+
+		<IonTabBar slot='bottom'>
+			<IonTabButton tab='chatlist' href='/tabs/chatList'>
+				<IonIcon
+					size='large'
+					className='chat-icon'
+					icon={chatbubbleEllipses}
+				/>
+			</IonTabButton>
+			<IonTabButton tab='chatlist' href='/tabs/chatList'>
+				<IonIcon
+					size='large'
+					className='chat-icon'
+					icon={chatbubbleEllipses}
+				/>
+			</IonTabButton>
+		</IonTabBar>
 	)
 }
 

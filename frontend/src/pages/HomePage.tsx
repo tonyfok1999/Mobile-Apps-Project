@@ -12,6 +12,7 @@ import {
 	IonContent,
 	useIonRouter
 } from '@ionic/react'
+import ClientTabBar from '../nav/ClientTabBar'
 
 const HomePage: React.FC = () => {
 	const navigation = useIonRouter()
@@ -82,7 +83,7 @@ const HomePage: React.FC = () => {
 				</IonRow>
 				<IonRow className='info2Col'>
 					<IonCol className='center'>
-						<IonButton fill='clear'  routerLink='/SpeakPage'  >
+						<IonButton fill='clear' routerLink='/SpeakPage'>
 							<h3>按一下開始</h3>
 						</IonButton>
 					</IonCol>
@@ -91,6 +92,7 @@ const HomePage: React.FC = () => {
 					<UserTabBar />
 				</IonRow>
 			</IonGrid>
+			<ClientTabBar />
 		</IonPage>
 	)
 }
