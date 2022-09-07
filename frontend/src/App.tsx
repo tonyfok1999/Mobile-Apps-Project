@@ -100,6 +100,7 @@ export default App
             <Redirect to="/tab1" />
           </Route>
         </IonRouterOutlet>
+		
         <IonTabBar slot="bottom">
           <IonTabButton tab="tab1" href="/tab1">
             <IonIcon icon={triangle} />

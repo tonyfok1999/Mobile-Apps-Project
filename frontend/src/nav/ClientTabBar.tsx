@@ -45,9 +45,9 @@ const ClientTabBar: React.FC = () => {
 			
 					<Route key='chat' path='/tabs/chatlist' component={ChatList}/>
 					<Route key='homepage' path='/tabs/homepage' component={HomePage}/>
-					<Route exact path='/SpeakPage'>
+					{/* <Route exact path='/SpeakPage'>
 					<Redirect  to='/SpeakPage' />
-				</Route>
+					</Route> */}
 				
 				</IonRouterOutlet>
 
