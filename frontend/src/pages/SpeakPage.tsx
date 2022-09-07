@@ -9,7 +9,8 @@ import {
 	IonGrid,
 	IonRow,
 	IonCol,
-	IonPage
+	IonPage,
+	IonContent
 } from '@ionic/react'
 import DetailsOfRecordingContent from '../components/DetailsOfRecordingContent'
 import { micOutline } from 'ionicons/icons'
@@ -69,67 +70,67 @@ export default function SpeakPage() {
 					margin: 0;
 				}
 			`}>
-			<IonGrid>
-				<IonRow className='topBar'>
-					<IonCol className='topBar'>
-						<TopBar />
-					</IonCol>
-				</IonRow>
-				<IonRow className='logoCol'>
-					<IonCol className='center'>
-						<Logo />
-					</IonCol>
-				</IonRow>
-				<IonRow className='infoCol'>
-					<IonCol className='center DetailsOfRecordingContent'>
-						<DetailsOfRecordingContent />
-					</IonCol>
-				</IonRow>
+			<IonContent>
+				<IonGrid>
+					<IonRow className='topBar'>
+						<IonCol className='topBar'>
+							<TopBar />
+						</IonCol>
+					</IonRow>
+					<IonRow className='logoCol'>
+						<IonCol className='center'>
+							<Logo />
+						</IonCol>
+					</IonRow>
+					<IonRow className='infoCol'>
+						<IonCol className='center DetailsOfRecordingContent'>
+							<DetailsOfRecordingContent />
+						</IonCol>
+					</IonRow>
 
-				<IonRow className='buttonRow '>
-					{recordState ? (
-						<IonButton
-						
-						size='large'
-						fill='clear'
-						// routerLink='/SpeakTest'
-						onClick={() => {
-							setRecordState(false)
-						}}>
-						<h3>聆聽中,按一下結束</h3>
-					</IonButton>
-					
-					) : (
-						<>
-							<IonCol class='textButton' size='12'>
-								<IonButton
-									size='large'
-									fill='clear'
-									// routerLink='/SpeakTest'
-									onClick={() => {
-										setRecordState(true)
-									}}>
-									<h3>按一下開始說話</h3>
-								</IonButton>
-							</IonCol>
-							<IonCol class='iconButton' size='12'>
-								<IonButton
-									size='large'
-									fill='clear'
-									// routerLink='/SpeakTest'
-									onClick={() => {
-										setRecordState(true)
-									}}>
-									<IonIcon
-										className='mic icon'
-										icon={micOutline}
-									/>
-								</IonButton>
-							</IonCol>
-						</>
-					)}
-				</IonRow>
-			</IonGrid>
+					<IonRow className='buttonRow '>
+						{recordState ? (
+							<IonButton
+								size='large'
+								fill='clear'
+								// routerLink='/SpeakTest'
+								onClick={() => {
+									setRecordState(false)
+								}}>
+								<h3>聆聽中,按一下結束</h3>
+							</IonButton>
+						) : (
+							<>
+								<IonCol class='textButton' size='12'>
+									<IonButton
+										size='large'
+										fill='clear'
+										// routerLink='/SpeakTest'
+										onClick={() => {
+											setRecordState(true)
+										}}>
+										<h3>按一下開始說話</h3>
+									</IonButton>
+								</IonCol>
+								<IonCol class='iconButton' size='12'>
+									<IonButton
+										size='large'
+										fill='clear'
+										// routerLink='/SpeakTest'
+										onClick={() => {
+											setRecordState(true)
+										}}>
+										<IonIcon
+											className='mic icon'
+											icon={micOutline}
+										/>
+									</IonButton>
+								</IonCol>
+							</>
+						)}
+					</IonRow>
+				</IonGrid>
+			</IonContent>
 		</IonPage>
 	)
 }

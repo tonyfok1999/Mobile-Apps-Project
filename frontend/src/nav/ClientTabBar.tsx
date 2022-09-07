@@ -16,13 +16,19 @@ import {
 	IonBadge
 } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
-import { chatbubbleEllipses, chatbubblesOutline, mic, micOutline } from 'ionicons/icons'
+import {
+	chatbubbleEllipses,
+	chatbubblesOutline,
+	mic,
+	micOutline
+} from 'ionicons/icons'
 import { Route, Redirect } from 'react-router'
 
 import ChatTab from '../components/ChatTab'
 import HomePage from '../pages/HomePage'
 import ChatList from '../pages/ChatList'
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace'
+import SpeakPage from '../pages/SpeakPage'
 
 // export default function ChatTab() {
 //   return (
@@ -33,30 +39,47 @@ import { EmotionJSX } from '@emotion/react/types/jsx-namespace'
 const ClientTabBar: React.FC = () => {
 	return (
 		<IonReactRouter>
-
 			<IonTabs>
 				<IonRouterOutlet>
-				<Route exact path='/tabs'>
-					<Redirect to='/tabs/homepage' />
-				</Route>
-					<Route key='chat' path='/tabs/chatlist' component={ChatList}/>
-					<Route key='homepage' path='/tabs/homepage' component={HomePage}/>
-		                
+					<Route exact path='/tabs'>
+						<Redirect to='/tabs/homepage' />
+					</Route>
+					
+					<Route
+						key='chat'
+						path='/tabs/chatList'
+						component={ChatList}
+					/>
+					
+					<Route
+						key='homepage'
+						exact path='/tabs/homePage'
+						component={HomePage}
+					/>
+					
+					<Route key='speakpage' path='/tabs/homePage/SpeakPage'>
+						<Redirect to='/tabs' />
+					</Route>
+				
 				</IonRouterOutlet>
 
 				<IonTabBar slot='bottom'>
-					<IonTabButton tab='homepage' className="home-icon" href='/tabs/homepage'>
-					<IonIcon size="large" icon={mic} />
+					<IonTabButton
+						tab='homepage'
+						className='home-icon'
+						href='/tabs/homePage'>
+						<IonIcon size='large' icon={mic} />
 					</IonTabButton>
-					<IonTabButton tab='chatlist' href='/tabs/chatlist'>
-					<IonIcon size="large" className="chat-icon" icon={chatbubbleEllipses} />
+					<IonTabButton tab='chatlist' href='/tabs/chatList'>
+						<IonIcon
+							size='large'
+							className='chat-icon'
+							icon={chatbubbleEllipses}
+						/>
 					</IonTabButton>
 				</IonTabBar>
-
 			</IonTabs>
 		</IonReactRouter>
-
-
 	)
 }
 

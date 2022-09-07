@@ -44,6 +44,7 @@ import ClientTabBar from './nav/ClientTabBar'
 import WorkerRegisterPageForTypeOfService from './pages/WorkerRegisterPageForTypeOfService'
 import SpeakPage from './pages/SpeakPage'
 import SpeakTest from './pages/SpeakRecord'
+import HomePage from './pages/HomePage'
 
 setupIonicReact()
 
@@ -56,8 +57,9 @@ const App: React.FC = () => (
 				</Route>
 
 				<Route path='/tabs' component={ClientTabBar} />
-				<Route exact path='/SpeakPage' component={SpeakPage} />
-				<Route exact path='/SpeakTest' component={SpeakTest} />
+
+				<Route path='/SpeakPage' component={SpeakPage} />
+				<Route path='/SpeakTest' component={SpeakTest} />
 				<Route
 					exact
 					path='/workerLoginPage'
