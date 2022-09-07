@@ -1,3 +1,4 @@
+import './ChatList.css'
 import {
 	IonToolbar,
 	IonButtons,

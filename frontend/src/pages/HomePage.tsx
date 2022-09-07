@@ -15,12 +15,6 @@ import {
 import ClientTabBar from '../nav/ClientTabBar'
 
 const HomePage: React.FC = () => {
-	const navigation = useIonRouter()
-
-	const doNavigate = () => {
-		navigation.push('/SpeakPage', 'root', 'replace')
-		console.log('navigation done')
-	}
 
 	return (
 		<IonPage
@@ -89,7 +83,7 @@ const HomePage: React.FC = () => {
 					</IonCol>
 				</IonRow>
 				<IonRow className='UserTabBarRow'>
-				<ClientTabBar />
+				{/* <ClientTabBar /> */}
 				</IonRow>
 			</IonGrid>
 			<ClientTabBar />
