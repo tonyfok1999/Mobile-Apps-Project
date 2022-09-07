@@ -76,12 +76,13 @@ export default function SpeakPage() {
 				</IonRow>
 
 				<IonRow className='buttonRow '>
+
 					<IonCol class='textButton' size='12'>
 						<IonButton
                         
 							size='large'
 							fill='clear'
-							onClick={() => {}}>
+							routerLink="/SpeakTest">
 							<h3>按一下開始說話</h3>
 						</IonButton>
 					</IonCol>
@@ -89,12 +90,16 @@ export default function SpeakPage() {
 						<IonButton
 							size='large'
 							fill='clear'
-							onClick={() => {}}>
+							routerLink="/SpeakTest">
 							<IonIcon className='mic icon' icon={micOutline} />
 						</IonButton>
 					</IonCol>
+
 				</IonRow>
 			</IonGrid>
+
+
+
 		</IonContent>
 	)
 }

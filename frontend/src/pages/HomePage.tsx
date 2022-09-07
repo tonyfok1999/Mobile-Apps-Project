@@ -3,32 +3,13 @@
 import Logo from '../components/Logo'
 import { css } from '@emotion/react'
 import UserTabBar from '../components/UserTabBar'
-import {
-	IonButtons,
-	IonToolbar,
-	IonBackButton,
-	IonTitle,
-	IonButton,
-	IonIcon,
-	IonMenuButton,
-	IonContent,
-	IonGrid,
-	IonRow,
-	IonCol,
-	IonBadge,
-	IonLabel,
-	IonTabBar,
-	IonTabButton,
-	IonTabs
-} from '@ionic/react'
-import ClientTabBar from '../nav/ClientTabBar'
+import { IonButton, IonContent, IonGrid, IonRow, IonCol } from '@ionic/react'
+
 
 export default function HomePage() {
 	return (
 		<IonContent
 			css={css`
-				
-
 				img {
 					width: 60%;
 					/* height: 60%; */
@@ -61,10 +42,18 @@ export default function HomePage() {
 					height: 40vh;
 				}
 				.infoCol {
-					height: 25vh;
+					height: 20vh;
+				}
+				.info2Col {
+					height: 30vh;
 				}
 				.UserTabBarRow {
-					height: 10vh;
+					
+					height: 5vh;
+				}
+				*{
+					padding: 0;
+					margin: 0;
 				}
 			`}>
 			<IonGrid>
@@ -80,22 +69,15 @@ export default function HomePage() {
 				</IonRow>
 				<IonRow className='info2Col'>
 					<IonCol className='center'>
-						<IonButton fill='clear' onClick={() => {}}>
+						<IonButton fill='clear'  routerLink="/SpeakPage" >
 							<h3>按一下開始</h3>
 						</IonButton>
 					</IonCol>
 				</IonRow>
 				<IonRow className='UserTabBarRow'>
-					
-					<ClientTabBar/>
-					
+					<UserTabBar />
 				</IonRow>
 			</IonGrid>
 		</IonContent>
-
-
-
-
-
 	)
 }

@@ -46,7 +46,7 @@ const ClientTabBar: React.FC = () => {
 
 					</IonTabButton>
 					<IonTabButton tab='chatlist' href='/tabs/chatlist'>
-					<IonIcon className='micIcon' icon={micOutline} />
+					<IonIcon className='micIcon' icon={chatbubblesOutline} />
 					</IonTabButton>
 				</IonTabBar>
 			</IonTabs>
