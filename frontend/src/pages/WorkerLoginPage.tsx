@@ -10,19 +10,22 @@ export default function WorkerLoginPage() {
 	return (
 		<IonPage
 			css={css`
-				max-width: 100%;
-				max-height: 100%;
 				display: flex;
 				flex-direction: column;
+				justify-content: stretch;
 				img {
-					margin: auto;
-					max-width: 60%;
+					margin-left: auto;
+					margin-right: auto;
+					margin-top: 3rem;
+					max-width: 40%;
 				}
-				h1 {
-					margin: auto;
-				}
+
 				.container {
-					margin: auto;
+					margin-left: auto;
+					margin-right: auto;
+					h1 {
+						margin: auto;
+					}
 				}
 				> span {
 					position: absolute;

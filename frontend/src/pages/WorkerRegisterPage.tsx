@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
+import { IonPage } from '@ionic/react'
 import React from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import LoginMethods from '../components/LoginMethods'
@@ -12,11 +13,14 @@ export default function WorkerRegisterPage() {
 	const history = useHistory()
 
 	return (
-		<div
+		<IonPage
 			css={css`
 				display: flex;
 				flex-direction: column;
 				align-items: center;
+				img {
+					max-width: 50%;
+				}
 				div:nth-of-type(1) {
 					margin-left: 60%;
 					a {
@@ -90,6 +94,6 @@ export default function WorkerRegisterPage() {
 					}}
 				/>
 			</form>
-		</div>
+		</IonPage>
 	)
 }

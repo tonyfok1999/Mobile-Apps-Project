@@ -41,6 +41,9 @@ export default function LoginBox() {
 						text-decoration: none;
 					}
 					input[type='submit'] {
+						margin-left: auto;
+						margin-right: auto;
+						align-items: center;
 						width: 19rem;
 						border-radius: 1rem;
 						border: none;
