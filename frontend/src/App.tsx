@@ -45,7 +45,7 @@ import WorkerRegisterPageForTypeOfService from './pages/WorkerRegisterPageForTyp
 import SpeakPage from './pages/SpeakPage'
 import SpeakTest from './pages/SpeakRecord'
 import HomePage from './pages/HomePage'
-import Login from './pages/Login'
+import ChatList from './pages/ChatList'
 
 setupIonicReact()
 
@@ -53,18 +53,18 @@ const App: React.FC = () => (
 	<IonApp>
 		<IonReactRouter>
 			<IonRouterOutlet>
+				<Route exact path='/'>
+					<HomePage />
+				</Route>
 
-			<Route exact path='/' component={Login}/>
-
-			<Route path='/tabs/homePage' component={ClientTabBar} />
-			<Route path='/tabs/chatList' component={ClientTabBar} />
-			<Route path='/SpeakPage' component={SpeakPage} />
-			
-			<Route
-				exact
-				path='/workerLoginPage'
-				component={WorkerLoginPage}
-			/>
+				<Route exact path='/tabs/homepage' component={HomePage} />
+				<Route exact path='/SpeakPage' component={SpeakPage} />
+				<Route exact path='/tabs/chatlist' component={ChatList} />
+				<Route
+					exact
+					path='/workerLoginPage'
+					component={WorkerLoginPage}
+				/>
 
 			<Route
 				exact
@@ -83,7 +83,7 @@ const App: React.FC = () => (
 )
 
 export default App
-{
+// {
 	/* <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
@@ -116,5 +116,12 @@ export default App
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
+
     </IonReactRouter> */
-}
+
+// 	;<IonTabs>
+// 		<IonTabBar slot='bottom'>
+// 			<IonTabButton tab='tab1' href='/tab1'></IonTabButton>
+// 		</IonTabBar>
+// 	</IonTabs>
+// }

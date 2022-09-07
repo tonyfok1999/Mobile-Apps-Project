@@ -18,6 +18,7 @@ import {
 import { IoMenuSharp } from 'react-icons/io5'
 import React from 'react'
 import ChatTab from '../components/ChatTab'
+import ClientTabBar from '../nav/ClientTabBar'
 
 
 const ChatList: React.FC = () => {
@@ -65,7 +66,7 @@ const ChatList: React.FC = () => {
 				onIonScrollEnd={() => {}}>
 				<ChatTab />
 			</IonContent>
-
+			<ClientTabBar />
 		</IonPage>
 	</>
 )}
