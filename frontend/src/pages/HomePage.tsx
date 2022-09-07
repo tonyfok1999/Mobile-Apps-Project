@@ -69,27 +69,28 @@ const HomePage: React.FC = () => {
 					margin: 0;
 				}
 			`}>
-			<IonContent>
-				<IonGrid>
-					<IonRow className='logoCol'>
-						<IonCol className='center'>
-							<Logo />
-						</IonCol>
-					</IonRow>
-					<IonRow className='infoCol'>
-						<IonCol className='center'>
-							<h1>只需要以語音說明你所需要的服務便可</h1>
-						</IonCol>
-					</IonRow>
-					<IonRow className='info2Col'>
-						<IonCol className='center'>
-							<IonButton routerLink='/SpeakPage' fill='clear'>
-								<h3>按一下開始</h3>
-							</IonButton>
-						</IonCol>
-					</IonRow>
-				</IonGrid>
-			</IonContent>
+			<IonGrid>
+				<IonRow className='logoCol'>
+					<IonCol className='center'>
+						<Logo />
+					</IonCol>
+				</IonRow>
+				<IonRow className='infoCol'>
+					<IonCol className='center'>
+						<h1>只需要以語音說明你所需要的服務便可</h1>
+					</IonCol>
+				</IonRow>
+				<IonRow className='info2Col'>
+					<IonCol className='center'>
+						<IonButton fill='clear'  routerLink='/SpeakPage'  >
+							<h3>按一下開始</h3>
+						</IonButton>
+					</IonCol>
+				</IonRow>
+				<IonRow className='UserTabBarRow'>
+					<UserTabBar />
+				</IonRow>
+			</IonGrid>
 		</IonPage>
 	)
 }

@@ -53,13 +53,13 @@ const App: React.FC = () => (
 		<IonReactRouter>
 			<IonRouterOutlet>
 			<Route exact path='/'>
-					<Redirect to='/tabs' />
+					<Redirect to='/tabs/homepage' />
 				</Route>
+				
 
-				<Route path='/tabs' component={ClientTabBar} />
-
-				<Route path='/SpeakPage' component={SpeakPage} />
-				<Route path='/SpeakTest' component={SpeakTest} />
+				<Route exact path='/tabs/homepage' component={ClientTabBar} />
+				<Route exact path='/SpeakPage' component={SpeakPage} />
+				
 				<Route
 					exact
 					path='/workerLoginPage'

@@ -28,6 +28,7 @@ import ChatTab from '../components/ChatTab'
 import HomePage from '../pages/HomePage'
 import ChatList from '../pages/ChatList'
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace'
+import SpeakTest from '../pages/SpeakRecord'
 import SpeakPage from '../pages/SpeakPage'
 
 // export default function ChatTab() {
