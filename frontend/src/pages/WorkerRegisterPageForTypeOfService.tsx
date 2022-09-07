@@ -23,12 +23,17 @@ export default function WorkerRegisterPageForTypeOfService() {
 	return (
 		<IonPage
 			css={css`
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: stretch;
 				ion-title {
 					background-color: white;
 				}
 				.btn-outline-danger {
 					margin-top: 1rem;
 					margin-left: 1rem;
+					margin-bottom: 1rem;
 					padding: 0.5rem 1.5rem;
 					border-radius: 2rem;
 				}
