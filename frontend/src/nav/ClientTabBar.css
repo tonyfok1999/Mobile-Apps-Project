@@ -1,6 +1,6 @@
-ion-icon {
+:root {
     /* --ion-background-color: linear-gradient( 45deg, rgb(56, 28, 129), rgb(254, 121, 89) ); */
     /* --border-color: transparent; */
     /* background-image: linear-gradient( 45deg, rgb(56, 28, 129), rgb(254, 121, 89) ); */
-    --ion-tab-bar-color-selected: #000000;
+    --ion-tab-bar-color-selected: #383a3e;
 }

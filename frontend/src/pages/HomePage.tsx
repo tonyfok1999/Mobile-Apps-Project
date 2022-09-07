@@ -3,10 +3,24 @@
 import Logo from '../components/Logo'
 import { css } from '@emotion/react'
 import UserTabBar from '../components/UserTabBar'
-import { IonButton, IonGrid, IonRow, IonCol, IonPage } from '@ionic/react'
+import {
+	IonButton,
+	IonGrid,
+	IonRow,
+	IonCol,
+	IonPage,
+	IonContent,
+	useIonRouter
+} from '@ionic/react'
 
+const HomePage: React.FC = () => {
+	const navigation = useIonRouter()
 
-const HomePage: React.FC = () =>{
+	const doNavigate = () => {
+		navigation.push('/SpeakPage', 'root', 'replace')
+		console.log('navigation done')
+	}
+
 	return (
 		<IonPage
 			css={css`
@@ -48,36 +62,34 @@ const HomePage: React.FC = () =>{
 					height: 30vh;
 				}
 				.UserTabBarRow {
-					
 					height: 5vh;
 				}
-				*{
+				* {
 					padding: 0;
 					margin: 0;
 				}
 			`}>
-			<IonGrid>
-				<IonRow className='logoCol'>
-					<IonCol className='center'>
-						<Logo />
-					</IonCol>
-				</IonRow>
-				<IonRow className='infoCol'>
-					<IonCol className='center'>
-						<h1>只需要以語音說明你所需要的服務便可</h1>
-					</IonCol>
-				</IonRow>
-				<IonRow className='info2Col'>
-					<IonCol className='center'>
-						<IonButton fill='clear'  routerLink="/SpeakPage" >
-							<h3>按一下開始</h3>
-						</IonButton>
-					</IonCol>
-				</IonRow>
-				<IonRow className='UserTabBarRow'>
-					<UserTabBar />
-				</IonRow>
-			</IonGrid>
+			<IonContent>
+				<IonGrid>
+					<IonRow className='logoCol'>
+						<IonCol className='center'>
+							<Logo />
+						</IonCol>
+					</IonRow>
+					<IonRow className='infoCol'>
+						<IonCol className='center'>
+							<h1>只需要以語音說明你所需要的服務便可</h1>
+						</IonCol>
+					</IonRow>
+					<IonRow className='info2Col'>
+						<IonCol className='center'>
+							<IonButton routerLink='/tabs/homePage/SpeakPage' fill='clear'>
+								<h3>按一下開始</h3>
+							</IonButton>
+						</IonCol>
+					</IonRow>
+				</IonGrid>
+			</IonContent>
 		</IonPage>
 	)
 }
