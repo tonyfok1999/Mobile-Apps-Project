@@ -45,6 +45,7 @@ import WorkerRegisterPageForTypeOfService from './pages/WorkerRegisterPageForTyp
 import SpeakPage from './pages/SpeakPage'
 import SpeakTest from './pages/SpeakRecord'
 import HomePage from './pages/HomePage'
+import Login from './pages/Login'
 
 setupIonicReact()
 
@@ -52,30 +53,29 @@ const App: React.FC = () => (
 	<IonApp>
 		<IonReactRouter>
 			<IonRouterOutlet>
-			<Route exact path='/'>
-					<Redirect to='/tabs/homepage' />
-				</Route>
-				
 
-				<Route exact path='/tabs/homepage' component={ClientTabBar} />
-				<Route exact path='/SpeakPage' component={SpeakPage} />
-				
-				<Route
-					exact
-					path='/workerLoginPage'
-					component={WorkerLoginPage}
-				/>
+			<Route exact path='/' component={Login}/>
 
-				<Route
-					exact
-					path='/workerRegisterPage'
-					component={WorkerRegisterPage}
-				/>
-				<Route
-					exact
-					path='/workerRegisterPageForTypeOfService'
-					component={WorkerRegisterPageForTypeOfService}
-				/>
+			<Route path='/tabs/homePage' component={ClientTabBar} />
+			<Route path='/tabs/chatList' component={ClientTabBar} />
+			<Route path='/SpeakPage' component={SpeakPage} />
+			
+			<Route
+				exact
+				path='/workerLoginPage'
+				component={WorkerLoginPage}
+			/>
+
+			<Route
+				exact
+				path='/workerRegisterPage'
+				component={WorkerRegisterPage}
+			/>
+			<Route
+				exact
+				path='/workerRegisterPageForTypeOfService'
+				component={WorkerRegisterPageForTypeOfService}
+			/>
 				<Route exact path='/test' component={InfiniteScrollExample} />
 			</IonRouterOutlet>
 		</IonReactRouter>

@@ -16,7 +16,8 @@ import DetailsOfRecordingContent from '../components/DetailsOfRecordingContent'
 import { micOutline } from 'ionicons/icons'
 import TopBar from '../components/TopBar'
 import { useEffect, useState } from 'react'
-export default function SpeakPage() {
+const SpeakPage: React.FC = () => {
+
 	const [recordState, setRecordState] = useState<boolean>(false)
 
 	// useEffect(() => {
@@ -134,3 +135,5 @@ export default function SpeakPage() {
 		</IonPage>
 	)
 }
+
+export default SpeakPage

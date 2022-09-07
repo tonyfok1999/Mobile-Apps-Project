@@ -6,7 +6,7 @@ import { arrowBackOutline } from 'ionicons/icons'
 
 export default function BackIcon() {
 	return (
-		<IonButton size='large' fill='clear' >
+		<IonButton routerLink="/tabs/homePage" size='large' fill='clear' >
 			<IonIcon className='icon' icon={arrowBackOutline} />
 		</IonButton>
 	)

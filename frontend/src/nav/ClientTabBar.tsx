@@ -42,28 +42,16 @@ const ClientTabBar: React.FC = () => {
 		<IonReactRouter>
 			<IonTabs>
 				<IonRouterOutlet>
-			
-					<Route key='chat' path='/tabs/chatlist' component={ChatList}/>
-					<Route key='homepage' path='/tabs/homepage' component={HomePage}/>
-					{/* <Route exact path='/SpeakPage'>
-					<Redirect  to='/SpeakPage' />
-					</Route> */}
-				
+					<Route path='/tabs/chatList' component={ChatList} />
+					<Route path='/tabs/homePage' component={HomePage} />
 				</IonRouterOutlet>
 
 				<IonTabBar slot='bottom'>
-					<IonTabButton
-						tab='homepage'
-						className='home-icon'
-						href='/tabs/homePage'>
+					<IonTabButton tab='homepage' href='/tabs/homePage'>
 						<IonIcon size='large' icon={mic} />
 					</IonTabButton>
 					<IonTabButton tab='chatlist' href='/tabs/chatList'>
-						<IonIcon
-							size='large'
-							className='chat-icon'
-							icon={chatbubbleEllipses}
-						/>
+						<IonIcon size='large' icon={chatbubbleEllipses} />
 					</IonTabButton>
 				</IonTabBar>
 			</IonTabs>
