@@ -3,12 +3,12 @@
 import Logo from '../components/Logo'
 import { css } from '@emotion/react'
 import UserTabBar from '../components/UserTabBar'
-import { IonButton, IonContent, IonGrid, IonRow, IonCol } from '@ionic/react'
+import { IonButton, IonGrid, IonRow, IonCol, IonPage } from '@ionic/react'
 
 
 export default function HomePage() {
 	return (
-		<IonContent
+		<IonPage
 			css={css`
 				img {
 					width: 60%;
@@ -78,6 +78,6 @@ export default function HomePage() {
 					<UserTabBar />
 				</IonRow>
 			</IonGrid>
-		</IonContent>
+		</IonPage>
 	)
 }

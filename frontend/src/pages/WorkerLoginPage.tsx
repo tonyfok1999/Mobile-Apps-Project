@@ -4,10 +4,11 @@ import { NavLink } from 'react-router-dom'
 import LoginBox from '../components/LoginBox'
 import Logo from '../components/Logo'
 import { css } from '@emotion/react'
+import { IonPage } from '@ionic/react'
 
 export default function WorkerLoginPage() {
 	return (
-		<div
+		<IonPage
 			css={css`
 				max-width: 100%;
 				max-height: 100%;
@@ -45,6 +46,6 @@ export default function WorkerLoginPage() {
 				師傅想加入我們?
 				<NavLink to='/workerRegisterPage'>註冊</NavLink>
 			</span>
-		</div>
+		</IonPage>
 	)
 }

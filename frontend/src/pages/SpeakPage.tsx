@@ -4,23 +4,29 @@ import Logo from '../components/Logo'
 import { css } from '@emotion/react'
 import UserTabBar from '../components/UserTabBar'
 import {
-	IonButtons,
-	IonToolbar,
-	IonBackButton,
-	IonTitle,
 	IonButton,
 	IonIcon,
-	IonMenuButton,
-	IonContent,
 	IonGrid,
 	IonRow,
-	IonCol
+	IonCol,
+	IonPage
 } from '@ionic/react'
 import DetailsOfRecordingContent from '../components/DetailsOfRecordingContent'
 import { micOutline } from 'ionicons/icons'
+import TopBar from '../components/TopBar'
+import { useEffect, useState } from 'react'
 export default function SpeakPage() {
+	const [recordState, setRecordState] = useState<boolean>(false)
+
+	// useEffect(() => {
+	// 	if(recordState){
+
+	// 	}
+
+	// 	},[recordState]);
+
 	return (
-		<IonContent
+		<IonPage
 			css={css`
 				img {
 					width: 60%;
@@ -30,8 +36,11 @@ export default function SpeakPage() {
 					justify-content: center;
 					align-items: center;
 				}
+				.topBar {
+					height: 10vh;
+				}
 				.logoCol {
-					height: 40vh;
+					height: 30vh;
 				}
 				.infoCol {
 					height: 30vh;
@@ -40,23 +49,20 @@ export default function SpeakPage() {
 					font-size: x-large;
 				}
 				.buttonRow {
-                    padding: 0;
+					padding: 0;
 					height: 30vh;
 				}
-                .textButton{
-                    display: flex;
-                    justify-content: center;
+				.textButton {
+					display: flex;
+					justify-content: center;
 					align-items: flex-end;
+				}
 
-                }
-
-                .iconButton{
-                    
-                    display: flex;
-                    justify-content: center;
+				.iconButton {
+					display: flex;
+					justify-content: center;
 					align-items: flex-start;
-
-                }
+				}
 
 				* {
 					padding: 0;
@@ -64,6 +70,11 @@ export default function SpeakPage() {
 				}
 			`}>
 			<IonGrid>
+				<IonRow className='topBar'>
+					<IonCol className='topBar'>
+						<TopBar />
+					</IonCol>
+				</IonRow>
 				<IonRow className='logoCol'>
 					<IonCol className='center'>
 						<Logo />
@@ -76,30 +87,49 @@ export default function SpeakPage() {
 				</IonRow>
 
 				<IonRow className='buttonRow '>
-
-					<IonCol class='textButton' size='12'>
+					{recordState ? (
 						<IonButton
-                        
-							size='large'
-							fill='clear'
-							routerLink="/SpeakTest">
-							<h3>按一下開始說話</h3>
-						</IonButton>
-					</IonCol>
-					<IonCol class='iconButton'size='12'>
-						<IonButton
-							size='large'
-							fill='clear'
-							routerLink="/SpeakTest">
-							<IonIcon className='mic icon' icon={micOutline} />
-						</IonButton>
-					</IonCol>
-
+						
+						size='large'
+						fill='clear'
+						// routerLink='/SpeakTest'
+						onClick={() => {
+							setRecordState(false)
+						}}>
+						<h3>聆聽中,按一下結束</h3>
+					</IonButton>
+					
+					) : (
+						<>
+							<IonCol class='textButton' size='12'>
+								<IonButton
+									size='large'
+									fill='clear'
+									// routerLink='/SpeakTest'
+									onClick={() => {
+										setRecordState(true)
+									}}>
+									<h3>按一下開始說話</h3>
+								</IonButton>
+							</IonCol>
+							<IonCol class='iconButton' size='12'>
+								<IonButton
+									size='large'
+									fill='clear'
+									// routerLink='/SpeakTest'
+									onClick={() => {
+										setRecordState(true)
+									}}>
+									<IonIcon
+										className='mic icon'
+										icon={micOutline}
+									/>
+								</IonButton>
+							</IonCol>
+						</>
+					)}
 				</IonRow>
 			</IonGrid>
-
-
-
-		</IonContent>
+		</IonPage>
 	)
 }
