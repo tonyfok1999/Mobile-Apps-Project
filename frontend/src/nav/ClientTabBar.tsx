@@ -70,13 +70,13 @@ const ClientTabBar: React.FC = () => {
 		// </IonReactRouter>
 
 		<IonTabBar slot='bottom'>
-			<IonTabButton tab='chatlist' href='/tabs/chatList'>
-				<IonIcon
-					size='large'
-					className='chat-icon'
-					icon={chatbubbleEllipses}
-				/>
+			<IonTabButton
+				tab='homepage'
+				className='home-icon'
+				href='/tabs/homePage'>
+				<IonIcon size='large' icon={mic} />
 			</IonTabButton>
+			
 			<IonTabButton tab='chatlist' href='/tabs/chatList'>
 				<IonIcon
 					size='large'

@@ -89,7 +89,7 @@ const HomePage: React.FC = () => {
 					</IonCol>
 				</IonRow>
 				<IonRow className='UserTabBarRow'>
-					<UserTabBar />
+				<ClientTabBar />
 				</IonRow>
 			</IonGrid>
 			<ClientTabBar />

@@ -57,7 +57,7 @@ const App: React.FC = () => (
 					<HomePage />
 				</Route>
 
-				<Route exact path='/tabs/homepage' component={ClientTabBar} />
+				<Route exact path='/tabs/homepage' component={HomePage} />
 				<Route exact path='/SpeakPage' component={SpeakPage} />
 				<Route exact path='/tabs/chatlist' component={ChatList} />
 				<Route
@@ -83,7 +83,7 @@ const App: React.FC = () => (
 )
 
 export default App
-{
+// {
 	/* <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
@@ -119,9 +119,9 @@ export default App
 
     </IonReactRouter> */
 
-	;<IonTabs>
-		<IonTabBar slot='bottom'>
-			<IonTabButton tab='tab1' href='/tab1'></IonTabButton>
-		</IonTabBar>
-	</IonTabs>
-}
+// 	;<IonTabs>
+// 		<IonTabBar slot='bottom'>
+// 			<IonTabButton tab='tab1' href='/tab1'></IonTabButton>
+// 		</IonTabBar>
+// 	</IonTabs>
+// }
