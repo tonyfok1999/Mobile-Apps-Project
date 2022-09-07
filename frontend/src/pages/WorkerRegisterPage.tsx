@@ -58,6 +58,8 @@ export default function WorkerRegisterPage() {
 						right: 0;
 						margin-left: auto;
 						margin-right: auto;
+						border-bottom: none;
+						font-weight: bold;
 						background: linear-gradient(
 							45deg,
 							rgb(56, 28, 129),
@@ -65,8 +67,6 @@ export default function WorkerRegisterPage() {
 						);
 						-webkit-background-clip: text;
 						color: transparent;
-						border-bottom: none;
-						font-weight: bold;
 					}
 				}
 			`}>
