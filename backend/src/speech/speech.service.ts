@@ -13,8 +13,8 @@ export class SpeechService {
 
 
 
-async uploadWebM(formDate){
-  console.log(formDate);
+async uploadWebM(speechUpload){
+  console.log(speechUpload);
   
   return
 }
@@ -22,7 +22,7 @@ async uploadWebM(formDate){
 
 
   
-  async googleAPI() {
+  async googleAPI(filename) {
    
   
 
@@ -32,11 +32,11 @@ async uploadWebM(formDate){
   
     // The audio file's encoding, sample rate in hertz, and BCP-47 language code
     const audio = {
-      content: readFileSync(process.env.SPEECH_FILE).toString('base64'),
+      content: readFileSync(process.env.SPEECH_FILE+filename).toString('base64'),
     };
     const config = {
       encoding: 'WEBM_OPUS',
-      sampleRateHertz: 8000 ,
+      sampleRateHertz: 48000 ,
       languageCode: 'yue-Hant-HK',
     };
     const request = {

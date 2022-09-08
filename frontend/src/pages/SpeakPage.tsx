@@ -17,71 +17,59 @@ import { micOutline } from 'ionicons/icons'
 import TopBar from '../components/TopBar'
 import { useEffect, useState } from 'react'
 
-
-
-
 export default function SpeakPage() {
-
 	const [recordState, setRecordState] = useState<boolean>(false)
 	const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>()
 
-	const newMediaDevices =async()=>{
-
+	const newMediaDevices = async () => {
 		await navigator.mediaDevices
-		.getUserMedia({ audio: true })
-		.then((stream) => {
-			setMediaRecorder(new MediaRecorder(stream))
-			
-			console.log('getUserMedia supported.')
-			// console.log(mediaRecorder?.state)
-			// console.log(mediaRecorder)
-		})
-		
-	} 
+			.getUserMedia({ audio: true })
+			.then((stream) => {
+				setMediaRecorder(new MediaRecorder(stream))
 
+				console.log('getUserMedia supported.')
+				
+			})
+	}
 
-	useEffect( () => {
+	useEffect(() => {
 		console.log(mediaRecorder?.state)
-		let chunks:any[] = []
-		if (mediaRecorder?.state == 'inactive' &&recordState == true) {
+		let chunks: any[] = []
+		if (mediaRecorder?.state == 'inactive' && recordState == true) {
 			mediaRecorder.start()
 			console.log(mediaRecorder.state)
-			
-		} 
-
-		if(mediaRecorder?.state == 'recording' &&recordState == false){
-			mediaRecorder.ondataavailable = async function (e) {
-				chunks.push(e.data)
-				console.log(chunks)
-				console.log(mediaRecorder.state)
-				// const blob = new Blob(chunks, { type: "audio/ogg; codecs=opus" });
-				// console.log(blob)
-				const formData = new FormData();
-				formData.append("upload", chunks[0], "WebM");
-				console.log(formData);
-				
-				let res = await fetch("http://localhost:8000/user/findduser")
-				// , {
-				// 	method: "POST",
-				// 	body: formData,
-				//   });
-				  let results = await res.json();
-				  console.log(results);
-				  
-			}
-			mediaRecorder.stop();
-			console.log(mediaRecorder.state)
-			chunks = [];
-
 		}
 
-	}, [recordState,mediaRecorder])
+		if (mediaRecorder?.state == 'recording' && recordState == false) {
+			mediaRecorder.ondataavailable = async function (e) {
+				chunks.push(e.data)
+				console.log(mediaRecorder.state)
 
+				const formData = new FormData()
 
+				const blob = new Blob(chunks, {
+					type: 'audio/WebM; codecs=opus'
+				})
+				console.log(blob)
+				formData.append('record', blob)
+				console.log(formData)
 
+				let res = await fetch(
+					'http://localhost:8000/speech/uploadWebM',
+					{
+						method: 'POST',
+						body: formData
+					}
+				)
+				let back = res.json()
+				console.log(back)
+			}
+			mediaRecorder.stop()
+			console.log(mediaRecorder.state)
+			chunks = []
+		}
+	}, [recordState, mediaRecorder])
 
-
-	 
 	return (
 		<IonPage
 			css={css`
@@ -199,5 +187,3 @@ export default function SpeakPage() {
 		</IonPage>
 	)
 }
-
-export default SpeakPage
