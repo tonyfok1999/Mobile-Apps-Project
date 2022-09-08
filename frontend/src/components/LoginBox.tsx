@@ -1,10 +1,23 @@
 /** @jsxImportSource @emotion/react */
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 import { css } from '@emotion/react'
 import LoginMethods from './LoginMethods'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 export default function LoginBox() {
+	const {
+		register,
+		handleSubmit,
+		watch,
+		formState: { errors }
+	} = useForm()
+
+	// useEffect(()=>{
+	// 	const =
+	// }
+	// 	,[])
+
 	return (
 		<div
 			className='container'
@@ -68,9 +81,17 @@ export default function LoginBox() {
 				}
 			`}>
 			<h1>登入</h1>
-			<form action='#'>
-				<input type='text' placeholder='電郵' />
-				<input type='password' placeholder='密碼' />
+			<form onSubmit={handleSubmit((date) => console.log(date))}>
+				<input
+					type='email'
+					placeholder='電郵'
+					{...register('email', { required: true })}
+				/>
+				<input
+					type='password'
+					placeholder='密碼'
+					{...register('password', { required: true })}
+				/>
 				<NavLink to='#'>忘記密碼?</NavLink>
 				<input type='submit' value='登入' />
 			</form>

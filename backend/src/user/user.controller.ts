@@ -17,24 +17,25 @@ import { LoginUserDto } from './dto/login.dto'
 export class UserController {
 	constructor(private readonly userService: UserService) {}
 
-	@Post('/register_user')
+	@Post()
 	register(@Body() createUserDto: CreateUserDto) {
 		return this.userService.register(createUserDto)
 	}
 
-	@Get('/findUser')
+	@Get('/allUser')
 	findAll() {
 		return this.userService.findAll()
 	}
 
-	@Get('/find_user_byid')
+	@Get('/:id')
 	findOne(@Param('id', ParseIntPipe) id: string) {
 		return this.userService.findOne(+id)
 	}
 
 	@Post('/login')
-	login(@Body() loginUserDto: LoginUserDto) {
-		return this.userService.login(loginUserDto)
+	login(@Body() user: LoginUserDto) {
+		// user.email!=''&&user.password!=''
+		return this.userService.login(user)
 	}
 
 	@Patch(':id')

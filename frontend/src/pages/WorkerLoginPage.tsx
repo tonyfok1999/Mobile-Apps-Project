@@ -29,7 +29,6 @@ export default function WorkerLoginPage() {
 				img {
 					margin-left: auto;
 					margin-right: auto;
-					margin-top: 3rem;
 					max-width: 40%;
 				}
 
