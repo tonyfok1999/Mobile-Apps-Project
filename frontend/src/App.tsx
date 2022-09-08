@@ -66,16 +66,16 @@ const App: React.FC = () => (
 					component={WorkerLoginPage}
 				/>
 
-				<Route
-					exact
-					path='/workerRegisterPage'
-					component={WorkerRegisterPage}
-				/>
-				<Route
-					exact
-					path='/workerRegisterPageForTypeOfService'
-					component={WorkerRegisterPageForTypeOfService}
-				/>
+			<Route
+				exact
+				path='/workerRegisterPage'
+				component={WorkerRegisterPage}
+			/>
+			<Route
+				exact
+				path='/workerRegisterPageForTypeOfService'
+				component={WorkerRegisterPageForTypeOfService}
+			/>
 				<Route exact path='/test' component={InfiniteScrollExample} />
 			</IonRouterOutlet>
 		</IonReactRouter>

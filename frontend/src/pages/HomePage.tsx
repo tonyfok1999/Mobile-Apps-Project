@@ -15,13 +15,6 @@ import {
 import ClientTabBar from '../nav/ClientTabBar'
 
 const HomePage: React.FC = () => {
-	const navigation = useIonRouter()
-
-	const doNavigate = () => {
-		navigation.push('/SpeakPage', 'root', 'replace')
-		console.log('navigation done')
-	}
-
 	return (
 		<IonPage
 			css={css`
@@ -87,9 +80,6 @@ const HomePage: React.FC = () => {
 							<h3>按一下開始</h3>
 						</IonButton>
 					</IonCol>
-				</IonRow>
-				<IonRow className='UserTabBarRow'>
-				<ClientTabBar />
 				</IonRow>
 			</IonGrid>
 			<ClientTabBar />

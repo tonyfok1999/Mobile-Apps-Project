@@ -1,0 +1,7 @@
+.active{
+    color: #0D0E10 !important
+}
+
+#chatTab-tab-allChats, #chatTab-tab-storedChats{
+    color: #A3A9AF
+}

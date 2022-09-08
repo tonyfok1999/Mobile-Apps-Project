@@ -199,3 +199,5 @@ export default function SpeakPage() {
 		</IonPage>
 	)
 }
+
+export default SpeakPage
