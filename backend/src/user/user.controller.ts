@@ -22,17 +22,17 @@ export class UserController {
 		return this.userService.register(createUserDto)
 	}
 
-	@Get('/allUser')
+	@Get('all')
 	findAll() {
 		return this.userService.findAll()
 	}
 
-	@Get('/:id')
-	findOne(@Param('id', ParseIntPipe) id: string) {
-		return this.userService.findOne(+id)
+	@Get(':id')
+	getUserById(@Param('id', ParseIntPipe) id: number) {
+		return this.userService.getUserById(id)
 	}
 
-	@Post('/login')
+	@Post('login')
 	login(@Body() user: LoginUserDto) {
 		// user.email!=''&&user.password!=''
 		return this.userService.login(user)

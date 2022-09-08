@@ -21,6 +21,10 @@ async function bootstrap() {
 	const document = SwaggerModule.createDocument(app, config)
 	SwaggerModule.setup('api', app, document)
 
+	app.enableCors({
+		origin: [process.env.REACT_URL]
+	})
+
 	// app.use((req, res, next) => {
 	// 	cors({
 	// 		origin: [process.env.URL]
