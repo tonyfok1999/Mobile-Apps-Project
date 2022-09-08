@@ -32,7 +32,7 @@ export const Chats: React.FC = () => (
 		<IonList>
 			{/* Multi-line sliding item with icon options on both sides */}
 			<IonItemSliding id='item100'>
-				<IonItem href='#'>
+				<IonItem routerLink='/chatroom/1'>
 					<IonAvatar slot='start'>
 						<IonImg src='https://picsum.photos/id/237/64/64'></IonImg>
 					</IonAvatar>
@@ -67,7 +67,7 @@ export const Chats: React.FC = () => (
 
 			{/* Multi-line sliding item with icon options on both sides */}
 			<IonItemSliding id='item100'>
-				<IonItem href='#'>
+				<IonItem routerLink='/chatroom/2'>
 					<IonAvatar slot='start'>
 						<IonImg src='https://picsum.photos/id/89/64/64'></IonImg>
 					</IonAvatar>

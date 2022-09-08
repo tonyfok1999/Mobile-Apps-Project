@@ -1,3 +1,6 @@
+
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
 import './ChatList.css'
 import {
 	IonToolbar,
@@ -44,7 +47,24 @@ const ChatList: React.FC = () => {
 			</IonContent>
 		</IonMenu>
 
-		<IonPage id='main-content'>
+		<IonPage id='main-content' 
+		css={css`
+		
+		ion-title{
+			font-family:'IBM Plex Sans Condensed';
+			font-size: 1.4rem;
+			font-weight: normal;
+		}
+		
+		ion-toolbar{
+			--border-style: none;
+		}
+		
+		svg{
+			color: #0D0E10
+		}
+		
+		`}>
 			
 			<IonHeader>
 				<IonToolbar>
