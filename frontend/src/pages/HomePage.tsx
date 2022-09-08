@@ -15,7 +15,6 @@ import {
 import ClientTabBar from '../nav/ClientTabBar'
 
 const HomePage: React.FC = () => {
-
 	return (
 		<IonPage
 			css={css`
@@ -81,9 +80,6 @@ const HomePage: React.FC = () => {
 							<h3>按一下開始</h3>
 						</IonButton>
 					</IonCol>
-				</IonRow>
-				<IonRow className='UserTabBarRow'>
-				{/* <ClientTabBar /> */}
 				</IonRow>
 			</IonGrid>
 			<ClientTabBar />
