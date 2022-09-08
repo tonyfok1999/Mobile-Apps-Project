@@ -1,6 +1,6 @@
 import { BarcodeScanner } from '@awesome-cordova-plugins/barcode-scanner';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from '@ionic/react';
-import Recording from '../components/Recording';
+// import Recording from '../components/Recording';
 
 export default function SpeakTest() {
   
@@ -10,7 +10,7 @@ export default function SpeakTest() {
     <IonPage>
     
       <IonContent>
-        <IonButton onClick={()=>{Recording()}}>audio</IonButton>
+        <IonButton onClick={()=>{}}>audio</IonButton>
       </IonContent>
     </IonPage>
   );
