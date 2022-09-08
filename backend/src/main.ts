@@ -13,8 +13,8 @@ async function bootstrap() {
 const document = SwaggerModule.createDocument(app, config);
 SwaggerModule.setup('api', app, document);
 
-  await app.listen(3000,function (){
-    console.log(`Server is listening on post:3000`)
+  await app.listen(8000,function (){
+    console.log(`Server is listening on post:8000`)
   });
   
 }
