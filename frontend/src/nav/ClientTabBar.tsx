@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 // import Tab from 'react-bootstrap/Tab'
 // import Tabs from 'react-bootstrap/Tabs'
-
 import { css } from '@emotion/react'
 import './ClientTabBar.css'
 import React, { useState } from 'react'
@@ -69,14 +68,18 @@ const ClientTabBar: React.FC = () => {
 		// 	</IonTabs>
 		// </IonReactRouter>
 
-		<IonTabBar slot='bottom'>
+		<IonTabBar
+			slot='bottom'
+			css={css`
+				height: 3rem;
+			`}>
 			<IonTabButton
 				tab='homepage'
 				className='home-icon'
 				href='/tabs/homePage'>
 				<IonIcon size='large' icon={mic} />
 			</IonTabButton>
-			
+
 			<IonTabButton tab='chatlist' href='/tabs/chatList'>
 				<IonIcon
 					size='large'
