@@ -11,6 +11,17 @@ ConfigModule.forRoot({
 export class SpeechService {
   
 
+
+
+async uploadWebM(formDate){
+  console.log(formDate);
+  
+  return
+}
+
+
+
+  
   async googleAPI() {
    
   
@@ -24,8 +35,8 @@ export class SpeechService {
       content: readFileSync(process.env.SPEECH_FILE).toString('base64'),
     };
     const config = {
-      encoding: 'LINEAR16',
-      sampleRateHertz: 44100,
+      encoding: 'WEBM_OPUS',
+      sampleRateHertz: 8000 ,
       languageCode: 'yue-Hant-HK',
     };
     const request = {

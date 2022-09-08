@@ -6,6 +6,10 @@ import { SpeechService } from './speech.service';
 export class SpeechController {
   constructor(private readonly speechService: SpeechService) {}
 
+  @Post('/uploadWebM')
+  uploadWebM(@Body()formDate){
+    return this.speechService.uploadWebM(formDate);
+  }
 
 
   @Get('/totext')

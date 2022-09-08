@@ -1,12 +1,10 @@
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config'
 import type { Knex } from 'knex'
 // import { config } from 'dotenv'
 
-
 ConfigModule.forRoot({
-  envFilePath: ['.env'],
-});
-
+	envFilePath: ['.env']
+})
 
 const Configs: { [key: string]: Knex.Config<any> } = {
 	development: {
@@ -73,12 +71,5 @@ const Configs: { [key: string]: Knex.Config<any> } = {
 		}
 	}
 }
-
-
-
-
-
-
-
 
 module.exports = Configs
