@@ -31,15 +31,24 @@ export default function SpeakPage() {
 			})
 	}
 
+	const closeMediaDevices = async () => {
+		await navigator.mediaDevices
+			.getUserMedia({ audio: true })
+			.then((stream) => {
+				var track = stream.getTracks()[0]
+				track.stop()
+			})
+	}
+
 	useEffect(() => {
-		console.log(mediaRecorder?.state)
+		// console.log(mediaRecorder?.state)
 		let chunks: any[] = []
-		if (mediaRecorder?.state == 'inactive' && recordState == true) {
+		if (mediaRecorder?.state === 'inactive' && recordState === true) {
 			mediaRecorder.start()
 			// console.log(mediaRecorder.state)
 		}
 
-		if (mediaRecorder?.state == 'recording' && recordState == false) {
+		if (mediaRecorder?.state === 'recording' && recordState === false) {
 			mediaRecorder.ondataavailable = async function (e) {
 				chunks.push(e.data)
 				// console.log(mediaRecorder.state)
@@ -146,6 +155,7 @@ export default function SpeakPage() {
 										fill='clear'
 										onClick={() => {
 											setRecordState(false)
+											closeMediaDevices()
 										}}>
 										<h3>聆聽中,按一下結束</h3>
 									</IonButton>
