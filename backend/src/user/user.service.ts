@@ -57,8 +57,21 @@ export class UserService {
 		return { loginState: false }
 	}
 
-	async findOne(id: number) {
-		let result = await this.knex.select('id').from('users').where('id', id)
+	async getUserById(id: number) {
+		let result = await this.knex
+			.select([
+				'id',
+				'email',
+				'nickname',
+				'phone',
+				'gender_id',
+				'profile_photo',
+				'is_worker',
+				'worker_info_id',
+				'score'
+			])
+			.from('users')
+			.where('id', id)
 
 		return result
 	}
