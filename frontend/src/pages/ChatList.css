@@ -2,21 +2,7 @@ ion-header{
     --ion-toolbar-background: white;
     background: white;
     border: none;
-    height: 60px;
+    height: 80px;
     display: flex;
     align-items: center;
-}
-
-ion-title{
-    font-family:'IBM Plex Sans Condensed';
-    font-size: 1.4rem;
-    font-weight: normal;
-}
-
-ion-toolbar{
-    --border-style: none;
-}
-
-svg{
-    color: #0D0E10
 }
