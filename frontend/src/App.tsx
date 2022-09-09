@@ -46,6 +46,7 @@ import SpeakPage from './pages/SpeakPage'
 // import SpeakTest from './pages/SpeakRecord'
 import HomePage from './pages/HomePage'
 import ChatList from './pages/ChatList'
+import WorkerOrderPage from './pages/WorkerOrderPage'
 
 setupIonicReact()
 
@@ -66,16 +67,21 @@ const App: React.FC = () => (
 					component={WorkerLoginPage}
 				/>
 
-			<Route
-				exact
-				path='/workerRegisterPage'
-				component={WorkerRegisterPage}
-			/>
-			<Route
-				exact
-				path='/workerRegisterPageForTypeOfService'
-				component={WorkerRegisterPageForTypeOfService}
-			/>
+				<Route
+					exact
+					path='/workerRegisterPage'
+					component={WorkerRegisterPage}
+				/>
+				<Route
+					exact
+					path='/workerRegisterPageForTypeOfService'
+					component={WorkerRegisterPageForTypeOfService}
+				/>
+				<Route
+					exact
+					path='/workerOrderPage'
+					component={WorkerOrderPage}
+				/>
 				<Route exact path='/test' component={InfiniteScrollExample} />
 			</IonRouterOutlet>
 		</IonReactRouter>
@@ -84,7 +90,7 @@ const App: React.FC = () => (
 
 export default App
 // {
-	/* <IonReactRouter>
+/* <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
           <Route exact path="/tab1">

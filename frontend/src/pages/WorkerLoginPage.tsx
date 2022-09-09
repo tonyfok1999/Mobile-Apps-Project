@@ -16,20 +16,6 @@ import {
 import { arrowBackOutline } from 'ionicons/icons'
 
 export default function WorkerLoginPage() {
-	const [userInfo, setUserInfo] = useState([])
-
-	useEffect(() => {
-		const fetchData = async () => {
-			const res = await fetch('localhost:8000/user/2')
-			const data = await res.json()
-			setUserInfo(data)
-			console.log(userInfo)
-		}
-
-		// STEP 5：呼叫 fetchData 這個方法
-		fetchData()
-	}, [])
-
 	return (
 		<IonPage
 			css={css`
@@ -73,7 +59,7 @@ export default function WorkerLoginPage() {
 				<IonIcon className='icon' icon={arrowBackOutline} />
 			</IonButton>
 			<Logo />
-			{userInfo[0]}
+			{/* {userInfo.id} */}
 			<LoginBox />
 			<span>
 				師傅想加入我們?

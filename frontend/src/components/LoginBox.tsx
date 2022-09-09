@@ -1,9 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import React, { useEffect } from 'react'
-import { NavLink } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { NavLink, useHistory } from 'react-router-dom'
 import { css } from '@emotion/react'
 import LoginMethods from './LoginMethods'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { Method } from 'ionicons/dist/types/stencil-public-runtime'
+import { useIonAlert } from '@ionic/react'
 
 export default function LoginBox() {
 	const {
@@ -13,10 +15,33 @@ export default function LoginBox() {
 		formState: { errors }
 	} = useForm()
 
-	// useEffect(()=>{
-	// 	const =
-	// }
-	// 	,[])
+	const history = useHistory()
+
+	const [presentAlert] = useIonAlert()
+
+	// const [submitData, setSubmitData] = useState<{
+	// 	email: string | null
+	// 	password: string | null
+	// }>()
+
+	// const [isLogin, setIsLogin] = useState<boolean>(false)
+
+	// useEffect(() => {
+	// 	const fetchData = async () => {
+	// 		const res = await fetch('http://localhost:8000/user/login', {
+	// 			method: 'POST',
+	// 			headers: {
+	// 				'Content-Type': 'application/x-www-form-urlencoded'
+	// 			},
+	// 			body: JSON.stringify(submitData)
+	// 		})
+	// 		const fetchData = await res.json()
+	// 		setIsLogin(fetchData.loginState)
+	// 	}
+	// 	if (submitData) {
+	// 		fetchData()
+	// 	}
+	// }, [submitData])
 
 	return (
 		<div
@@ -81,7 +106,29 @@ export default function LoginBox() {
 				}
 			`}>
 			<h1>登入</h1>
-			<form onSubmit={handleSubmit((date) => console.log(date))}>
+			<form
+				onSubmit={handleSubmit(async (body) => {
+					const res = await fetch(
+						'http://localhost:8000/user/login',
+						{
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body: JSON.stringify(body)
+						}
+					)
+					const fetchData = await res.json()
+					if (fetchData.loginState === true) {
+						history.push('/workerOrderPage')
+					} else {
+						presentAlert({
+							header: '帳號或密碼錯誤',
+							message: '請重新輸入',
+							buttons: ['確定']
+						})
+					}
+				})}>
 				<input
 					type='email'
 					placeholder='電郵'
