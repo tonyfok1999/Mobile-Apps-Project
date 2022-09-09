@@ -5,10 +5,6 @@ export async function up(knex: Knex): Promise<void> {
   if (!hasTable) {
     await knex.schema.createTable('chatrooms', (table) => {
       table.increments();
-      table.integer('attendee_id').notNullable;
-
-      table.foreign('attendee_id').references('attendees.id');
-
       table.timestamps(false, true);
     });
   }

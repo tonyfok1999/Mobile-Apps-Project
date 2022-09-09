@@ -7,6 +7,8 @@ export async function up(knex: Knex): Promise<void> {
       table.increments();
       table.integer('user_id').notNullable;
       table.foreign('user_id').references('users.id');
+      table.integer("chatroom_id").notNullable;
+      table.foreign("chatroom_id").references("chatrooms.id");
       table.timestamps(false, true);
     });
   }

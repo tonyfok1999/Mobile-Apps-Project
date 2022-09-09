@@ -9,7 +9,8 @@ export async function up(knex: Knex): Promise<void> {
       table.integer('sender_id').notNullable;
       table.string('text');
       table.string('image');
-
+      
+      table.foreign('sender_id').references('users.id');
       table.foreign('chatroom_id').references('chatrooms.id');
 
       table.timestamps(false, true);

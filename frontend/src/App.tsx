@@ -46,6 +46,7 @@ import SpeakPage from './pages/SpeakPage'
 // import SpeakTest from './pages/SpeakRecord'
 import HomePage from './pages/HomePage'
 import ChatList from './pages/ChatList'
+import ChatRoom from './pages/ChatRoom'
 
 setupIonicReact()
 
@@ -60,6 +61,8 @@ const App: React.FC = () => (
 				<Route exact path='/tabs/homepage' component={HomePage} />
 				<Route exact path='/SpeakPage' component={SpeakPage} />
 				<Route exact path='/tabs/chatlist' component={ChatList} />
+
+				<Route path='/chatroom/:chatroomId' component={ChatRoom}/>
 				<Route
 					exact
 					path='/workerLoginPage'
