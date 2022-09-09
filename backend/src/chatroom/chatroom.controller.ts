@@ -15,7 +15,7 @@ import { UpdateChatroomDto } from "./dto/update-chatroom.dto";
 @Controller("chatroom")
 export class ChatroomController {
   constructor(private readonly chatroomService: ChatroomService) {}
-
+}
 //   @Post()
 //   create(@Body() createChatroomDto: CreateChatroomDto) {
 //     return this.chatroomService.create(createChatroomDto);
