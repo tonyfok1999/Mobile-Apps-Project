@@ -2,7 +2,7 @@
 
 import Logo from '../components/Logo'
 import { css } from '@emotion/react'
-import UserTabBar from '../components/UserTabBar'
+
 import {
 	IonButton,
 	IonIcon,
@@ -27,8 +27,7 @@ export default function SpeakPage() {
 			.then((stream) => {
 				setMediaRecorder(new MediaRecorder(stream))
 
-				console.log('getUserMedia supported.')
-				
+				// console.log('getUserMedia supported.')
 			})
 	}
 
@@ -37,22 +36,22 @@ export default function SpeakPage() {
 		let chunks: any[] = []
 		if (mediaRecorder?.state == 'inactive' && recordState == true) {
 			mediaRecorder.start()
-			console.log(mediaRecorder.state)
+			// console.log(mediaRecorder.state)
 		}
 
 		if (mediaRecorder?.state == 'recording' && recordState == false) {
 			mediaRecorder.ondataavailable = async function (e) {
 				chunks.push(e.data)
-				console.log(mediaRecorder.state)
+				// console.log(mediaRecorder.state)
 
 				const formData = new FormData()
 
 				const blob = new Blob(chunks, {
 					type: 'audio/WebM; codecs=opus'
 				})
-				console.log(blob)
+				// console.log(blob)
 				formData.append('record', blob)
-				console.log(formData)
+				// console.log(formData)
 
 				let res = await fetch(
 					'http://localhost:8000/speech/uploadWebM',
@@ -65,7 +64,7 @@ export default function SpeakPage() {
 				console.log(back)
 			}
 			mediaRecorder.stop()
-			console.log(mediaRecorder.state)
+			// console.log(mediaRecorder.state)
 			chunks = []
 		}
 	}, [recordState, mediaRecorder])
