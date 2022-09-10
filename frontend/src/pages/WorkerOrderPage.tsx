@@ -54,7 +54,9 @@ export default function WorkerOrderPage() {
 			<IonContent>
 				{ordersInfo &&
 					ordersInfo.map((orderInfo) => (
-						<div className='order'>{orderInfo.id}</div>
+						<div className='order' key={orderInfo.id}>
+							{orderInfo.id}
+						</div>
 					))}
 			</IonContent>
 		</IonPage>
