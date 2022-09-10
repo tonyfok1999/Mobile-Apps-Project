@@ -3,6 +3,7 @@ import { css } from '@emotion/react'
 import { IonContent, IonPage } from '@ionic/react'
 import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
+import WorkerTabBar from '../nav/WorkerTabBar'
 
 export default function WorkerOrderPage() {
 	const [ordersInfo, setOrdersInfo] = useState<
@@ -118,6 +119,7 @@ export default function WorkerOrderPage() {
 						</div>
 					))}
 			</IonContent>
+			<WorkerTabBar />
 		</IonPage>
 	)
 }
