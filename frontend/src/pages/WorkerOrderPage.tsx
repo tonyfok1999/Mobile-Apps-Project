@@ -55,8 +55,6 @@ export default function WorkerOrderPage() {
 		fetchOrdersData()
 	}, [])
 
-	// referenceTable[1].filter((type) => type.id == referenceTable[2].filter((subType) => subType.id == {orderInfo.service_subtype_id})[0].service_type_id)[0].type
-
 	return (
 		<IonPage
 			css={css`
@@ -80,7 +78,7 @@ export default function WorkerOrderPage() {
 				{ordersInfo &&
 					ordersInfo.map((orderInfo) => (
 						<div className='order' key={orderInfo.id}>
-							<NavLink to='/orderDetailPage'>
+							<NavLink to={`/orderDetailPage/${orderInfo.id}`}>
 								<div>{orderInfo.working_address}</div>
 								<div>{orderInfo.id}</div>
 								<div>

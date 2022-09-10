@@ -16,8 +16,10 @@ export class OrderService {
     return result;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} order`;
+  async getOrderById(id: number) {
+    let result = await this.knex.select("*").from("orders").where("id", id);
+
+    return result;
   }
 
   update(id: number, updateOrderDto: UpdateOrderDto) {
