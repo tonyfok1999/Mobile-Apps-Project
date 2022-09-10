@@ -77,8 +77,10 @@ export default function WorkerOrderPage() {
 			<IonContent>
 				{ordersInfo &&
 					ordersInfo.map((orderInfo) => (
-						<div className='order' key={orderInfo.id}>
-							<NavLink to={`/orderDetailPage/${orderInfo.id}`}>
+						<NavLink
+							key={orderInfo.id}
+							to={`/orderDetailPage/${orderInfo.id}`}>
+							<div className='order'>
 								<div>{orderInfo.working_address}</div>
 								<div>{orderInfo.id}</div>
 								<div>
@@ -113,8 +115,8 @@ export default function WorkerOrderPage() {
 									預算<span>{orderInfo.budget}</span>
 								</div>
 								<NavLink to='/tabs/chatlist'>聯絡客戶</NavLink>
-							</NavLink>
-						</div>
+							</div>
+						</NavLink>
 					))}
 			</IonContent>
 			<WorkerTabBar />

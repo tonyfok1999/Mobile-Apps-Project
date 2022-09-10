@@ -42,7 +42,7 @@ export default function OrderDetailPage() {
 		const fetchOrdersData = async () => {
 			const res = await fetch(`http://localhost:8000/orders/${params.id}`)
 			const data = await res.json()
-			setOrderInfo(data)
+			setOrderInfo(data[0])
 		}
 
 		const fetchReferenceTable = async () => {
@@ -58,11 +58,42 @@ export default function OrderDetailPage() {
 	return (
 		<IonPage>
 			<IonContent>
-				<div>{params.id}</div>
+				<div>{orderInfo?.id}</div>
 				<div>資料</div>
 				<div>
 					icon <div>地區</div>
+					<div>{orderInfo?.working_address}</div>
 				</div>
+				<div>服務範圍</div>
+				<div>
+					{
+						referenceTable![1].filter(
+							(type) =>
+								type.id ==
+								referenceTable![2].filter(
+									(subType) =>
+										subType.id ==
+										orderInfo?.service_subtype_id
+								)[0].service_type_id
+						)[0].type
+					}
+				</div>
+				<div>維修類別</div>
+				<div>
+					{
+						referenceTable![2].filter(
+							(subType) =>
+								subType.id == orderInfo?.service_subtype_id
+						)[0].subtype
+					}
+				</div>
+				<div>icon 預算</div>
+				<div>$ {orderInfo?.budget}</div>
+				<div>icon 相片</div>
+				<div>相片</div>
+				<div>icon 語音</div>
+				<div>語音</div>
+				<div>語音文字</div>
 			</IonContent>
 		</IonPage>
 	)
