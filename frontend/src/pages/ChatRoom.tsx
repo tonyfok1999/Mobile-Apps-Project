@@ -11,24 +11,33 @@ import {
 	IonAvatar,
 	IonImg,
 	IonBackButton,
-	IonLabel
+	IonLabel,
+	IonFooter
 } from '@ionic/react'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { IoArrowBackSharp } from 'react-icons/io5'
 import { useParams } from 'react-router'
+import ChatInput from '../components/ChatInput'
+import { useVirtualizer } from '@tanstack/react-virtual'
+import Chats from '../components/Chats'
+import ChatContainer from '../components/ChatContainer'
+import { useAppDispatch } from '../store'
 
 const Chatroom: React.FC = () => {
 	const params = useParams<{ chatroomId: string }>()
+
+	// const handleSendMessage = async (message: Message) => {}
 
 	return (
 		<>
 			<IonPage
 				css={css`
-					ion-avatar {
-						padding-left: 20px;
-						align-items: center;
-						display: flex;
-					}
+
+				ion-avatar {
+					padding-left: 20px;
+					align-items: center;
+					display: flex;
+				}
 
 					.avatar {
 						padding-left: 20px;
@@ -49,9 +58,15 @@ const Chatroom: React.FC = () => {
 					ion-img {
 						width: 100%;
 					}
+
+					.input-container{
+					height: 2.15rem;
+					bottom: 0;
+					background: white;
+				}
 				`}>
 				<IonHeader>
-					<IonToolbar>
+					<IonToolbar css={css`--border-style: none;`}>
 						<IonButtons slot='start'>
 							<IonBackButton text='' defaultHref='/tabs/chatlist'>
 								<IoArrowBackSharp size='1.5rem' />
@@ -68,15 +83,14 @@ const Chatroom: React.FC = () => {
 						</div>
 					</IonToolbar>
 				</IonHeader>
-
-				<IonContent
-					fullscreen={true}
-					scrollEvents={true}
-					onIonScrollStart={() => {}}
-					onIonScroll={() => {}}
-					onIonScrollEnd={() => {}}>
-					Chat{params.chatroomId}
+				
+				<IonContent>
+				<ChatContainer/>
 				</IonContent>
+
+				<IonFooter>
+				<ChatInput/>
+				</IonFooter>
 			</IonPage>
 		</>
 	)

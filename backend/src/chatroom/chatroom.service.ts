@@ -1,9 +1,18 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { CreateChatroomDto } from './dto/create-chatroom.dto';
 import { UpdateChatroomDto } from './dto/update-chatroom.dto';
-
+import { Message } from './dto/message.dto';
+import { Knex } from 'knex';
+import { InjectKnex } from 'nestjs-knex';
 @Injectable()
 export class ChatroomService {
+  constructor(@InjectKnex() private readonly knex: Knex) {}
+
+  async postMessage(chatroomId: number, message: Message, file?: Express.Multer.File) {
+    await this.knex('chatroom_records').insert({ chatroom_id: chatroomId, sender_id: message.sender_id, text: message.text, image: file?.filename });
+  }
+
   create(createChatroomDto: CreateChatroomDto) {
     return 'This action adds a new chatroom';
   }

@@ -2,6 +2,7 @@
 import { css } from '@emotion/react'
 import { IonContent, IonPage } from '@ionic/react'
 import React, { useEffect, useState } from 'react'
+import { NavLink } from 'react-router-dom'
 import { useParams } from 'react-router-dom'
 
 export default function OrderDetailPage() {
@@ -38,7 +39,7 @@ export default function OrderDetailPage() {
 	>()
 
 	useEffect(() => {
-		const fetchOrderData = async () => {
+		const fetchOrdersData = async () => {
 			const res = await fetch(`http://localhost:8000/orders/${params.id}`)
 			const data = await res.json()
 			setOrderInfo(data[0])
@@ -50,12 +51,12 @@ export default function OrderDetailPage() {
 			setReferenceTable(data)
 		}
 
-		fetchOrderData()
 		fetchReferenceTable()
+		fetchOrdersData()
 	}, [])
 
 	return (
-		<IonPage css={css``}>
+		<IonPage>
 			<IonContent>
 				<div>{orderInfo?.id}</div>
 				<div>資料</div>
@@ -65,24 +66,26 @@ export default function OrderDetailPage() {
 				</div>
 				<div>服務範圍</div>
 				<div>
-					{referenceTable &&
-						referenceTable[1].filter(
+					{
+						referenceTable![1].filter(
 							(type) =>
 								type.id ==
-								referenceTable[2].filter(
+								referenceTable![2].filter(
 									(subType) =>
 										subType.id ==
 										orderInfo?.service_subtype_id
 								)[0].service_type_id
-						)[0].type}
+						)[0].type
+					}
 				</div>
 				<div>維修類別</div>
 				<div>
-					{referenceTable &&
-						referenceTable[2].filter(
+					{
+						referenceTable![2].filter(
 							(subType) =>
 								subType.id == orderInfo?.service_subtype_id
-						)[0].subtype}
+						)[0].subtype
+					}
 				</div>
 				<div>icon 預算</div>
 				<div>$ {orderInfo?.budget}</div>
