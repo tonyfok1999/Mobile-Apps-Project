@@ -7,6 +7,7 @@ import { Message } from './dto/message.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { get } from 'http';
+import console from 'console';
 
 @Controller('/chatroom')
 export class ChatroomController {
@@ -16,11 +17,13 @@ export class ChatroomController {
   async getMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number) {
     
     if (chatroomId === undefined) {
-      throw new HttpException('sender_id and chatroom_id are required', HttpStatus.NOT_FOUND);
+      throw new HttpException('chatroom_id are required', HttpStatus.NOT_FOUND);
     }
 
     try {
       const result= await this.chatroomService.getMessage(chatroomId);
+
+      console.log('result')
 
       if (result.rowCount === 0) {
         throw new HttpException('chatroom_id is out of range', HttpStatus.NOT_FOUND);
@@ -28,7 +31,7 @@ export class ChatroomController {
 
       return result.rows
     } catch {
-      throw new HttpException('message cannot be posted', HttpStatus.BAD_REQUEST);;
+      throw new HttpException('message cannot be found', HttpStatus.BAD_REQUEST);;
     }
   }
 

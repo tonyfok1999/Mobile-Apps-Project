@@ -8,8 +8,9 @@ import { InjectKnex } from 'nestjs-knex';
 @Injectable()
 export class ChatroomService {
   constructor(@InjectKnex() private readonly knex: Knex) {}
+
   async getMessage(chatroomId: number) {
-    return await this.knex.raw('select sender_id and text from chatroom_records where chatroom_id = ?', chatroomId)
+    return await this.knex.raw('select sender_id, text from chatroom_records where chatroom_id = ?', chatroomId)
   }
 
   async postMessage(chatroomId: number, message: Message, file?: Express.Multer.File) {
