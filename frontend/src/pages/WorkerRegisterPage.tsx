@@ -10,18 +10,19 @@ import {
 	IonPage,
 	IonToolbar
 } from '@ionic/react'
-import { arrowBackOutline } from 'ionicons/icons'
 import React from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
-import BackIcon from '../components/BackIcon'
 import LoginMethods from '../components/LoginMethods'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
 export default function WorkerRegisterPage() {
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-	}
-
 	const history = useHistory()
+	const {
+		register,
+		handleSubmit,
+		watch,
+		formState: { errors }
+	} = useForm()
 
 	return (
 		<IonPage
@@ -97,27 +98,36 @@ export default function WorkerRegisterPage() {
 					}
 				}
 			`}>
-			{/* <div>
-				<IonButton
-					size='large'
-					fill='clear'
-					routerLink='/workerLoginPage'>
-					<IonIcon className='icon' icon={arrowBackOutline} />
-				</IonButton>
-				<span>
-					已經註冊? <NavLink to='/workerLoginPage'>登入</NavLink>
-				</span>
-			</div> */}
 			<IonContent>
 				<h1>師傅註冊</h1>
 				<LoginMethods />
 				<div>或</div>
-				<form onSubmit={handleSubmit}>
-					<input type='text' placeholder='顯示名稱*' />
-					<input type='email' placeholder='電郵*' />
-					<input type='password' placeholder='密碼*' />
-					<input type='password' placeholder='確定密碼*' />
-					<input type='number' placeholder='聯絡電話*' />
+				<form onSubmit={handleSubmit((a) => console.log(a))}>
+					<input
+						type='text'
+						placeholder='顯示名稱*'
+						{...register('nickname', { required: true })}
+					/>
+					<input
+						type='email'
+						placeholder='電郵*'
+						{...register('email', { required: true })}
+					/>
+					<input
+						type='password'
+						placeholder='密碼*'
+						{...register('password', { required: true })}
+					/>
+					<input
+						type='password'
+						placeholder='確定密碼*'
+						{...register('confirmedPassword', { required: true })}
+					/>
+					<input
+						type='number'
+						placeholder='聯絡電話*'
+						{...register('phone', { required: true })}
+					/>
 					<input
 						type='submit'
 						value='下一步'

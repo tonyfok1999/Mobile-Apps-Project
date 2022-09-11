@@ -1,10 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import LoginMethods from './LoginMethods'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { Method } from 'ionicons/dist/types/stencil-public-runtime'
 import { useIonAlert } from '@ionic/react'
 
 export default function LoginBox() {
@@ -18,30 +17,6 @@ export default function LoginBox() {
 	const history = useHistory()
 
 	const [presentAlert] = useIonAlert()
-
-	// const [submitData, setSubmitData] = useState<{
-	// 	email: string | null
-	// 	password: string | null
-	// }>()
-
-	// const [isLogin, setIsLogin] = useState<boolean>(false)
-
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		const res = await fetch('http://localhost:8000/user/login', {
-	// 			method: 'POST',
-	// 			headers: {
-	// 				'Content-Type': 'application/x-www-form-urlencoded'
-	// 			},
-	// 			body: JSON.stringify(submitData)
-	// 		})
-	// 		const fetchData = await res.json()
-	// 		setIsLogin(fetchData.loginState)
-	// 	}
-	// 	if (submitData) {
-	// 		fetchData()
-	// 	}
-	// }, [submitData])
 
 	return (
 		<div
