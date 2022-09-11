@@ -6,10 +6,31 @@ import { UpdateChatroomDto } from './dto/update-chatroom.dto';
 import { Message } from './dto/message.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
+import { get } from 'http';
 
 @Controller('/chatroom')
 export class ChatroomController {
   constructor(private readonly chatroomService: ChatroomService) {}
+
+  @Get('/:chatroomId/message')
+  async getMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number) {
+    
+    if (chatroomId === undefined) {
+      throw new HttpException('sender_id and chatroom_id are required', HttpStatus.NOT_FOUND);
+    }
+
+    try {
+      const result= await this.chatroomService.getMessage(chatroomId);
+
+      if (result.rowCount === 0) {
+        throw new HttpException('chatroom_id is out of range', HttpStatus.NOT_FOUND);
+      }
+
+      return result.rows
+    } catch {
+      throw new HttpException('message cannot be posted', HttpStatus.BAD_REQUEST);;
+    }
+  }
 
   @Post('/:chatroomId/message')
   @UseInterceptors(
@@ -18,9 +39,6 @@ export class ChatroomController {
     })
   )
   async postMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number, @Body() message: Message, @UploadedFile() file?:Express.Multer.File) {
-    
-    console.log('the file is' + JSON.stringify(file))
-    console.log(message.text)
 
     if (chatroomId === undefined || message.sender_id === undefined) {
       throw new HttpException('sender_id and chatroom_id are required', HttpStatus.NOT_FOUND);
