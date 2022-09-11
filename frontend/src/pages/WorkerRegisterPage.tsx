@@ -4,6 +4,7 @@ import {
 	IonBackButton,
 	IonButton,
 	IonButtons,
+	IonContent,
 	IonHeader,
 	IonIcon,
 	IonPage,
@@ -107,30 +108,25 @@ export default function WorkerRegisterPage() {
 					已經註冊? <NavLink to='/workerLoginPage'>登入</NavLink>
 				</span>
 			</div> */}
-			{/* <IonHeader>
-				<IonToolbar>
-					<IonButtons slot='start'>
-						<IonBackButton />
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader> */}
-			<h1>師傅註冊</h1>
-			<LoginMethods />
-			<div>或</div>
-			<form onSubmit={handleSubmit}>
-				<input type='text' placeholder='顯示名稱*' />
-				<input type='email' placeholder='電郵*' />
-				<input type='password' placeholder='密碼*' />
-				<input type='password' placeholder='確定密碼*' />
-				<input type='number' placeholder='聯絡電話*' />
-				<input
-					type='submit'
-					value='下一步'
-					onClick={() => {
-						history.push('/workerRegisterPageForTypeOfService')
-					}}
-				/>
-			</form>
+			<IonContent>
+				<h1>師傅註冊</h1>
+				<LoginMethods />
+				<div>或</div>
+				<form onSubmit={handleSubmit}>
+					<input type='text' placeholder='顯示名稱*' />
+					<input type='email' placeholder='電郵*' />
+					<input type='password' placeholder='密碼*' />
+					<input type='password' placeholder='確定密碼*' />
+					<input type='number' placeholder='聯絡電話*' />
+					<input
+						type='submit'
+						value='下一步'
+						onClick={() => {
+							history.push('/workerRegisterPageForTypeOfService')
+						}}
+					/>
+				</form>
+			</IonContent>
 		</IonPage>
 	)
 }

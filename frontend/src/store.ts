@@ -1,7 +1,7 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { type } from 'os'
-import { authReducer } from './auth/reducer'
-import { districtReducer } from './districts/reducer'
+import { authReducer } from './redux/auth/reducer'
+import { districtReducer } from './redux/districts/reducer'
 
 const reducers = combineReducers({
 	auth: authReducer,

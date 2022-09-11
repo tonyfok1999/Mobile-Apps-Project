@@ -86,29 +86,27 @@ export default function WorkerOrderPage() {
 								<div>
 									服務範圍
 									<span>
-										{
-											referenceTable![1].filter(
+										{referenceTable &&
+											referenceTable[1].filter(
 												(type) =>
 													type.id ==
-													referenceTable![2].filter(
+													referenceTable[2].filter(
 														(subType) =>
 															subType.id ==
 															orderInfo.service_subtype_id
 													)[0].service_type_id
-											)[0].type
-										}
+											)[0].type}
 									</span>
 								</div>
 								<div>
 									維修類別
 									<span>
-										{
-											referenceTable![2].filter(
+										{referenceTable &&
+											referenceTable[2].filter(
 												(subType) =>
 													subType.id ==
 													orderInfo.service_subtype_id
-											)[0].subtype
-										}
+											)[0].subtype}
 									</span>
 								</div>
 								<div>
