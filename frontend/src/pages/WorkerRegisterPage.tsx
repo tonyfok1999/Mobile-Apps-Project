@@ -14,6 +14,8 @@ import React from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import LoginMethods from '../components/LoginMethods'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import { storeAccount } from '../redux/register/action'
 
 export default function WorkerRegisterPage() {
 	const history = useHistory()
@@ -23,6 +25,8 @@ export default function WorkerRegisterPage() {
 		watch,
 		formState: { errors }
 	} = useForm()
+
+	const dispatch = useDispatch()
 
 	return (
 		<IonPage
@@ -100,7 +104,17 @@ export default function WorkerRegisterPage() {
 				<h1>師傅註冊</h1>
 				<LoginMethods />
 				<div>或</div>
-				<form onSubmit={handleSubmit((a) => console.log(a))}>
+				<form
+					onSubmit={handleSubmit((formData) =>
+						dispatch(
+							storeAccount({
+								nickname: formData.nickname,
+								email: formData.email,
+								password: formData.confirmedPassword,
+								phone: formData.phone
+							})
+						)
+					)}>
 					<input
 						type='text'
 						placeholder='顯示名稱*'

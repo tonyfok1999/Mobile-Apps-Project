@@ -11,6 +11,9 @@ import {
 	IonTitle,
 	IonToolbar
 } from '@ionic/react'
+import { useSelector } from 'react-redux'
+import { RootState } from '../store'
+import { $CombinedState } from 'redux'
 
 export default function WorkerRegisterPageForTypeOfService() {
 	// 0 = nothing to show
@@ -41,6 +44,10 @@ export default function WorkerRegisterPageForTypeOfService() {
 
 		fetchReferenceTable()
 	}, [])
+
+	const nickname = useSelector(
+		(state: RootState) => state.register.account?.nickname
+	)
 
 	return (
 		<IonPage
@@ -131,6 +138,7 @@ export default function WorkerRegisterPageForTypeOfService() {
 
 					<input type='submit' value='註冊'></input>
 				</form>
+				<div></div>
 			</IonContent>
 		</IonPage>
 	)

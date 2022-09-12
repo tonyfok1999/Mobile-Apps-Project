@@ -15,6 +15,7 @@ export const registerReducer = (
 ) => {
 	if (action.type === '@@register/storeAccount') {
 		return {
+			...state,
 			account: action.account
 		}
 	} else {
