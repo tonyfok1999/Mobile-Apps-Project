@@ -16,8 +16,8 @@ export class ChatroomController {
   @Get('/:chatroomId/message')
   async getMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number) {
     
-    if (chatroomId === undefined) {
-      throw new HttpException('chatroom_id are required', HttpStatus.NOT_FOUND);
+    if (typeof(chatroomId) !== 'number') {
+      throw new HttpException('chatroom_id need to be a number', HttpStatus.NOT_FOUND);
     }
 
     try {
