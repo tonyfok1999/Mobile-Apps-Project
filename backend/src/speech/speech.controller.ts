@@ -16,6 +16,7 @@ import { diskStorage } from 'multer';
 import { SpeechUpload } from './dto/speechUpload.dto'
 import { SpeechService } from './speech.service'
 import { ConfigModule } from '@nestjs/config';
+import { TestString } from './dto/test.dto';
 ConfigModule.forRoot({
   envFilePath: ['.env'],
 });
@@ -43,14 +44,17 @@ async uploadedFile(@UploadedFile() file) {
     };
     // console.log(response);
     console.log(file);
-   await this.speechService.googleAPI(file.filename)
-    
-    return response;
+  let result = await this.speechService.googleAPI(file.filename)
+    console.log(result);
+	
+    return result;
 }
 
 
-	// @Get('/totext')
-	// googleAPI() {
-	// 	return this.speechService.googleAPI()
-	// }
+	@Post('/getDistricts')
+	getDistricts(@Body() testStringDto:TestString) {
+		console.log(testStringDto.testString);
+		
+		return this.speechService.getDistricts(testStringDto.testString)
+	}
 }

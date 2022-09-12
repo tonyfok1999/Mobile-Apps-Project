@@ -23,22 +23,37 @@ export async function seed(knex: Knex): Promise<void> {
       { service_type_id: typeArrayId[0].id, subtype: '空調設備維修' },
       { service_type_id: typeArrayId[0].id, subtype: '空調設備清洗 ' },
       { service_type_id: typeArrayId[0].id, subtype: '風喉維修' },
-      { service_type_id: typeArrayId[0].id, subtype: '風喉清洗' }, //4
+      { service_type_id: typeArrayId[0].id, subtype: '風喉清洗' }, 
+      { service_type_id: typeArrayId[0].id, subtype: '洗冷氣' }, 
+      { service_type_id: typeArrayId[0].id, subtype: '裝冷氣' }, 
+      { service_type_id: typeArrayId[0].id, subtype: '整冷氣' }, 
+      { service_type_id: typeArrayId[0].id, subtype: '檢查冷氣' }, 
+      { service_type_id: typeArrayId[0].id, subtype: '冷氣' }, 
+      { service_type_id: typeArrayId[0].id, subtype: '風' }, 
+
 
       { service_type_id: typeArrayId[1].id, subtype: '消防電氣裝配（家居）' },
       { service_type_id: typeArrayId[1].id, subtype: '消防電氣裝配（商戶）' }, 
-      { service_type_id: typeArrayId[1].id, subtype: '消防設備檢查' }, //7
+      { service_type_id: typeArrayId[1].id, subtype: '消防設備檢查' }, 
 
+      { service_type_id: typeArrayId[2].id, subtype: '水喉' },
+      { service_type_id: typeArrayId[2].id, subtype: '水' },
       { service_type_id: typeArrayId[2].id, subtype: '水喉設備安裝' },
       { service_type_id: typeArrayId[2].id, subtype: '水喉漏水維修' },
+      { service_type_id: typeArrayId[2].id, subtype: '水喉設備安裝' },
+      { service_type_id: typeArrayId[2].id, subtype: '裝水喉' },
+      { service_type_id: typeArrayId[2].id, subtype: '整水喉' },
       { service_type_id: typeArrayId[2].id, subtype: '馬桶安裝' },
       { service_type_id: typeArrayId[2].id, subtype: '馬桶維修' },
-      { service_type_id: typeArrayId[2].id, subtype: '漏水調查' }, //12
+      { service_type_id: typeArrayId[2].id, subtype: '裝馬桶' },
+      { service_type_id: typeArrayId[2].id, subtype: '整馬桶' },
+      { service_type_id: typeArrayId[2].id, subtype: '漏水調查' }, 
 
       { service_type_id: typeArrayId[3].id, subtype: '電子設備安裝' },
       { service_type_id: typeArrayId[3].id, subtype: '電子設備維修' },
       { service_type_id: typeArrayId[3].id, subtype: '電訊系統安裝' },
-      { service_type_id: typeArrayId[3].id, subtype: '電訊系統維修' }, //16
+      { service_type_id: typeArrayId[3].id, subtype: '電訊系統維修' }, 
+      { service_type_id: typeArrayId[3].id, subtype: '電' },
     ])
     .into('service_subtypes')
     .returning('id');
