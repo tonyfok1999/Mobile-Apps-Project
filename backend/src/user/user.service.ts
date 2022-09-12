@@ -68,4 +68,10 @@ export class UserService {
   remove(id: number) {
     return `This action removes a #${id} user`;
   }
+
+  async checkEmail(data: { email: string }) {
+    let result = await this.knex.select('email').from('users').where('email', data.email);
+
+    return result;
+  }
 }

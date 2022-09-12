@@ -38,4 +38,16 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
+
+  @Post('checkEmail')
+  async checkEmail(@Body() data: { email: string }) {
+    let isDuplicate: boolean;
+    if ((await this.userService.checkEmail(data)).length == 0) {
+      isDuplicate = false;
+    } else {
+      isDuplicate = true;
+    }
+
+    return { isDuplicate: isDuplicate };
+  }
 }

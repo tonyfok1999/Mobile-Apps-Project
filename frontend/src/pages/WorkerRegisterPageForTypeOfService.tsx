@@ -11,11 +11,20 @@ import {
 	IonTitle,
 	IonToolbar
 } from '@ionic/react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store'
 import { $CombinedState } from 'redux'
+import { useHistory } from 'react-router'
 
 export default function WorkerRegisterPageForTypeOfService() {
+	const {
+		register,
+		handleSubmit,
+		watch,
+		formState: { errors }
+	} = useForm()
+
 	// 0 = nothing to show
 	// 1 = 風
 	// 2 = 火
@@ -48,6 +57,17 @@ export default function WorkerRegisterPageForTypeOfService() {
 	const nickname = useSelector(
 		(state: RootState) => state.register.account?.nickname
 	)
+	const history = useHistory()
+
+	// email: string;
+	// password: string;
+	// nickname: string;
+	// phone: number;
+	// gender_id?: number | null;
+	// profile_photo?: string | null;
+	// is_worker: boolean;
+	// worker_info_id?: number | null;
+	// score?: number;
 
 	return (
 		<IonPage
@@ -87,7 +107,10 @@ export default function WorkerRegisterPageForTypeOfService() {
 				}
 			`}>
 			<IonContent>
-				<form>
+				<form
+					onSubmit={handleSubmit((formData) => {
+						console.log(formData)
+					})}>
 					<div>維修範圍*</div>
 					{referenceTable &&
 						referenceTable[1].map((types) => {
@@ -122,6 +145,7 @@ export default function WorkerRegisterPageForTypeOfService() {
 							.map((subtypes) => (
 								<span key={subtypes.id}>
 									<input
+										{...register('subtypes_id')}
 										type='checkbox'
 										className='btn-check'
 										name='serviceSubtypes'
@@ -136,9 +160,15 @@ export default function WorkerRegisterPageForTypeOfService() {
 								</span>
 							))}
 
-					<input type='submit' value='註冊'></input>
+					<input
+						type='submit'
+						value='註冊'
+						disabled={false}
+						// onClick={() => {
+						// 	history.push('/workerOrderPage')
+						// }}
+					></input>
 				</form>
-				<div></div>
 			</IonContent>
 		</IonPage>
 	)
