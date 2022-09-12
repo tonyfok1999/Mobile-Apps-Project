@@ -69,8 +69,8 @@ export default function SpeakPage() {
 						body: formData
 					}
 				)
-				let back = res.json()
-				console.log(back)
+				let result = res.json()
+				console.log(result)
 			}
 			mediaRecorder.stop()
 			// console.log(mediaRecorder.state)
