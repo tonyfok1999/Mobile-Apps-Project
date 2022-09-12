@@ -2,12 +2,14 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit'
 import { type } from 'os'
 import { TypedUseSelectorHook, useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
-import { authReducer } from './auth/reducer'
-import { districtReducer } from './districts/reducer'
+import { authReducer } from './redux/auth/reducer'
+import { districtReducer } from './redux/districts/reducer'
+import { registerReducer } from './redux/register/reducer'
 
 const reducers = combineReducers({
 	auth: authReducer,
 	districts: districtReducer,
+	register: registerReducer
 })
 
 export type RootState = ReturnType<typeof reducers>

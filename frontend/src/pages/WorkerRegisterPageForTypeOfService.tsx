@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
 	IonApp,
 	IonContent,
@@ -11,6 +11,9 @@ import {
 	IonTitle,
 	IonToolbar
 } from '@ionic/react'
+import { useSelector } from 'react-redux'
+import { RootState } from '../store'
+import { $CombinedState } from 'redux'
 
 export default function WorkerRegisterPageForTypeOfService() {
 	// 0 = nothing to show
@@ -18,7 +21,33 @@ export default function WorkerRegisterPageForTypeOfService() {
 	// 2 = 火
 	// 3 = 水
 	// 4 = 電
-	const [showService, setShowService] = useState(0)
+	const [showService, setShowService] = useState<number>(0)
+
+	const [referenceTable, setReferenceTable] = useState<
+		[
+			{ id: number; region_id: number; district: string }[], //[0] districts
+			{ id: number; type: string }[], // [1] service types
+			{
+				id: number
+				service_type_id: number
+				subtype: string
+			}[] // [2] service subtypes
+		]
+	>()
+
+	useEffect(() => {
+		const fetchReferenceTable = async () => {
+			const res = await fetch('http://localhost:8000/referencesTable')
+			const data = await res.json()
+			setReferenceTable(data)
+		}
+
+		fetchReferenceTable()
+	}, [])
+
+	const nickname = useSelector(
+		(state: RootState) => state.register.account?.nickname
+	)
 
 	return (
 		<IonPage
@@ -57,85 +86,60 @@ export default function WorkerRegisterPageForTypeOfService() {
 					);
 				}
 			`}>
-			<IonHeader>
-				<IonToolbar>
-					<IonTitle></IonTitle>
-				</IonToolbar>
-			</IonHeader>
+			<IonContent>
+				<form>
+					<div>維修範圍*</div>
+					{referenceTable &&
+						referenceTable[1].map((types) => {
+							return (
+								<span key={types.id}>
+									<input
+										type='radio'
+										className='btn-check'
+										name='serviceTypes'
+										id={types.type}
+										value={types.type}
+									/>
+									<label
+										className='btn btn-outline-danger'
+										htmlFor={types.type}
+										onClick={() => {
+											setShowService(types.id)
+										}}>
+										{types.type}
+									</label>
+								</span>
+							)
+						})}
 
-			<form>
-				<div>維修範圍*</div>
-				<input
-					type='radio'
-					className='btn-check'
-					name='serviceRage'
-					id={'風'}
-					// autoComplete='off'
-					value={'風'}></input>
-				<label
-					className='btn btn-outline-danger'
-					htmlFor='風'
-					onClick={() => {
-						setShowService(1)
-					}}>
-					風
-				</label>
+					{showService > 0 && <div>維修類別*</div>}
+					{referenceTable &&
+						referenceTable[2]
+							.filter(
+								(subtypes) =>
+									subtypes.service_type_id == showService
+							)
+							.map((subtypes) => (
+								<span key={subtypes.id}>
+									<input
+										type='checkbox'
+										className='btn-check'
+										name='serviceSubtypes'
+										id={subtypes.subtype}
+										value={subtypes.subtype}
+									/>
+									<label
+										className='btn btn-outline-danger'
+										htmlFor={subtypes.subtype}>
+										{subtypes.subtype}
+									</label>
+								</span>
+							))}
 
-				<input
-					type='radio'
-					className='btn-check'
-					name='serviceRage'
-					id={'火'}
-					// autoComplete='off'
-					value={'火'}></input>
-				<label
-					className='btn btn-outline-danger'
-					htmlFor='火'
-					onClick={() => {
-						setShowService(2)
-					}}>
-					火
-				</label>
-
-				<input
-					type='radio'
-					className='btn-check'
-					name='serviceRage'
-					id={'水'}
-					// autoComplete='off'
-					value={'水'}></input>
-				<label
-					className='btn btn-outline-danger'
-					htmlFor='水'
-					onClick={() => {
-						setShowService(3)
-					}}>
-					水
-				</label>
-
-				<input
-					type='radio'
-					className='btn-check'
-					name='serviceRage'
-					id={'電'}
-					// autoComplete='off'
-					value={'電'}></input>
-				<label
-					className='btn btn-outline-danger'
-					htmlFor='電'
-					onClick={() => {
-						setShowService(4)
-					}}>
-					電
-				</label>
-				<div>維修類別*</div>
-				{showService === 1 && <div>1</div>}
-				{showService === 2 && <div>2</div>}
-				{showService === 3 && <div>3</div>}
-				{showService === 4 && <div>4</div>}
-
-				<input type='submit' value='註冊'></input>
-			</form>
+					<input type='submit' value='註冊'></input>
+				</form>
+				<div></div>
+			</IonContent>
 		</IonPage>
 	)
 }

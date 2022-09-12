@@ -14,7 +14,7 @@ import {
 	IonLabel,
 	IonFooter
 } from '@ionic/react'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IoArrowBackSharp, IoNuclearOutline } from 'react-icons/io5'
 import { useParams } from 'react-router'
 import ChatInput from '../components/ChatInput'
@@ -22,11 +22,30 @@ import { useVirtualizer } from '@tanstack/react-virtual'
 import Chats from '../components/Chats'
 import MessageBubble from '../components/MessageBubble'
 
+export interface Message {
+    sender_id: number;
+    text?: string;
+}
 
 const ChatContainer: React.FC = () => {
 
 	// The scrollable element for your list
-	const parentRef = React.useRef<HTMLDivElement>(null) 
+	const parentRef = React.useRef<HTMLDivElement>(null)
+	
+	const initialState: Message = {sender_id: 0, text: 'null'}
+
+	const [messages, setMessages] = useState([initialState])
+
+	useEffect(() => {
+	
+		(async function(){
+			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/chatroom/1/message`);
+			const json = await res.json();
+			console.log(json)
+			setMessages(json)
+		})()
+	
+		}, [])
     // const scrollToFn: VirtualizerOptions<any, any>['scrollToFn'] =
     // React.useCallback((offset, canSmooth, instance) => {
     //   const duration = 1000

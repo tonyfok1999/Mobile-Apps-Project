@@ -1,12 +1,11 @@
 export interface User {
-	id: number
-	email: string
-	password: string
-	nickname: string
-	phone: number
-	gender_id: number
-	profile_photo: string
-	is_worker: boolean
-	worker_info_id: number
-	score: number
+	id: number | null
+	email: string | null
+	nickname: string | null
+	phone: number | null
+	gender_id: number | null
+	profile_photo: string | null
+	is_worker: boolean | null
+	worker_info_id: number | null
+	score: number | null
 }

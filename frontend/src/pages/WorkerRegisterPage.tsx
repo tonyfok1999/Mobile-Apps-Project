@@ -4,23 +4,29 @@ import {
 	IonBackButton,
 	IonButton,
 	IonButtons,
+	IonContent,
 	IonHeader,
 	IonIcon,
 	IonPage,
 	IonToolbar
 } from '@ionic/react'
-import { arrowBackOutline } from 'ionicons/icons'
 import React from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
-import BackIcon from '../components/BackIcon'
 import LoginMethods from '../components/LoginMethods'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
+import { storeAccount } from '../redux/register/action'
 
 export default function WorkerRegisterPage() {
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-	}
-
 	const history = useHistory()
+	const {
+		register,
+		handleSubmit,
+		watch,
+		formState: { errors }
+	} = useForm()
+
+	const dispatch = useDispatch()
 
 	return (
 		<IonPage
@@ -29,10 +35,8 @@ export default function WorkerRegisterPage() {
 				flex-direction: column;
 				align-items: center;
 				justify-content: stretch;
-
 				div:nth-of-type(1) {
 					display: flex;
-
 					ion-button {
 						position: absolute;
 						left: 0;
@@ -96,41 +100,56 @@ export default function WorkerRegisterPage() {
 					}
 				}
 			`}>
-			{/* <div>
-				<IonButton
-					size='large'
-					fill='clear'
-					routerLink='/workerLoginPage'>
-					<IonIcon className='icon' icon={arrowBackOutline} />
-				</IonButton>
-				<span>
-					已經註冊? <NavLink to='/workerLoginPage'>登入</NavLink>
-				</span>
-			</div> */}
-			{/* <IonHeader>
-				<IonToolbar>
-					<IonButtons slot='start'>
-						<IonBackButton />
-					</IonButtons>
-				</IonToolbar>
-			</IonHeader> */}
-			<h1>師傅註冊</h1>
-			<LoginMethods />
-			<div>或</div>
-			<form onSubmit={handleSubmit}>
-				<input type='text' placeholder='顯示名稱*' />
-				<input type='email' placeholder='電郵*' />
-				<input type='password' placeholder='密碼*' />
-				<input type='password' placeholder='確定密碼*' />
-				<input type='number' placeholder='聯絡電話*' />
-				<input
-					type='submit'
-					value='下一步'
-					onClick={() => {
-						history.push('/workerRegisterPageForTypeOfService')
-					}}
-				/>
-			</form>
+			<IonContent>
+				<h1>師傅註冊</h1>
+				<LoginMethods />
+				<div>或</div>
+				<form
+					onSubmit={handleSubmit((formData) =>
+						dispatch(
+							storeAccount({
+								nickname: formData.nickname,
+								email: formData.email,
+								password: formData.confirmedPassword,
+								phone: formData.phone
+							})
+						)
+					)}>
+					<input
+						type='text'
+						placeholder='顯示名稱*'
+						{...register('nickname', { required: true })}
+					/>
+					<input
+						type='email'
+						placeholder='電郵*'
+						{...register('email', { required: true })}
+					/>
+					<input
+						type='password'
+						placeholder='密碼*'
+						{...register('password', { required: true })}
+					/>
+					<input
+						type='password'
+						placeholder='確定密碼*'
+						{...register('confirmedPassword', { required: true })}
+					/>
+					<input
+						type='number'
+						placeholder='聯絡電話*'
+						{...register('phone', { required: true })}
+					/>
+					<input
+						type='submit'
+						value='下一步'
+						disabled={true}
+						onClick={() => {
+							history.push('/workerRegisterPageForTypeOfService')
+						}}
+					/>
+				</form>
+			</IonContent>
 		</IonPage>
 	)
 }
