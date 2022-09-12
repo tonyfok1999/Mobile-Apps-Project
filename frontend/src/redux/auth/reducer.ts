@@ -6,17 +6,7 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-	user: {
-		id: null,
-		email: null,
-		nickname: null,
-		phone: null,
-		gender_id: null,
-		profile_photo: null,
-		is_worker: null,
-		worker_info_id: null,
-		score: null
-	}
+	user: null
 }
 
 export function authReducer(
