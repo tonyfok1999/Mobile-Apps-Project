@@ -23,8 +23,6 @@ export class ChatroomController {
     try {
       const result= await this.chatroomService.getMessage(chatroomId);
 
-      console.log('result')
-
       if (result.rowCount === 0) {
         throw new HttpException('chatroom_id is out of range', HttpStatus.NOT_FOUND);
       }

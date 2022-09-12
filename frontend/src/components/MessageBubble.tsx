@@ -2,6 +2,7 @@
 import { css } from '@emotion/react'
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace'
 import React from 'react'
+import {Message} from './ChatContainer'
 
 function MessageBubble(props:{content:number}) {
 	return (

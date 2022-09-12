@@ -46,6 +46,8 @@ const ChatContainer: React.FC = () => {
 		})()
 	
 		}, [])
+
+	console.log(`message: `+ JSON.stringify(messages))
     // const scrollToFn: VirtualizerOptions<any, any>['scrollToFn'] =
     // React.useCallback((offset, canSmooth, instance) => {
     //   const duration = 1000
