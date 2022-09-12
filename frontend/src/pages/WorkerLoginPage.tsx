@@ -59,7 +59,6 @@ export default function WorkerLoginPage() {
 				<IonIcon className='icon' icon={arrowBackOutline} />
 			</IonButton>
 			<Logo />
-			{/* {userInfo.id} */}
 			<LoginBox />
 			<span>
 				師傅想加入我們?

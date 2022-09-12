@@ -1,12 +1,13 @@
 import { User } from './state'
 
-export function loggedIn(users: User[]) {
+export function loggedIn(user: User) {
 	return {
 		type: '@@auth/loggedIn' as const,
-		users: users
+		user: user
 	}
 }
-export function loggedOut(users: User[]) {
+
+export function loggedOut() {
 	return {
 		type: '@@auth/loggedOut' as const
 	}

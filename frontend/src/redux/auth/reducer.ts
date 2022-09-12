@@ -2,11 +2,21 @@ import { AuthActions, loggedIn } from './action'
 import { User } from './state'
 
 export interface AuthState {
-	users: User[] | null
+	user: User | null
 }
 
 const initialState: AuthState = {
-	users: []
+	user: {
+		id: null,
+		email: null,
+		nickname: null,
+		phone: null,
+		gender_id: null,
+		profile_photo: null,
+		is_worker: null,
+		worker_info_id: null,
+		score: null
+	}
 }
 
 export function authReducer(
@@ -17,12 +27,12 @@ export function authReducer(
 		case '@@auth/loggedIn':
 			return {
 				...state,
-				users: action.users
+				user: action.user
 			}
 		case '@@auth/loggedOut':
 			return {
 				...state,
-				users: null
+				user: null
 			}
 	}
 }
