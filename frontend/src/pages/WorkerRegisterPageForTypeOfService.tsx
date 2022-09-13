@@ -12,19 +12,12 @@ import {
 	IonToolbar
 } from '@ionic/react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../store'
 import { $CombinedState } from 'redux'
 import { useHistory } from 'react-router'
 
 export default function WorkerRegisterPageForTypeOfService() {
-	const {
-		register,
-		handleSubmit,
-		watch,
-		formState: { errors }
-	} = useForm()
-
 	// 0 = nothing to show
 	// 1 = 風
 	// 2 = 火
@@ -44,6 +37,8 @@ export default function WorkerRegisterPageForTypeOfService() {
 		]
 	>()
 
+	const [workerSubtypeId, setWorkerSubtypeId] = useState<number[]>([])
+
 	useEffect(() => {
 		const fetchReferenceTable = async () => {
 			const res = await fetch('http://localhost:8000/referencesTable')
@@ -54,8 +49,17 @@ export default function WorkerRegisterPageForTypeOfService() {
 		fetchReferenceTable()
 	}, [])
 
+	const email = useSelector(
+		(state: RootState) => state.register.account?.email
+	)
 	const nickname = useSelector(
 		(state: RootState) => state.register.account?.nickname
+	)
+	const password = useSelector(
+		(state: RootState) => state.register.account?.password
+	)
+	const phone = useSelector(
+		(state: RootState) => state.register.account?.phone
 	)
 	const history = useHistory()
 
@@ -108,9 +112,25 @@ export default function WorkerRegisterPageForTypeOfService() {
 			`}>
 			<IonContent>
 				<form
-					onSubmit={handleSubmit((formData) => {
-						console.log(formData)
-					})}>
+					onSubmit={(e) => {
+						e.preventDefault()
+						const res = fetch(
+							'http://localhost:8000/user/register',
+							{
+								method: 'post',
+								headers: {
+									'Content-Type': 'application/json'
+								},
+								body: JSON.stringify({
+									email: email,
+									nickname: nickname,
+									password: password,
+									phone: phone,
+									workerSubtypeId: workerSubtypeId
+								})
+							}
+						)
+					}}>
 					<div>維修範圍*</div>
 					{referenceTable &&
 						referenceTable[1].map((types) => {
@@ -145,12 +165,17 @@ export default function WorkerRegisterPageForTypeOfService() {
 							.map((subtypes) => (
 								<span key={subtypes.id}>
 									<input
-										{...register('subtypes_id')}
 										type='checkbox'
 										className='btn-check'
 										name='serviceSubtypes'
 										id={subtypes.subtype}
-										value={subtypes.subtype}
+										value={subtypes.id}
+										onChange={(e) => {
+											setWorkerSubtypeId((last) => [
+												...last,
+												parseInt(e.target.value)
+											])
+										}}
 									/>
 									<label
 										className='btn btn-outline-danger'

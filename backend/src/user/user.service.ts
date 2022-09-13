@@ -22,15 +22,24 @@ export class UserService {
     if (typeof result[0] == 'undefined') {
       const hash = await bcrypt.hash(user.password, 1);
       console.log(hash);
-      await this.knex('users').insert({
-        email: user.email,
-        password: hash,
-        nickname: user.nickname,
-        phone: user.phone,
-        gender_id: gender_id,
-        profile_photo: profile_photo,
-        is_worker: true,
-      });
+      let workerId = await this.knex('users')
+        .insert({
+          email: user.email,
+          password: hash,
+          nickname: user.nickname,
+          phone: user.phone,
+          gender_id: gender_id,
+          profile_photo: profile_photo,
+          is_worker: true,
+        })
+        .returning('id');
+
+      for (let subtype_id of user.workerSubtypeId) {
+        await this.knex('worker_service_subtypes').insert({
+          worker_id: workerId[0].id,
+          subtype_id: subtype_id,
+        });
+      }
     } else {
       return { massage: 'used email' };
     }

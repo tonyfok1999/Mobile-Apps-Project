@@ -8,4 +8,5 @@ export class CreateUserDto {
   is_worker: boolean;
   worker_info_id?: number | null;
   score?: number;
+  workerSubtypeId: number[];
 }
