@@ -49,6 +49,8 @@ import ChatList from './pages/ChatList'
 import ChatRoom from './pages/ChatRoom'
 import WorkerOrderPage from './pages/WorkerOrderPage'
 import OrderDetailPage from './pages/OrderDetailPage'
+import RegisterSuccess from './pages/RegisterSuccess'
+import RegisterFail from './pages/RegisterFail'
 
 setupIonicReact()
 
@@ -90,6 +92,11 @@ const App: React.FC = () => (
 					exact
 					path='/orderDetailPage/:id'
 					component={OrderDetailPage}
+				/>
+				<Route
+					exact
+					path='/registerSuccess'
+					component={RegisterSuccess}
 				/>
 				<Route exact path='/test' component={InfiniteScrollExample} />
 			</IonRouterOutlet>

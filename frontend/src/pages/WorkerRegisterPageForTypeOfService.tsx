@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../store'
 import { $CombinedState } from 'redux'
 import { useHistory } from 'react-router'
+import { async } from 'rxjs'
 
 export default function WorkerRegisterPageForTypeOfService() {
 	// 0 = nothing to show
@@ -38,6 +39,8 @@ export default function WorkerRegisterPageForTypeOfService() {
 	>()
 
 	const [workerSubtypeId, setWorkerSubtypeId] = useState<number[]>([])
+
+	const [cannotRegister, setCannotRegister] = useState<boolean>(true)
 
 	useEffect(() => {
 		const fetchReferenceTable = async () => {
@@ -112,9 +115,9 @@ export default function WorkerRegisterPageForTypeOfService() {
 			`}>
 			<IonContent>
 				<form
-					onSubmit={(e) => {
+					onSubmit={async (e) => {
 						e.preventDefault()
-						const res = fetch(
+						const res = await fetch(
 							'http://localhost:8000/user/register',
 							{
 								method: 'post',
@@ -175,6 +178,7 @@ export default function WorkerRegisterPageForTypeOfService() {
 												...last,
 												parseInt(e.target.value)
 											])
+											setCannotRegister(false)
 										}}
 									/>
 									<label
@@ -188,11 +192,10 @@ export default function WorkerRegisterPageForTypeOfService() {
 					<input
 						type='submit'
 						value='註冊'
-						disabled={false}
-						// onClick={() => {
-						// 	history.push('/workerOrderPage')
-						// }}
-					></input>
+						disabled={cannotRegister}
+						onClick={() => {
+							history.push('/registerSuccess')
+						}}></input>
 				</form>
 			</IonContent>
 		</IonPage>
