@@ -20,7 +20,7 @@ import { useEffect, useState } from 'react'
 export default function SpeakPage() {
 	const [recordState, setRecordState] = useState<boolean>(false)
 	const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>()
-
+	const [data, setData] = useState<object>()
 	const newMediaDevices = async () => {
 		await navigator.mediaDevices
 			.getUserMedia({ audio: true })
@@ -49,7 +49,7 @@ export default function SpeakPage() {
 		}
 
 		if (mediaRecorder?.state === 'recording' && recordState === false) {
-			mediaRecorder.ondataavailable = async function (e) {
+			mediaRecorder.ondataavailable =  async function (e) {
 				chunks.push(e.data)
 				// console.log(mediaRecorder.state)
 
@@ -62,21 +62,17 @@ export default function SpeakPage() {
 				formData.append('record', blob)
 				// console.log(formData)
 
-				let res = await fetch(
-					'http://localhost:8000/speech/uploadWebM',
-					{
-						method: 'POST',
-						body: formData
-					}
-				)
-				let result = res.json()
-				console.log(result)
+				let data =await fetch('http://localhost:8000/speech/uploadWebM', {
+					method: 'POST',
+					body: formData
+				})
+				console.log(await data.json()) ///speech data by backend
 			}
 			mediaRecorder.stop()
 			// console.log(mediaRecorder.state)
 			chunks = []
 		}
-	}, [recordState, mediaRecorder])
+	}, [recordState, mediaRecorder, data])
 
 	return (
 		<IonPage
@@ -156,7 +152,7 @@ export default function SpeakPage() {
 										onClick={() => {
 											setRecordState(false)
 											closeMediaDevices()
-										}}>
+										}}routerLink='/Speak/SpeakDetailPage'>
 										<h3>聆聽中,按一下結束</h3>
 									</IonButton>
 								</IonCol>
@@ -181,6 +177,7 @@ export default function SpeakPage() {
 										onClick={() => {
 											setRecordState(true)
 											newMediaDevices()
+											
 										}}>
 										<IonIcon
 											className='micicon'

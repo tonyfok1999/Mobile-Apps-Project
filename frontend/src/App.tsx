@@ -49,6 +49,7 @@ import ChatList from './pages/ChatList'
 import ChatRoom from './pages/ChatRoom'
 import WorkerOrderPage from './pages/WorkerOrderPage'
 import OrderDetailPage from './pages/OrderDetailPage'
+import SpeakDetailPage from './pages/SpeakDetailPage'
 
 setupIonicReact()
 
@@ -61,9 +62,10 @@ const App: React.FC = () => (
 				</Route>
 
 				<Route exact path='/tabs/homepage' component={HomePage} />
-				<Route exact path='/SpeakPage' component={SpeakPage} />
+				<Route exact path='/Speak/SpeakPage' component={SpeakPage} />
 				<Route exact path='/tabs/chatlist' component={ChatList} />
-
+				<Route exact path='/Speak/SpeakDetailPage' component={SpeakDetailPage} />
+			
 				<Route path='/chatroom/:chatroomId' component={ChatRoom} />
 				<Route
 					exact

@@ -76,7 +76,7 @@ const HomePage: React.FC = () => {
 				</IonRow>
 				<IonRow className='info2Col'>
 					<IonCol className='center'>
-						<IonButton fill='clear' routerLink='/SpeakPage'>
+						<IonButton fill='clear' routerLink='/Speak/SpeakPage'>
 							<h3>按一下開始</h3>
 						</IonButton>
 					</IonCol>
