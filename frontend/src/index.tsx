@@ -5,13 +5,16 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import reportWebVitals from './reportWebVitals'
 import { Provider } from 'react-redux'
 import { store } from './store'
+import { socket, WebSocketProvider } from './context/WebScoketContext'
 
 const container = document.getElementById('root')
 const root = createRoot(container!)
 root.render(
 	// <React.StrictMode>
 	<Provider store={store}>
-		<App />
+		<WebSocketProvider value={socket}>
+			<App />
+		</WebSocketProvider>
 	</Provider>
 	// </React.StrictMode>
 )

@@ -14,13 +14,14 @@ import {
 	IonLabel,
 	IonFooter
 } from '@ionic/react'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { IoArrowBackSharp, IoNuclearOutline } from 'react-icons/io5'
 import { useParams } from 'react-router'
 import ChatInput from '../components/ChatInput'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import Chats from '../components/Chats'
 import MessageBubble from '../components/MessageBubble'
+import { WebSocketContext } from '../context/WebScoketContext'
 
 const VirtualScroll = require('react-dynamic-virtual-scroll')
 
@@ -35,20 +36,46 @@ const ChatContainer: React.FC = () => {
 
 	const initialState: Message = { sender_id: 0, text: 'null' }
 
-	const [messages, setMessages] = useState([initialState])
+	const [messages, setMessages] = useState<Message[]>([initialState])
+
+	const socket = useContext(WebSocketContext)
 
 	useEffect(() => {
-		;(async function () {
+		const getMessages = async () => {
 			const res = await fetch(
 				`${process.env.REACT_APP_BACKEND_URL}/chatroom/1/message`
 			)
 			const json = await res.json()
 			console.log(json)
-			setMessages(json)
-		})()
+			console.log('calling getMessages')
+			setMessages(() => json)
+		}
+
+		getMessages()
+
+		console.log('container lifecycle starting')
+
+		// socket.on('connect', ()=>{
+		// 	console.log('socket connected')
+		// 	getMessages()
+		// })
+
+		socket.on('onMessage', (data)=>{
+			console.log('onMessage event received')
+			console.log(data)
+			setMessages((prev) => [...prev, data])
+		})
+
+		return () => {
+			console.log('Unregistering Event')
+			socket.off('connect')
+			socket.off('onMessage')
+		}
+
 	}, [])
 
 	console.log(`message: ` + JSON.stringify(messages))
+	
 	// const scrollToFn: VirtualizerOptions<any, any>['scrollToFn'] =
 	// React.useCallback((offset, canSmooth, instance) => {
 	//   const duration = 1000
@@ -59,7 +86,7 @@ const ChatContainer: React.FC = () => {
 	const rowVirtualizer = useVirtualizer({
 		count: 1000,
 		getScrollElement: () => parentRef.current,
-		estimateSize: () => 35
+		estimateSize: () => 50
 	})
 
 	return (

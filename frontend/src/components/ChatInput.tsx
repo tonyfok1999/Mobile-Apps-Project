@@ -2,14 +2,28 @@
 import { css } from '@emotion/react'
 import { VscSmiley } from 'react-icons/vsc'
 import Button from 'react-bootstrap/Button'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Picker from 'emoji-picker-react'
-import { async } from 'rxjs'
 import { Message } from './ChatContainer'
+import { WebSocketContext } from '../context/WebScoketContext'
 
 const ChatInput: React.FC = () => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false)
 	const [message, setMessage] = useState('')
+	const socket = useContext(WebSocketContext)
+
+	// useEffect(() => {
+		
+	// 	socket.on('connect', ()=>{
+	// 		console.log('Connected')
+	// 	})
+
+	// 	return () => {
+	// 		console.log('Unregistering Event')
+	// 		socket.off('connect')
+	// 		socket.off('onMessage')
+	// 	}
+	// }, [])
 
 	const handleEmojiPickerHideShow = () => {
 		setShowEmojiPicker(!showEmojiPicker)
@@ -87,6 +101,7 @@ const ChatInput: React.FC = () => {
 				if(message.length>0){
 					console.log(formData)
 					handleSendMessage(message, formData);
+					socket.emit('newMessage', message)
 					console.log('the message has been submit')
 					setMessage('')
 				}}
