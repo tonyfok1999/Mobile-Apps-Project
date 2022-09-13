@@ -4,7 +4,7 @@ import {Server} from 'socket.io'
 
 @WebSocketGateway({
     cors: {
-        origin: 'https://'
+        origin: [`${process.env.REACT_URL}`]
     }
 })
 export class MyWebSocket implements OnModuleInit{
@@ -15,7 +15,7 @@ export class MyWebSocket implements OnModuleInit{
     onModuleInit() {
         this.server.on('connection', (socket)=>{
             console.log(socket.id)
-            console.log('connected')
+            console.log('connected websocket gateway')
         })
     }
 
@@ -26,8 +26,8 @@ export class MyWebSocket implements OnModuleInit{
 
         // emit a new message
         this.server.emit('onMessage', {
-            message: 'New Message',
-            content: body
+            sender_id: 1,
+            text: body
         })
     }
 

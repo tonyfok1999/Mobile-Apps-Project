@@ -15,7 +15,7 @@ const knexConfigs = require('../knexfile')
 @Module({
   imports: [ConfigModule.forRoot(), KnexModule.forRoot({
     config: knexConfigs[process.env.NODE_ENV || 'development'],
-  }), UserModule, SpeechModule, ChatroomModule, OrderModule, ReferencesTableModule, AuthModule, WebsocketModule,],
+  }), UserModule, SpeechModule, ChatroomModule, OrderModule, ReferencesTableModule, AuthModule, WebsocketModule],
   controllers: [],
   providers: [AuthService],
 })
