@@ -2,7 +2,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { KnexModule } from 'nestjs-knex';
 import { UserModule } from './user/user.module';
-import { SpeechModule } from './speech/speech.module';
+import { SpeechModule } from './speak/speak.module';
 import { ChatroomModule } from './chatroom/chatroom.module';
 import { OrderModule } from './order/order.module';
 import { ReferencesTableModule } from './references_table/references_table.module';

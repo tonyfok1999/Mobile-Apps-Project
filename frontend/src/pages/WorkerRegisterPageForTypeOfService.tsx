@@ -11,9 +11,12 @@ import {
 	IonTitle,
 	IonToolbar
 } from '@ionic/react'
-import { useSelector } from 'react-redux'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../store'
 import { $CombinedState } from 'redux'
+import { useHistory } from 'react-router'
+import { async } from 'rxjs'
 
 export default function WorkerRegisterPageForTypeOfService() {
 	// 0 = nothing to show
@@ -35,6 +38,10 @@ export default function WorkerRegisterPageForTypeOfService() {
 		]
 	>()
 
+	const [workerSubtypeId, setWorkerSubtypeId] = useState<number[]>([])
+
+	const [cannotRegister, setCannotRegister] = useState<boolean>(true)
+
 	useEffect(() => {
 		const fetchReferenceTable = async () => {
 			const res = await fetch('http://localhost:8000/referencesTable')
@@ -45,9 +52,29 @@ export default function WorkerRegisterPageForTypeOfService() {
 		fetchReferenceTable()
 	}, [])
 
+	const email = useSelector(
+		(state: RootState) => state.register.account?.email
+	)
 	const nickname = useSelector(
 		(state: RootState) => state.register.account?.nickname
 	)
+	const password = useSelector(
+		(state: RootState) => state.register.account?.password
+	)
+	const phone = useSelector(
+		(state: RootState) => state.register.account?.phone
+	)
+	const history = useHistory()
+
+	// email: string;
+	// password: string;
+	// nickname: string;
+	// phone: number;
+	// gender_id?: number | null;
+	// profile_photo?: string | null;
+	// is_worker: boolean;
+	// worker_info_id?: number | null;
+	// score?: number;
 
 	return (
 		<IonPage
@@ -87,7 +114,26 @@ export default function WorkerRegisterPageForTypeOfService() {
 				}
 			`}>
 			<IonContent>
-				<form>
+				<form
+					onSubmit={async (e) => {
+						e.preventDefault()
+						const res = await fetch(
+							'http://localhost:8000/user/register',
+							{
+								method: 'post',
+								headers: {
+									'Content-Type': 'application/json'
+								},
+								body: JSON.stringify({
+									email: email,
+									nickname: nickname,
+									password: password,
+									phone: phone,
+									workerSubtypeId: workerSubtypeId
+								})
+							}
+						)
+					}}>
 					<div>維修範圍*</div>
 					{referenceTable &&
 						referenceTable[1].map((types) => {
@@ -126,7 +172,14 @@ export default function WorkerRegisterPageForTypeOfService() {
 										className='btn-check'
 										name='serviceSubtypes'
 										id={subtypes.subtype}
-										value={subtypes.subtype}
+										value={subtypes.id}
+										onChange={(e) => {
+											setWorkerSubtypeId((last) => [
+												...last,
+												parseInt(e.target.value)
+											])
+											setCannotRegister(false)
+										}}
 									/>
 									<label
 										className='btn btn-outline-danger'
@@ -136,9 +189,14 @@ export default function WorkerRegisterPageForTypeOfService() {
 								</span>
 							))}
 
-					<input type='submit' value='註冊'></input>
+					<input
+						type='submit'
+						value='註冊'
+						disabled={cannotRegister}
+						onClick={() => {
+							history.push('/registerSuccess')
+						}}></input>
 				</form>
-				<div></div>
 			</IonContent>
 		</IonPage>
 	)

@@ -19,30 +19,6 @@ export default function LoginBox() {
 
 	const [presentAlert] = useIonAlert()
 
-	// const [submitData, setSubmitData] = useState<{
-	// 	email: string | null
-	// 	password: string | null
-	// }>()
-
-	// const [isLogin, setIsLogin] = useState<boolean>(false)
-
-	// useEffect(() => {
-	// 	const fetchData = async () => {
-	// 		const res = await fetch('http://localhost:8000/user/login', {
-	// 			method: 'POST',
-	// 			headers: {
-	// 				'Content-Type': 'application/x-www-form-urlencoded'
-	// 			},
-	// 			body: JSON.stringify(submitData)
-	// 		})
-	// 		const fetchData = await res.json()
-	// 		setIsLogin(fetchData.loginState)
-	// 	}
-	// 	if (submitData) {
-	// 		fetchData()
-	// 	}
-	// }, [submitData])
-
 	return (
 		<div
 			className='container'

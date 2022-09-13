@@ -10,7 +10,7 @@ import {
 	IonPage,
 	IonToolbar
 } from '@ionic/react'
-import React from 'react'
+import React, { useState } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import LoginMethods from '../components/LoginMethods'
 import { SubmitHandler, useForm } from 'react-hook-form'
@@ -27,6 +27,10 @@ export default function WorkerRegisterPage() {
 	} = useForm()
 
 	const dispatch = useDispatch()
+
+	const [cannotNextStep, setCannotNextStep] = useState<boolean>(true)
+	const [isDuplicateEmail, setIsDuplicateEmail] = useState<boolean>(false)
+	const [isSamePassword, setIsSamePassword] = useState<boolean>(true)
 
 	return (
 		<IonPage
@@ -105,7 +109,7 @@ export default function WorkerRegisterPage() {
 				<LoginMethods />
 				<div>或</div>
 				<form
-					onSubmit={handleSubmit((formData) =>
+					onSubmit={handleSubmit((formData) => {
 						dispatch(
 							storeAccount({
 								nickname: formData.nickname,
@@ -114,7 +118,7 @@ export default function WorkerRegisterPage() {
 								phone: formData.phone
 							})
 						)
-					)}>
+					})}>
 					<input
 						type='text'
 						placeholder='顯示名稱*'
@@ -123,8 +127,31 @@ export default function WorkerRegisterPage() {
 					<input
 						type='email'
 						placeholder='電郵*'
-						{...register('email', { required: true })}
+						{...register('email', {
+							required: true,
+							onChange: async () => {
+								const res = await fetch(
+									'http://localhost:8000/user/checkEmail',
+									{
+										method: 'POST',
+										headers: {
+											'Content-Type': 'application/json'
+										},
+										body: JSON.stringify({
+											email: watch('email')
+										})
+									}
+								)
+								const data = await res.json()
+								data.isDuplicate
+									? setIsDuplicateEmail(true)
+									: setIsDuplicateEmail(false)
+							}
+						})}
 					/>
+					{isDuplicateEmail && (
+						<div className='error'> this email is duplicated</div>
+					)}
 					<input
 						type='password'
 						placeholder='密碼*'
@@ -133,17 +160,38 @@ export default function WorkerRegisterPage() {
 					<input
 						type='password'
 						placeholder='確定密碼*'
-						{...register('confirmedPassword', { required: true })}
+						{...register('confirmedPassword', {
+							required: true,
+							onBlur: () => {
+								watch('password') == watch('confirmedPassword')
+									? setIsSamePassword(true)
+									: setIsSamePassword(false)
+							}
+						})}
 					/>
+					{!isSamePassword && (
+						<div className='error'>
+							the password is not the same of above
+						</div>
+					)}
 					<input
 						type='number'
 						placeholder='聯絡電話*'
-						{...register('phone', { required: true })}
+						{...register('phone', {
+							required: true,
+							onChange: () => {
+								setCannotNextStep(false)
+							}
+						})}
 					/>
 					<input
 						type='submit'
 						value='下一步'
-						disabled={true}
+						disabled={
+							cannotNextStep ||
+							isDuplicateEmail ||
+							!isSamePassword
+						}
 						onClick={() => {
 							history.push('/workerRegisterPageForTypeOfService')
 						}}

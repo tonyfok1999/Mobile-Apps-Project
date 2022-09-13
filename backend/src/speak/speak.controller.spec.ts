@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SpeechController } from './speech.controller';
-import { SpeechService } from './speech.service';
+import { SpeechController } from './speak.controller';
+import { SpeechService } from './speak.service';
 
 describe('SpeechController', () => {
   let controller: SpeechController;
