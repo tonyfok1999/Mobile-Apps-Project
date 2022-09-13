@@ -4,10 +4,10 @@ import { EmotionJSX } from '@emotion/react/types/jsx-namespace'
 import React from 'react'
 import {Message} from './ChatContainer'
 
-function MessageBubble(props:{content:number}) {
+function MessageBubble(props:{content?:Message}) {
 	return (
 		<>
-			<h1>{props.content}</h1>
+			<h1>{props.content?.text}</h1>
 		</>
 	)
 }

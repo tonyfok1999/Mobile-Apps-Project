@@ -2,8 +2,10 @@
 import { css } from '@emotion/react'
 import { VscSmiley } from 'react-icons/vsc'
 import Button from 'react-bootstrap/Button'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Picker from 'emoji-picker-react'
+import { async } from 'rxjs'
+import { Message } from './ChatContainer'
 
 const ChatInput: React.FC = () => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false)
@@ -17,6 +19,21 @@ const ChatInput: React.FC = () => {
  		setMessage(message + emojiObject.emoji)
 	}
 
+	const handleSendMessage =async (message: string,formData: FormData) => {
+		
+		const blob = new Blob([JSON.stringify({sender_id: 1, text: message})], {type : 'application/json'});
+		formData.append('blob', blob)
+
+		await fetch(
+			`${process.env.REACT_APP_BACKEND_URL}/chatroom/1/message`,
+			{ 
+			method: 'POST',
+			headers:{'Content-Type': 'application/json; charset=utf-8'},
+			body: JSON.stringify({sender_id: 1, text: message})
+			}
+		)
+		console.log('message has been sent')
+	}
 
 	return (
 		<form
@@ -62,12 +79,18 @@ const ChatInput: React.FC = () => {
 					}
 				}
 			`}
-			// onSubmit={(e)=>{
-			// 	e.preventDefault();
-			// 	{message.length>0 && 
-			// 		handleSendMessage(message)
-			// 		setMessage('')
-			// 	}}
+			onSubmit={(event) => {
+				event.preventDefault();
+				let form = event.currentTarget
+				let formData = new FormData(form)
+
+				if(message.length>0){
+					console.log(formData)
+					handleSendMessage(message, formData);
+					console.log('the message has been submit')
+					setMessage('')
+				}}
+			}
 			>
 			<input type='text' placeholder='Type something here...' value={message} onChange={(e)=>setMessage(e.target.value)} />
 			<div
