@@ -13,8 +13,8 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { request } from 'express'
 import { diskStorage } from 'multer';
-import { SpeechUpload } from './dto/speechUpload.dto'
-import { SpeechService } from './speech.service'
+import { SpeechUpload } from './dto/speakUpload.dto'
+import { SpeechService } from './speak.service'
 import { ConfigModule } from '@nestjs/config';
 import { TestString } from './dto/test.dto';
 ConfigModule.forRoot({
@@ -38,23 +38,23 @@ export class SpeechController {
   })}),
 )
 async uploadedFile(@UploadedFile() file) {
-    const response = {
-    	originalname: file.originalname,
-    	filename: file.filename,
-    };
+    // const response = {
+    // 	originalname: file.originalname,
+    // 	filename: file.filename,
+    // };
     // console.log(response);
-    console.log(file);
-  let result = await this.speechService.googleAPI(file.filename)
-    console.log(result);
+    // console.log(file);
+//   let result = await this.speechService.googleAPI(file.filename)
+//     console.log(result);
 	
-    return result;
+    return this.speechService.googleAPI(file.filename);
 }
 
 
-	@Post('/getDistricts')
-	getDistricts(@Body() testStringDto:TestString) {
-		console.log(testStringDto.testString);
+	// @Post('/getDistricts')
+	// getDistricts(@Body() testStringDto:TestString) {
+	// 	console.log(testStringDto.testString);
 		
-		return this.speechService.getDistricts(testStringDto.testString)
-	}
+	// 	return this.speechService.getDistricts(testStringDto.testString)
+	// }
 }
