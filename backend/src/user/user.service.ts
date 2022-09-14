@@ -41,9 +41,9 @@ export class UserService {
         });
       }
     } else {
-      return { massage: 'used email' };
+      return { message: 'used email' };
     }
-    return { massage: 'register_success' };
+    return { message: 'register_success' };
   }
 
   async findAll() {

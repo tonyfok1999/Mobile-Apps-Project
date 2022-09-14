@@ -63,6 +63,8 @@ const ChatList: React.FC = () => {
 		svg{
 			color: #0D0E10
 		}
+
+
 		
 		`}>
 			

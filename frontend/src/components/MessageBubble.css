@@ -1,0 +1,33 @@
+.message{
+    display:flex;
+    align-items: center;
+   
+}
+
+.content{
+    max-width: 90%;
+    overflow-wrap:break-word;
+    padding: 0.5rem;
+    font-size: 1.1rem;
+    border-radius: 0.5rem;
+    color: #ffffff;
+}
+
+.sender{
+    justify-content:flex-end;
+
+}
+
+.sender .content{
+    background-color: #FF855C
+}
+
+.receiver{
+    justify-content:flex-start;
+
+}
+
+.receiver .content{
+    background-color: #e4e4e4;
+    color: black
+}
