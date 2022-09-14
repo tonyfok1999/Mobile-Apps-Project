@@ -16,11 +16,20 @@ import DetailsOfRecordingContent from '../components/DetailsOfRecordingContent'
 import { micOutline } from 'ionicons/icons'
 import TopBar from '../components/TopBar'
 import { useEffect, useState } from 'react'
-
+import { useDispatch } from 'react-redux'
+import {
+	changeDistrict,
+	changeServiceSubType,
+	changeSpeakFileName,
+	changeTranscription
+} from '../redux/speak/action'
+import { useSelector } from 'react-redux'
+import { RootState } from '../store'
 export default function SpeakPage() {
+	const dispatch = useDispatch()
 	const [recordState, setRecordState] = useState<boolean>(false)
 	const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>()
-	const [data, setData] = useState<object>()
+
 	const newMediaDevices = async () => {
 		await navigator.mediaDevices
 			.getUserMedia({ audio: true })
@@ -49,7 +58,7 @@ export default function SpeakPage() {
 		}
 
 		if (mediaRecorder?.state === 'recording' && recordState === false) {
-			mediaRecorder.ondataavailable =  async function (e) {
+			mediaRecorder.ondataavailable = async function (e) {
 				chunks.push(e.data)
 				// console.log(mediaRecorder.state)
 
@@ -62,17 +71,25 @@ export default function SpeakPage() {
 				formData.append('record', blob)
 				// console.log(formData)
 
-				let data =await fetch('http://localhost:8000/speech/uploadWebM', {
-					method: 'POST',
-					body: formData
-				})
-				console.log(await data.json()) ///speech data by backend
+				let data = await fetch(
+					'http://localhost:8000/speech/uploadWebM',
+					{
+						method: 'POST',
+						body: formData
+					}
+				)
+				let datas = await data.json()
+				console.log(datas) ///speech data by backend
+				dispatch(changeDistrict(datas.district))
+				dispatch(changeServiceSubType(datas.serviceSubType))
+				dispatch(changeSpeakFileName(datas.speakFileName))
+				dispatch(changeTranscription(datas.transcription))
 			}
 			mediaRecorder.stop()
 			// console.log(mediaRecorder.state)
 			chunks = []
 		}
-	}, [recordState, mediaRecorder, data])
+	}, [recordState, mediaRecorder])
 
 	return (
 		<IonPage
@@ -127,7 +144,7 @@ export default function SpeakPage() {
 				<IonGrid>
 					<IonRow className='topBar'>
 						<IonCol className='topBar'>
-							<TopBar />
+							<TopBar thisBackPath={'/tabs/homepage'}/>
 						</IonCol>
 					</IonRow>
 					<IonRow className='logoCol'>
@@ -152,8 +169,9 @@ export default function SpeakPage() {
 										onClick={() => {
 											setRecordState(false)
 											closeMediaDevices()
-										}}routerLink='/Speak/SpeakDetailPage'>
-										<h3>聆聽中,按一下結束</h3>
+										}}
+										routerLink='/Speak/SpeakDetailPage'>
+										<h3>聆聽中,按一下結束 </h3>
 									</IonButton>
 								</IonCol>
 							</>
@@ -167,7 +185,7 @@ export default function SpeakPage() {
 											setRecordState(true)
 											newMediaDevices()
 										}}>
-										<h3>按一下開始說話</h3>
+										<h3>按一下開始說話 </h3>
 									</IonButton>
 								</IonCol>
 								<IonCol class='iconButton' size='12'>
@@ -177,7 +195,6 @@ export default function SpeakPage() {
 										onClick={() => {
 											setRecordState(true)
 											newMediaDevices()
-											
 										}}>
 										<IonIcon
 											className='micicon'

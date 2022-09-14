@@ -11,7 +11,8 @@ import { css } from '@emotion/react'
 
 import BackIcon from './BackIcon'
 
-export default function TopBar() {
+export default function TopBar(props:{
+	thisBackPath:string,}) {
 	return (
 		<IonGrid
 			css={css`
@@ -29,7 +30,7 @@ export default function TopBar() {
 			<IonRow>
 
 				<IonCol size='4' className=''>
-					<BackIcon/>
+				<BackIcon thisPath={props.thisBackPath}/>
 				</IonCol>
 
 				<IonCol size='8' className='loginCol'>
