@@ -83,4 +83,11 @@ export class UserService {
 
     return result;
   }
+
+  async findUser(email: string) {
+    let result = await this.knex.select('*').from('users').where('email', email);
+    console.log(result);
+
+    return result;
+  }
 }
