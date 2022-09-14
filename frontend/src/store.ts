@@ -5,11 +5,13 @@ import { useDispatch } from 'react-redux'
 import { authReducer } from './redux/auth/reducer'
 import { districtReducer } from './redux/districts/reducer'
 import { registerReducer } from './redux/register/reducer'
+import { speakReducer } from './redux/speak/reducer'
 
 const reducers = combineReducers({
 	auth: authReducer,
 	districts: districtReducer,
-	register: registerReducer
+	register: registerReducer,
+	speak: speakReducer
 })
 
 export type RootState = ReturnType<typeof reducers>

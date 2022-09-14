@@ -1,7 +1,8 @@
 export interface SpeakData {
-	district: number
-	serviceSubType: number[]
-    budget:number | null
-    imageFileName:string[] |null
-    speakFileName:string
+	district?: number
+	serviceSubType?: number[]
+    budget?:number |null
+    imageFileName?:string[] |null
+    speakFileName?:string |null
+    transcription?:string |null
 }
