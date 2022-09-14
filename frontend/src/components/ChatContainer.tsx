@@ -106,6 +106,7 @@ const ChatContainer: React.FC = () => {
 					{rowVirtualizer.getVirtualItems().map((virtualItem) => (
 						<div
 							key={virtualItem.key}
+							ref={virtualItem.measureElement}
 							style={{
 								position: 'absolute',
 								top: 0,
