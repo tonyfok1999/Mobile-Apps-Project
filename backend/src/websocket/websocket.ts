@@ -1,4 +1,4 @@
-import { OnModuleInit } from "@nestjs/common";
+import { Logger, OnModuleInit } from "@nestjs/common";
 import { MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from "@nestjs/websockets";
 import {Server} from 'socket.io'
 
@@ -14,8 +14,7 @@ export class MyWebSocket implements OnModuleInit{
 
     onModuleInit() {
         this.server.on('connection', (socket)=>{
-            console.log(socket.id)
-            console.log('connected websocket gateway')
+            Logger.log(`connected websocket gateway - socket id: ${socket.id}`)
         })
     }
 
