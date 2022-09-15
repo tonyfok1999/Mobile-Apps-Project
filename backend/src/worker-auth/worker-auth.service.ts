@@ -8,11 +8,16 @@ export class WorkerAuthService {
   constructor(private readonly jwtService: JwtService, private readonly userService: UserService) {}
 
   async validateUser(email: string, password: string) {
-    const user = await this.userService.findUser(email);
+    let user = await this.userService.findUser(email);
+    if (user.length == 0) {
+      return (user = []);
+    }
+
     const isSamePassword = await bcrypt.compare(password, user[0].password);
-    console.log(user[0], isSamePassword);
+
+    // console.log(user[0], isSamePassword);
     if (!user[0] || !isSamePassword) {
-      return null;
+      return (user = []);
     }
     return user;
   }

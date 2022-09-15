@@ -59,9 +59,9 @@ export class SpeechService {
       // console.log(serviceSubType.rows);
 
       if (serviceSubType.rows.length == 0) {
-        serviceSubType = 1;
+        serviceSubType = [1];
       } else {
-        serviceSubType = serviceSubType.rows[0].id;
+        serviceSubType = [serviceSubType.rows[0].id];
       }
       // console.log(serviceSubType);
 
@@ -78,7 +78,7 @@ export class SpeechService {
       console.log(e);
       
       let district = 1;
-      let serviceSubType = 1;
+      let serviceSubType = [1];
    let transcription='Hello'
 
       let speedResult: SpeedResult = { district: district, serviceSubType: serviceSubType, speakFileName: filename,transcription:transcription };

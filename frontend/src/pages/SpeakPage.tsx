@@ -25,7 +25,9 @@ import {
 } from '../redux/speak/action'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store'
+import { useHistory } from "react-router-dom";
 export default function SpeakPage() {
+	const history = useHistory();
 	const dispatch = useDispatch()
 	const [recordState, setRecordState] = useState<boolean>(false)
 	const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>()
@@ -67,6 +69,9 @@ export default function SpeakPage() {
 				const blob = new Blob(chunks, {
 					type: 'audio/WebM; codecs=opus'
 				})
+				let speakUrl = window.URL.createObjectURL(blob);
+				console.log(speakUrl);
+				
 				// console.log(blob)
 				formData.append('record', blob)
 				// console.log(formData)
@@ -84,10 +89,12 @@ export default function SpeakPage() {
 				dispatch(changeServiceSubType(datas.serviceSubType))
 				dispatch(changeSpeakFileName(datas.speakFileName))
 				dispatch(changeTranscription(datas.transcription))
+				chunks = []
+				history.push("/Speak/SpeakDetailPage");
 			}
 			mediaRecorder.stop()
 			// console.log(mediaRecorder.state)
-			chunks = []
+			
 		}
 	}, [recordState, mediaRecorder])
 
@@ -170,7 +177,7 @@ export default function SpeakPage() {
 											setRecordState(false)
 											closeMediaDevices()
 										}}
-										routerLink='/Speak/SpeakDetailPage'>
+										>
 										<h3>聆聽中,按一下結束 </h3>
 									</IonButton>
 								</IonCol>

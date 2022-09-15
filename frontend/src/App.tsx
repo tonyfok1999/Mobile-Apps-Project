@@ -51,6 +51,8 @@ import WorkerOrderPage from './pages/WorkerOrderPage'
 import OrderDetailPage from './pages/OrderDetailPage'
 import RegisterSuccess from './pages/RegisterSuccess'
 import SpeakDetailPage from './pages/SpeakDetailPage'
+import ChangeDistricts from './pages/ChangeDistricts'
+import ChangeSubType from './pages/ChangeSubType'
 import { useEffect, useState } from 'react'
 import { loggedIn, logOut } from './redux/auth/action'
 import { useAppDispatch } from './store'
@@ -99,18 +101,16 @@ const App: React.FC = () => {
 						<HomePage />
 					</Route>
 
-					<Route exact path='/tabs/homepage' component={HomePage} />
-					<Route
-						exact
-						path='/Speak/SpeakPage'
-						component={SpeakPage}
-					/>
-					<Route exact path='/tabs/chatlist' component={ChatList} />
-					<Route
-						exact
-						path='/Speak/SpeakDetailPage'
-						component={SpeakDetailPage}
-					/>
+				<Route exact path='/tabs/homepage' component={HomePage} />
+				<Route exact path='/Speak/SpeakPage' component={SpeakPage} />
+				<Route exact path='/tabs/chatlist' component={ChatList} />
+				<Route exact path='/tabs/changeDistricts' component={ChangeDistricts} />
+				<Route exact path='/tabs/changeSubType' component={ChangeSubType} />
+				<Route
+					exact
+					path='/Speak/SpeakDetailPage'
+					component={SpeakDetailPage}
+				/>
 
 					<Route path='/chatroom/:chatroomId' component={ChatRoom} />
 					<Route
