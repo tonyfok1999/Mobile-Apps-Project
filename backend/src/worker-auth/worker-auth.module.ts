@@ -11,18 +11,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
   imports: [
     PassportModule,
     UserModule,
-    JwtModule.registerAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      useFactory: (config: ConfigService) => {
-        const secret = config.get('secrets.jwt');
-        return {
-          secret,
-          signOptions: {
-            expiresIn: '72h',
-          },
-        };
-      },
+    JwtModule.register({
+      secret: 'tryMe',
+      signOptions: { expiresIn: '3d' },
     }),
   ],
   controllers: [WorkerAuthController],

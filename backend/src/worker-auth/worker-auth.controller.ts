@@ -4,6 +4,7 @@ import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
 import { Request } from 'express';
 import { WorkerAuthService } from './worker-auth.service';
+import { LocalAuthGuard } from './local-auth.guard';
 
 @Controller('worker-auth')
 export class WorkerAuthController {
@@ -14,9 +15,9 @@ export class WorkerAuthController {
     return this.userService.register(user);
   }
 
-  @UseGuards(AuthGuard('local'))
+  @UseGuards(LocalAuthGuard)
   @Post('login')
-  login(@Req() request: Request) {
+  async login(@Req() request: Request) {
     return this.authService.generateJwt(request.user as { id: number; email: string });
   }
 }
