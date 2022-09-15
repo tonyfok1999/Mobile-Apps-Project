@@ -12,14 +12,14 @@ export class AllUserJwtMiddleware implements NestMiddleware {
   @UseGuards(JwtAuthGuard)
   async use(req: Request, res: Response, next: NextFunction) {
     Logger.log('inside alluserjwt middleware');
-    const { authorization } = req.headers;
-    console.log(authorization)
+    const { authorization, access_token } = req.headers;
+    console.log(authorization);
 
     // check if the token exists
-    if (!authorization) {
+    if (!authorization && !access_token) {
       const jwt = await this.authService.generateJwt();
       Logger.log(`the new user has been assigned to new token: ${jwt}`);
-      res.json({'Authorization':jwt});
+      res.json({ Authorization: jwt });
       next();
     } else {
       Logger.log('the user has token already');
