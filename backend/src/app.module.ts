@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { KnexModule } from 'nestjs-knex';
 import { UserModule } from './user/user.module';
@@ -10,19 +10,35 @@ import { AuthMiddleware } from './middleware/auth.middleware';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { WebsocketModule } from './websocket/websocket.module';
+import { AllUserJwtMiddleware } from './middleware/alluserjwt.middleware';
+import { JwtService } from '@nestjs/jwt';
+import { WorkerAuthModule } from './worker-auth/worker-auth.module';
+import SecretConfigFactory from './config/secret.config';
 
-const knexConfigs = require('../knexfile')
+const knexConfigs = require('../knexfile');
 @Module({
-  imports: [ConfigModule.forRoot(), KnexModule.forRoot({
-    config: knexConfigs[process.env.NODE_ENV || 'development'],
-  }), UserModule, SpeechModule, ChatroomModule, OrderModule, ReferencesTableModule, AuthModule, WebsocketModule],
+  imports: [
+    ConfigModule.forRoot({
+      load: [SecretConfigFactory],
+      isGlobal: true,
+    }),
+    KnexModule.forRoot({
+      config: knexConfigs[process.env.NODE_ENV || 'development'],
+    }),
+    UserModule,
+    SpeechModule,
+    ChatroomModule,
+    OrderModule,
+    ReferencesTableModule,
+    AuthModule,
+    WebsocketModule,
+    WorkerAuthModule,
+  ],
   controllers: [],
-  providers: [AuthService],
+  providers: [AuthService, JwtService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(AuthMiddleware)
-      .forRoutes('*');
+    consumer.apply(AuthMiddleware, AllUserJwtMiddleware).forRoutes('*');
   }
 }

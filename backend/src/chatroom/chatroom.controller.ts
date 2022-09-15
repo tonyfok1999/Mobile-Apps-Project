@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseInterceptors, UploadedFile, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseInterceptors, UploadedFile, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ChatroomService } from './chatroom.service';
 import { CreateChatroomDto } from './dto/create-chatroom.dto';
@@ -8,6 +8,7 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { get } from 'http';
 import console from 'console';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('/chatroom')
 export class ChatroomController {

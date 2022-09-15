@@ -9,11 +9,6 @@ import { LoginUserDto } from './dto/login.dto';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post('register')
-  register(@Body() createUserDto: CreateUserDto) {
-    return this.userService.register(createUserDto);
-  }
-
   @Get('all')
   findAll() {
     return this.userService.findAll();

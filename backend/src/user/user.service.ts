@@ -5,10 +5,14 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dto/login.dto';
+import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectKnex() private readonly knex: Knex) {}
+  constructor(
+    @InjectKnex() private readonly knex: Knex,
+    private authenticationService: AuthService,
+  ) {}
 
   async register(user: CreateUserDto) {
     let result = await this.knex.select('email').from('users').where('email', user.email);
@@ -80,6 +84,13 @@ export class UserService {
 
   async checkEmail(data: { email: string }) {
     let result = await this.knex.select('email').from('users').where('email', data.email);
+
+    return result;
+  }
+
+  async findUser(email: string) {
+    let result = await this.knex.select('*').from('users').where('email', email);
+    console.log(result);
 
     return result;
   }
