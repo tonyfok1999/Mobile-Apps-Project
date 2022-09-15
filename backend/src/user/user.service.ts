@@ -9,10 +9,7 @@ import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UserService {
-  constructor(
-    @InjectKnex() private readonly knex: Knex,
-    private authenticationService: AuthService,
-  ) {}
+  constructor(@InjectKnex() private readonly knex: Knex, private authenticationService: AuthService) {}
 
   async register(user: CreateUserDto) {
     let result = await this.knex.select('email').from('users').where('email', user.email);
@@ -90,7 +87,6 @@ export class UserService {
 
   async findUser(email: string) {
     let result = await this.knex.select('*').from('users').where('email', email);
-    console.log(result);
 
     return result;
   }

@@ -18,7 +18,8 @@ export class WorkerAuthService {
   }
 
   generateJwt(user: { id: number; email: string }) {
-    const payload = { id: user.id, email: user.email };
+    const { id, email } = user;
+    const payload = { id, email };
     return {
       access_token: this.jwtService.sign(payload),
     };
