@@ -8,4 +8,5 @@ export interface User {
 	is_worker: boolean | null
 	worker_info_id: number | null
 	score: number | null
+	token: string | null
 }

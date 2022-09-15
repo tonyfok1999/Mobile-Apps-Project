@@ -54,36 +54,52 @@ import SpeakDetailPage from './pages/SpeakDetailPage'
 import ChangeDistricts from './pages/ChangeDistricts'
 import ChangeSubType from './pages/ChangeSubType'
 import { useEffect, useState } from 'react'
-import { async } from 'rxjs'
+import { loggedIn, logOut } from './redux/auth/action'
+import { useAppDispatch } from './store'
 
 setupIonicReact()
 
 const App: React.FC = () => {
-	
-	const [token, setToken] = useState('')
+	const dispatch = useAppDispatch()
 
-	useEffect(()=> {
-		
-		(async function getToken() {
-			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}`)
-			const token = (await res.json()).Authorization
+	useEffect(() => {
+		;(async function checkToken() {
+			const token = localStorage.getItem('token')
 
-			console.log(`the ${token} has been retrieved from the server`)
-			setToken(token)
-			localStorage.setItem('token', token);
-			console.log(`the token ${token} has been saved in localStorage`)
+			if (token == null) {
+				dispatch(logOut())
+
+				const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}`)
+				const token = (await res.json()).Authorization
+				console.log(`the ${token} has been retrieved from the server`)
+				localStorage.setItem('token', token)
+				console.log(`the token ${token} has been saved in localStorage`)
+				return
+			}
+
+			const res = await fetch(
+				`${process.env.REACT_APP_BACKEND_URL}/worker-auth/login`,
+				{
+					headers: { Authorization: `Bearer ${token}` }
+				}
+			)
+
+			if (res.status === 200) {
+				const user = await res.json()
+				dispatch(loggedIn(user))
+			} else {
+				dispatch(logOut())
+			}
 		})()
-		
-
-		}, [])
+	}, [])
 
 	return (
-	<IonApp>
-		<IonReactRouter>
-			<IonRouterOutlet>
-				<Route exact path='/'>
-					<HomePage />
-				</Route>
+		<IonApp>
+			<IonReactRouter>
+				<IonRouterOutlet>
+					<Route exact path='/'>
+						<HomePage />
+					</Route>
 
 				<Route exact path='/tabs/homepage' component={HomePage} />
 				<Route exact path='/Speak/SpeakPage' component={SpeakPage} />
@@ -96,44 +112,48 @@ const App: React.FC = () => {
 					component={SpeakDetailPage}
 				/>
 
-				<Route path='/chatroom/:chatroomId' component={ChatRoom} />
-				<Route
-					exact
-					path='/workerLoginPage'
-					component={WorkerLoginPage}
-				/>
+					<Route path='/chatroom/:chatroomId' component={ChatRoom} />
+					<Route
+						exact
+						path='/workerLoginPage'
+						component={WorkerLoginPage}
+					/>
 
-				<Route
-					exact
-					path='/workerRegisterPage'
-					component={WorkerRegisterPage}
-				/>
-				<Route
-					exact
-					path='/workerRegisterPageForTypeOfService'
-					component={WorkerRegisterPageForTypeOfService}
-				/>
-				<Route
-					exact
-					path='/workerOrderPage'
-					component={WorkerOrderPage}
-				/>
-				<Route
-					exact
-					path='/orderDetailPage/:id'
-					component={OrderDetailPage}
-				/>
-				<Route
-					exact
-					path='/registerSuccess'
-					component={RegisterSuccess}
-				/>
-				<Route exact path='/test' component={InfiniteScrollExample} />
-			</IonRouterOutlet>
-		</IonReactRouter>
-	</IonApp>
+					<Route
+						exact
+						path='/workerRegisterPage'
+						component={WorkerRegisterPage}
+					/>
+					<Route
+						exact
+						path='/workerRegisterPageForTypeOfService'
+						component={WorkerRegisterPageForTypeOfService}
+					/>
+					<Route
+						exact
+						path='/workerOrderPage'
+						component={WorkerOrderPage}
+					/>
+					<Route
+						exact
+						path='/orderDetailPage/:id'
+						component={OrderDetailPage}
+					/>
+					<Route
+						exact
+						path='/registerSuccess'
+						component={RegisterSuccess}
+					/>
+					<Route
+						exact
+						path='/test'
+						component={InfiniteScrollExample}
+					/>
+				</IonRouterOutlet>
+			</IonReactRouter>
+		</IonApp>
 	)
-	}
+}
 
 export default App
 // {
