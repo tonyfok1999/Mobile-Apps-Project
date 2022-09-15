@@ -13,8 +13,7 @@ dotenv.config();
     imports:[
         PassportModule,
         JwtModule.register({
-            secret: 'secretKey',
-            signOptions: { expiresIn: '7d' },
+            secret: 'secretKey'
           }),
     ],
     providers: [AuthService, JwtStrategy, JwtAuthGuard],
