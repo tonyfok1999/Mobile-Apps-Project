@@ -15,7 +15,8 @@ const initialState: AuthState = {
 		profile_photo: null,
 		is_worker: null,
 		worker_info_id: null,
-		score: null
+		score: null,
+		token: null
 	}
 }
 
@@ -41,7 +42,8 @@ export function authReducer(
 					profile_photo: null,
 					is_worker: null,
 					worker_info_id: null,
-					score: null
+					score: null,
+					token: null
 				}
 			}
 		default:
