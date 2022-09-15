@@ -51,6 +51,8 @@ import WorkerOrderPage from './pages/WorkerOrderPage'
 import OrderDetailPage from './pages/OrderDetailPage'
 import RegisterSuccess from './pages/RegisterSuccess'
 import SpeakDetailPage from './pages/SpeakDetailPage'
+import ChangeDistricts from './pages/ChangeDistricts'
+import ChangeSubType from './pages/ChangeSubType'
 
 setupIonicReact()
 
@@ -65,6 +67,8 @@ const App: React.FC = () => (
 				<Route exact path='/tabs/homepage' component={HomePage} />
 				<Route exact path='/Speak/SpeakPage' component={SpeakPage} />
 				<Route exact path='/tabs/chatlist' component={ChatList} />
+				<Route exact path='/tabs/changeDistricts' component={ChangeDistricts} />
+				<Route exact path='/tabs/changeSubType' component={ChangeSubType} />
 				<Route
 					exact
 					path='/Speak/SpeakDetailPage'

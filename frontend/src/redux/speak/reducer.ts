@@ -3,6 +3,7 @@ import { SpeakData } from './state'
 const defaultState = {
 	district: 1,
 	serviceSubType: [1],
+	serviceType: 1,
 	budget: 1,
 	imageFileName: [],
 	speakFileName: '',
@@ -43,6 +44,11 @@ export function speakReducer(
 		return {
 			...state,
 			transcription:action.transcription
+		}
+		case'@@speak/CHANGE_SERVICETYPE':
+		return {
+			...state,
+			serviceType:action.serviceType
 		}
 
 

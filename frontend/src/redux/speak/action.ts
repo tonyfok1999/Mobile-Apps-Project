@@ -12,6 +12,12 @@ export function changeServiceSubType(serviceSubType:number[]) {
 		serviceSubType:serviceSubType
 	}
 }
+export function changeServiceType(serviceType:number) {
+	return {
+		type: '@@speak/CHANGE_SERVICETYPE' as const,
+		serviceType:serviceType
+	}
+}
 export function changeBudget(budget:number) {
 	return {
 		type: '@@speak/CHANGE_BUDGET' as const,
@@ -41,6 +47,7 @@ export function changeTranscription(transcription:string) {
 
 export type ChangeDistrictAction = ReturnType<typeof changeDistrict>
 export type ChangeServiceSubTypeAction = ReturnType<typeof changeServiceSubType>
+export type ChangeServiceTypeAction = ReturnType<typeof changeServiceType>
 export type ChangeBudgetAction = ReturnType<typeof changeBudget>
 export type ChangeImageFileNameAction = ReturnType<typeof changeImageFileName>
 export type ChangeSpeakFileNameAction = ReturnType<typeof changeSpeakFileName>
@@ -53,3 +60,4 @@ export type SpeakActions =
 	| ChangeImageFileNameAction
     | ChangeSpeakFileNameAction
     | ChangeTranscriptionAction
+	| ChangeServiceTypeAction

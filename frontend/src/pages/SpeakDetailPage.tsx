@@ -9,15 +9,24 @@ import {
 	IonPage,
 	IonRow
 } from '@ionic/react'
-import { locationOutline, locationSharp } from 'ionicons/icons'
+import {
+	cameraOutline,
+	cashOutline,
+	locationOutline,
+	locationSharp,
+	micOutline
+} from 'ionicons/icons'
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import BackIcon from '../components/BackIcon'
 import RightButton from '../components/RightButton'
+import { changeServiceType } from '../redux/speak/action'
 import { RootState } from '../store'
+import submit from '../srcImage/submit.png'
 
 export default function SpeakDetailPage() {
+	const dispatch = useDispatch()
 	const [referenceTable, setReferenceTable] = useState<
 		[
 			{ id: number; region_id: number; district: string }[], //[0] districts
@@ -29,41 +38,15 @@ export default function SpeakDetailPage() {
 			}[] // [2] service subtypes
 		]
 	>()
-	const [typeNumber, setTypeNumber] = useState<number>()
+
 	const [districts, setDistricts] = useState<string>()
-
-	useEffect(() => {
-		const fetchReferenceTable = async () => {
-			const res = await fetch('http://localhost:8000/referencesTable')
-			const data = await res.json()
-			setReferenceTable(data)
-		}
-		if (!referenceTable) {
-			fetchReferenceTable()
-		}
-
-		if (districtNumber && referenceTable) {
-			setDistricts(
-				referenceTable[0][
-					referenceTable[0].map((e) => e.id).indexOf(districtNumber)
-				].district
-			)
-		}
-		if (serviceSubTypeNumber && referenceTable) {
-			setTypeNumber(
-				referenceTable[2][
-					referenceTable[2]
-						.map((e) => e.id)
-						.indexOf(serviceSubTypeNumber[0])
-				].service_type_id
-			)
-		}
-	}, [districts, referenceTable])
 
 	const districtNumber = useSelector(
 		(state: RootState) => state.speak.district
 	)
-
+	const typeNumber = useSelector(
+		(state: RootState) => state.speak.serviceType
+	)
 	const serviceSubTypeNumber = useSelector(
 		(state: RootState) => state.speak.serviceSubType
 	)
@@ -77,6 +60,34 @@ export default function SpeakDetailPage() {
 	const transcription = useSelector(
 		(state: RootState) => state.speak.transcription
 	)
+
+	useEffect(() => {
+		const fetchReferenceTable = async () => {
+			const res = await fetch('http://localhost:8000/referencesTable')
+			const data = await res.json()
+			setReferenceTable(data)
+		}
+		if (!referenceTable) {
+			fetchReferenceTable()
+		}
+
+		if (referenceTable) {
+			setDistricts(
+				referenceTable[0][
+					referenceTable[0].map((e) => e.id).indexOf(districtNumber)
+				].district
+			)
+		}
+
+		console.log(serviceSubTypeNumber)
+	}, [
+		districts,
+		referenceTable,
+		districtNumber,
+		typeNumber,
+		serviceSubTypeNumber
+	])
+
 	// console.log(district);
 
 	return (
@@ -87,17 +98,17 @@ export default function SpeakDetailPage() {
 					margin: 0;
 				}
 				.topBar {
-					height: 5vh;
+					height: 4vh;
 					justify-content: flex-start;
 				}
 				.infoBar {
 					justify-content: flex-start;
 					align-items: center;
-					height: 13vh;
+					height: 8vh;
 					padding-left: 5px;
 				}
 				.districtBar {
-					height: 10vh;
+					height: 9vh;
 					border-bottom-style: groove;
 				}
 				.district {
@@ -110,7 +121,7 @@ export default function SpeakDetailPage() {
 				}
 				h1 {
 					font-weight: bolder;
-					font-size: 5vh;
+					font-size: 4vh;
 				}
 				.locationIcon {
 					font-size: 4.5vh;
@@ -119,11 +130,11 @@ export default function SpeakDetailPage() {
 					font-size: 3vh;
 				}
 				.serviceTypeBar {
-					height: 18vh;
+					height: 14vh;
 					border-bottom-style: groove;
 				}
 				.serviceTypeRow {
-					height: 6vh;
+					height: 5vh;
 				}
 				.serviceSubTypeRow {
 					height: 6vh;
@@ -135,10 +146,14 @@ export default function SpeakDetailPage() {
 					font-size: 3vh;
 				}
 				.serviceTypeButton {
-					height: 12vh;
+					height: 1vh;
 				}
 				.serviceSubTypeBar {
 					height: 18vh;
+					border-bottom-style: groove;
+				}
+				.budgetBar {
+					height: 12vh;
 					border-bottom-style: groove;
 				}
 				/* .typebuttonText {
@@ -151,6 +166,28 @@ export default function SpeakDetailPage() {
 				.typebutton {
 					width: auto;
 					height: auto;
+				}
+				.rightButtonCol {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+				}
+				.budgetText {
+					display: flex;
+					align-items: center;
+					font-size: 3vh;
+					padding-top: 1vh;
+				}
+				.imageBar {
+					height: 12vh;
+					border-bottom-style: groove;
+				}
+				.transcriptionBar {
+					height: 12vh;
+					border-bottom-style: groove;
+				}
+				button {
+					padding: 0;
 				}
 			`}>
 			<IonContent>
@@ -177,7 +214,7 @@ export default function SpeakDetailPage() {
 							</IonRow>
 						</IonCol>
 						<IonCol size='2'>
-							<RightButton thisPath='' />
+							<RightButton thisPath='/tabs/changeDistricts' />
 						</IonCol>
 					</IonRow>
 
@@ -206,8 +243,10 @@ export default function SpeakDetailPage() {
 														className='typebutton btn btn-outline-danger '
 														htmlFor={types.type}
 														onClick={() => {
-															setTypeNumber(
-																types.id
+															dispatch(
+																changeServiceType(
+																	types.id
+																)
 															)
 														}}>
 														{types.type}
@@ -228,8 +267,10 @@ export default function SpeakDetailPage() {
 														className='typebutton btn btn-outline-danger '
 														htmlFor={types.type}
 														onClick={() => {
-															setTypeNumber(
-																types.id
+															dispatch(
+																changeServiceType(
+																	types.id
+																)
 															)
 														}}>
 														{types.type}
@@ -249,48 +290,94 @@ export default function SpeakDetailPage() {
 								</span>
 							</IonRow>
 							<IonRow className='serviceTypeRow'>
-							{referenceTable &&
-						referenceTable[2]
-							.filter(
-								(subtypes) =>
-									subtypes.service_type_id == typeNumber && subtypes.id == 1
-							)
-							.map((subtypes) => (
-								<span key={subtypes.id}>
-									<input
-										type='checkbox'
-										className='btn-check'
-										name='serviceSubtypes'
-										id={subtypes.subtype}
-										value={subtypes.id}
-										onChange={(e) => {
-											
-										}}
-									/>
-									<label
-										className='btn btn-outline-danger'
-										htmlFor={subtypes.subtype}>
-										{subtypes.subtype}
-									</label>
-								</span>
-							))}
+								{referenceTable &&
+									referenceTable[2]
+										// .filter(
+										// 	(subtypes) =>
 
+										// 	subtypes.service_type_id === typeNumber
+
+										// )
+										.filter(
+											(subtypes) =>
+												serviceSubTypeNumber.includes(
+													subtypes.id
+												) &&
+												subtypes.service_type_id ===
+													typeNumber
+										)
+
+										.map((subtypes) => (
+											<span key={subtypes.id}>
+												<input
+													type='checkbox'
+													className='btn-check'
+													name='serviceSubtypes'
+													id={subtypes.subtype}
+													value={subtypes.id}
+													onChange={(e) => {}}
+												/>
+												<label
+													className='btn btn-outline-danger'
+													htmlFor={subtypes.subtype}>
+													{subtypes.subtype}
+												</label>
+											</span>
+										))}
 							</IonRow>
 						</IonCol>
-						<IonCol size='2'>
-							<RightButton thisPath='' />
+						<IonCol size='2' className='rightButtonCol'>
+							<RightButton thisPath='/tabs/changeSubType' />
 						</IonCol>
 					</IonRow>
 					<IonRow className='budgetBar'>
-						<IonCol></IonCol>
-						<IonCol></IonCol>
+						<IonCol>
+							<IonRow>
+								<IonIcon
+									className='locationIcon'
+									icon={cashOutline}
+								/>
+								預算
+							</IonRow>
+							<IonRow className='budgetText'>${budget}</IonRow>
+						</IonCol>
+						<IonCol size='2' className='rightButtonCol'>
+							<RightButton thisPath='' />
+						</IonCol>
 					</IonRow>
 					<IonRow className='imageBar'>
-						<IonCol></IonCol>
-						<IonCol></IonCol>
+						<IonCol>
+							<IonRow>
+								<IonIcon
+									className='locationIcon'
+									icon={cameraOutline}
+								/>
+								上傳照片
+							</IonRow>
+							<IonRow className='budgetText'>暫沒有相片</IonRow>
+						</IonCol>
+						<IonCol size='2' className='rightButtonCol'>
+							<RightButton thisPath='' />
+						</IonCol>
 					</IonRow>
-					<IonRow className='transcriptionBar'></IonRow>
-					<IonRow className='submitBar'></IonRow>
+					<IonRow className='transcriptionBar'>
+						<IonCol>
+							<IonRow>
+								<IonIcon
+									className='locationIcon'
+									icon={micOutline}
+								/>
+								上傳語音
+							</IonRow>
+							<IonRow className=''></IonRow>
+						</IonCol>
+					</IonRow>
+
+					<IonRow className='submitBar'>
+						<button>
+							<img src={submit} alt='logo img'></img>
+						</button>
+					</IonRow>
 				</IonGrid>
 			</IonContent>
 		</IonPage>

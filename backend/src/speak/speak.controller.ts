@@ -51,6 +51,13 @@ async uploadedFile(@UploadedFile() file) {
 }
 
 
+
+
+
+
+
+
+
 	// @Post('/getDistricts')
 	// getDistricts(@Body() testStringDto:TestString) {
 	// 	console.log(testStringDto.testString);

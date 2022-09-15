@@ -1,6 +1,6 @@
 export class SpeedResult {
     district:number;
-    serviceSubType:number;
+    serviceSubType:number[];
     speakFileName:string;
     transcription:string;
 }
