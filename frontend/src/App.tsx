@@ -53,10 +53,31 @@ import RegisterSuccess from './pages/RegisterSuccess'
 import SpeakDetailPage from './pages/SpeakDetailPage'
 import ChangeDistricts from './pages/ChangeDistricts'
 import ChangeSubType from './pages/ChangeSubType'
+import { useEffect, useState } from 'react'
+import { async } from 'rxjs'
 
 setupIonicReact()
 
-const App: React.FC = () => (
+const App: React.FC = () => {
+	
+	const [token, setToken] = useState('')
+
+	useEffect(()=> {
+		
+		(async function getToken() {
+			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}`)
+			const token = (await res.json()).Authorization
+
+			console.log(`the ${token} has been retrieved from the server`)
+			setToken(token)
+			localStorage.setItem('token', token);
+			console.log(`the token ${token} has been saved in localStorage`)
+		})()
+		
+
+		}, [])
+
+	return (
 	<IonApp>
 		<IonReactRouter>
 			<IonRouterOutlet>
@@ -111,7 +132,8 @@ const App: React.FC = () => (
 			</IonRouterOutlet>
 		</IonReactRouter>
 	</IonApp>
-)
+	)
+	}
 
 export default App
 // {

@@ -14,6 +14,7 @@ import { AllUserJwtMiddleware } from './middleware/alluserjwt.middleware';
 import { JwtService } from '@nestjs/jwt';
 import { WorkerAuthModule } from './worker-auth/worker-auth.module';
 import SecretConfigFactory from './config/secret.config';
+import { AppController } from './app.controller';
 
 const knexConfigs = require('../knexfile');
 @Module({
@@ -34,7 +35,7 @@ const knexConfigs = require('../knexfile');
     WebsocketModule,
     WorkerAuthModule,
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [AuthService, JwtService],
 })
 export class AppModule implements NestModule {

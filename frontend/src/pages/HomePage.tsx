@@ -13,8 +13,11 @@ import {
 	useIonRouter
 } from '@ionic/react'
 import ClientTabBar from '../nav/ClientTabBar'
+import { useEffect } from 'react'
+import { async } from 'rxjs'
 
 const HomePage: React.FC = () => {
+
 	return (
 		<IonPage
 			css={css`

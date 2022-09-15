@@ -19,7 +19,7 @@ export class AllUserJwtMiddleware implements NestMiddleware {
     if (!authorization) {
       const jwt = await this.authService.generateJwt();
       Logger.log(`the new user has been assigned to new token: ${jwt}`);
-      res.header('X-Auth-Token', jwt);
+      res.json({'Authorization':jwt});
       next();
     } else {
       Logger.log('the user has token already');
