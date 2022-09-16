@@ -15,7 +15,6 @@ export class WorkerAuthService {
 
     const isSamePassword = await bcrypt.compare(password, user[0].password);
 
-    // console.log(user[0], isSamePassword);
     if (!user[0] || !isSamePassword) {
       return (user = []);
     }

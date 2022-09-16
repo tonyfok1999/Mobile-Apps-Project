@@ -1,0 +1,32 @@
+-- Get all the chatroom where a target user embeded in
+
+SELECT chatroom_id FROM attendees
+LEFT OUTER JOIN chatrooms
+ON chatrooms.id = attendees.chatroom_id 
+WHERE user_id = 3 ;
+
+-- Get all the msg record the target user has sent
+
+SELECT * FROM attendees
+LEFT OUTER JOIN chatroom_records 
+ON chatroom_records.chatroom_id = attendees.chatroom_id 
+WHERE user_id = 3 ;
+
+-- Get all the chatroom and their latest records of a target user
+
+SELECT chatrooms.id as chatroom_id, array_agg(text) as text, array_agg(sender_id) as sender_id FROM attendees
+INNER JOIN chatrooms ON chatrooms.id = attendees.chatroom_id 
+INNER JOIN 
+(SELECT text, sender_id, chatroom_id FROM chatroom_records ORDER BY created_at DESC LIMIT 1) as chatroom_records
+ON chatroom_records.chatroom_id = attendees.chatroom_id 
+WHERE user_id = 3 GROUP BY chatrooms.id;
+
+-- Get all the chatroom and their latest records of a target user (new version)
+
+SELECT chatrooms.id as chatroomId, chatroom_records.created_at as lastUpdateTime, text, sender_id FROM attendees
+LEFT JOIN chatrooms ON chatrooms.id = attendees.chatroom_id 
+LEFT JOIN (SELECT text, sender_id, chatroom_id, created_at FROM chatroom_records ORDER BY created_at DESC LIMIT 1) as chatroom_records
+ON chatroom_records.chatroom_id = chatrooms.id
+WHERE attendees.user_id = 2;
+
+select * from chatroom_records;

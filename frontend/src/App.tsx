@@ -1,4 +1,4 @@
-import { Redirect, Route } from 'react-router-dom'
+import { Redirect, Route, useHistory } from 'react-router-dom'
 import {
 	IonApp,
 	IonIcon,
@@ -7,7 +7,8 @@ import {
 	IonTabBar,
 	IonTabButton,
 	IonTabs,
-	setupIonicReact
+	setupIonicReact,
+	useIonRouter
 } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
 import { ellipse, square, triangle } from 'ionicons/icons'
@@ -60,41 +61,6 @@ import { useAppDispatch } from './store'
 setupIonicReact()
 
 const App: React.FC = () => {
-	const dispatch = useAppDispatch()
-
-	useEffect(() => {
-		;(async () => {
-			const token = localStorage.getItem('token')
-
-			if (token == null) {
-				dispatch(logOut())
-
-				const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}`)
-				const token = (await res.json()).Authorization
-
-				console.log(`the ${token} has been retrieved from the server`)
-				localStorage.setItem('token', token)
-				console.log(`the token ${token} has been saved in localStorage`)
-				return
-			}
-
-			const res = await fetch(
-				`${process.env.REACT_APP_BACKEND_URL}/worker-auth/login`,
-				{
-					method: 'post',
-					headers: { Authorization: `Bearer ${token}` }
-				}
-			)
-
-			// if (res.status === 200) {
-			// 	const user = await res.json()
-			// 	dispatch(loggedIn(user))
-			// } else {
-			// 	dispatch(logOut())
-			// }
-		})()
-	}, [])
-
 	return (
 		<IonApp>
 			<IonReactRouter>

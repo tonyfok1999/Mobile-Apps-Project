@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Knex } from 'knex';
 import { InjectKnex } from 'nestjs-knex';
@@ -8,14 +8,15 @@ import { v4 as uuidv4 } from 'uuid';
 export class AuthService {
   constructor(private jwtService: JwtService, @InjectKnex() private readonly knex: Knex) {}
 
-  async verifyJwt(jwt: string) {
-    try {
-      const verifiedJwt = this.jwtService.verify(jwt);
-      return verifiedJwt;
-    } catch {
-      return undefined;
-    }
+  async verifyJwt(jwt: string){
+    try{
+    const verifiedJwt = this.jwtService.verify(jwt, {secret:'secretKey'})
+    Logger.log(`the token is decoded: ${JSON.stringify(verifiedJwt)}`, 'Authorization');
+    return verifiedJwt
+  }catch{
+    return undefined;
   }
+  }  
 
   async generateJwt() {
     const newUser = await this.knex('users')
