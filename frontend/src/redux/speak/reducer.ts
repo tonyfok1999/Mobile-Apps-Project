@@ -3,11 +3,11 @@ import { SpeakData } from './state'
 const defaultState = {
 	district: 1,
 	serviceSubType: [1],
-	serviceType: 1,
-	budget: 1,
+	serviceType: 2,
+	budget: 0,
 	imageFileName: [],
-	speakFileName: '0',
-	transcription: '0'
+	speakFileName: ' ',
+	transcription: '沒有語音識別結果'
 }
 
 export function speakReducer(

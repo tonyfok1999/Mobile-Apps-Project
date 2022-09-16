@@ -28,19 +28,14 @@ export async function seed(knex: Knex): Promise<void> {
       { service_type_id: typeArrayId[0].id, subtype: '裝冷氣' }, 
       { service_type_id: typeArrayId[0].id, subtype: '整冷氣' }, 
       { service_type_id: typeArrayId[0].id, subtype: '檢查冷氣' }, 
-      { service_type_id: typeArrayId[0].id, subtype: '冷氣' }, 
-      { service_type_id: typeArrayId[0].id, subtype: '風' }, 
-
 
       { service_type_id: typeArrayId[1].id, subtype: '消防電氣裝配（家居）' },
       { service_type_id: typeArrayId[1].id, subtype: '消防電氣裝配（商戶）' }, 
       { service_type_id: typeArrayId[1].id, subtype: '消防設備檢查' }, 
 
       { service_type_id: typeArrayId[2].id, subtype: '水喉' },
-      { service_type_id: typeArrayId[2].id, subtype: '水' },
       { service_type_id: typeArrayId[2].id, subtype: '水喉設備安裝' },
       { service_type_id: typeArrayId[2].id, subtype: '水喉漏水維修' },
-      { service_type_id: typeArrayId[2].id, subtype: '水喉設備安裝' },
       { service_type_id: typeArrayId[2].id, subtype: '裝水喉' },
       { service_type_id: typeArrayId[2].id, subtype: '整水喉' },
       { service_type_id: typeArrayId[2].id, subtype: '馬桶安裝' },
@@ -53,7 +48,7 @@ export async function seed(knex: Knex): Promise<void> {
       { service_type_id: typeArrayId[3].id, subtype: '電子設備維修' },
       { service_type_id: typeArrayId[3].id, subtype: '電訊系統安裝' },
       { service_type_id: typeArrayId[3].id, subtype: '電訊系統維修' }, 
-      { service_type_id: typeArrayId[3].id, subtype: '電' },
+      { service_type_id: typeArrayId[3].id, subtype: '電器' },
     ])
     .into('service_subtypes')
     .returning('id');

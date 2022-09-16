@@ -25,7 +25,7 @@ export class SpeechController {
   // }
 
   @Post('/submitOderFrom')
-  async submitOderFrom(@Body() data: { district: string }) {
+  async submitOderFrom(@Body() data:SubmitFrom) {
     console.log(data);
 
     // console.log(JSON.parse(data.district));
@@ -35,7 +35,7 @@ export class SpeechController {
     // console.log(submitFrom.district);
     // console.log(JSON.parse(submitFrom.district));
 
-    return { ok: 'ok' };
+    return 'ok';
   }
 
   @Post('/uploadWebM')

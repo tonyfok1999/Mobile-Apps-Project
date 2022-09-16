@@ -82,8 +82,7 @@ export default function SpeakDetailPage() {
 			)
 		}
 
-		console.log(serviceSubTypeNumber)
-		console.log('budget' + budget)
+
 	}, [
 		districts,
 		referenceTable,
@@ -94,30 +93,33 @@ export default function SpeakDetailPage() {
 	])
 
 	async function sendOder() {
-		// const test = "test"
-		// let datas: {
-		// 	district: string
-		// typeNumber: number
-		// serviceSubTypeNumber: number[]
-		// budget: number
-		// speakFileName: string
-		// transcription: string
-		// } = {
-		// 	district: test  ,
-		// typeNumber: typeNumber,
-		// serviceSubTypeNumber: serviceSubTypeNumber,
-		// budget: budget,
-		// speakFileName: speakFileName,
-		// transcription: transcription
-		// }
+		
+		let datas: {
+			district: string
+		typeNumber: number
+		serviceSubTypeNumber: number[]
+		budget: number
+		speakFileName: string
+		transcription: string
+		} = {
+			district: districts  ,
+		typeNumber: typeNumber,
+		serviceSubTypeNumber: serviceSubTypeNumber,
+		budget: budget,
+		speakFileName: speakFileName,
+		transcription: transcription
+		}
 console.log(  window.localStorage.token);
 
 		let testdata = await fetch(
 			'http://localhost:8000/speech/submitOderFrom',
 			{
 				method: 'POST',
-				headers: { authorization: window.localStorage.token },
-				body: JSON.stringify({ district: 'test' })
+				headers: { 
+					'Content-Type': 'application/json',
+					authorization: window.localStorage.token
+				 },
+				body: JSON.stringify(datas)
 			}
 		)
 		console.log(await testdata.json())
