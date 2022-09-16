@@ -50,7 +50,7 @@ const HomePage: React.FC = () => {
 				dispatch(loggedIn(userinfo[0], token))
 
 				if (userinfo[0].is_worker === true) {
-					history.push('/workerOrderPage')
+					history.replace('/workerOrderPage')
 				}
 			}
 

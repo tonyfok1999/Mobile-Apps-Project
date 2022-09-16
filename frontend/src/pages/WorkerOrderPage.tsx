@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { IonContent, IonPage } from '@ionic/react'
+import { IonButton, IonContent, IonPage } from '@ionic/react'
 import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import WorkerTabBar from '../nav/WorkerTabBar'
@@ -116,7 +116,9 @@ export default function WorkerOrderPage() {
 								<div>
 									預算<span>{orderInfo.budget}</span>
 								</div>
-								<NavLink to='/tabs/chatlist'>聯絡客戶</NavLink>
+								<IonButton routerLink='/tabs/chatlist'>
+									聯絡客戶
+								</IonButton>
 							</div>
 						</NavLink>
 					))}

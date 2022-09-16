@@ -104,7 +104,7 @@ export default function LoginBox() {
 						const token = fetchData.access_token
 						localStorage.setItem('token', token)
 						dispatch(loggedIn(fetchData.user, token))
-						history.push('/workerOrderPage')
+						history.replace('/workerOrderPage')
 					} else {
 						presentAlert({
 							header: '帳號或密碼錯誤',
