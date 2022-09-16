@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "repair_matching_platform",
+            "database": "repair_matching_platform",
+            "username": "postgres",
+            "password": "a90812658"
+        }
+    ]
+}
