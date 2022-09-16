@@ -10,7 +10,7 @@ export class AuthService {
 
   async verifyJwt(jwt: string) {
     try {
-      const verifiedJwt = this.jwtService.verify(jwt);
+      const verifiedJwt = this.jwtService.verify(jwt, { secret: 'secretKey' });
       return verifiedJwt;
     } catch {
       return undefined;

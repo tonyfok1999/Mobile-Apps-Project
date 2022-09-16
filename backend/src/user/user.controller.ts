@@ -5,6 +5,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginUserDto } from './dto/login.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { Request, Response } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -13,6 +14,12 @@ export class UserController {
   @Get('all')
   findAll() {
     return this.userService.findAll();
+  }
+
+  @Get('me')
+  findUserById(@Req() req: Request) {
+    const id = req.user['id'];
+    return this.userService.findUserById(id);
   }
 
   @Get(':id')
@@ -40,12 +47,5 @@ export class UserController {
     }
 
     return { isDuplicate: isDuplicate };
-  }
-
-  @Get('me')
-  findUserById(@Req() request) {
-    console.log(request.user!.id);
-
-    return this.userService.findUserById(request.user!.id);
   }
 }

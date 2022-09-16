@@ -1,4 +1,4 @@
-import { Redirect, Route } from 'react-router-dom'
+import { Redirect, Route, useHistory } from 'react-router-dom'
 import {
 	IonApp,
 	IonIcon,
@@ -61,30 +61,45 @@ setupIonicReact()
 
 const App: React.FC = () => {
 	const dispatch = useAppDispatch()
+	const history = useHistory()
 
 	useEffect(() => {
 		;(async () => {
 			const token = localStorage.getItem('token')
 
 			if (token == null) {
-				dispatch(logOut())
-
 				const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}`)
 				const token = (await res.json()).Authorization
 
 				console.log(`the ${token} has been retrieved from the server`)
 				localStorage.setItem('token', token)
 				console.log(`the token ${token} has been saved in localStorage`)
-				return
+
+				const resMe = await fetch(
+					`${process.env.REACT_APP_BACKEND_URL}/user/me`,
+					{ headers: { Authorization: `Bearer ${token}` } }
+				)
+				const userinfo = await resMe.json()
+				dispatch(loggedIn(userinfo[0], token))
+			} else {
+				const res = await fetch(
+					`${process.env.REACT_APP_BACKEND_URL}/user/me`,
+					{ headers: { Authorization: `Bearer ${token}` } }
+				)
+				const userinfo = await res.json()
+				dispatch(loggedIn(userinfo[0], token))
+				if (userinfo[0].is_worker === true) {
+					history.push('/workerOrderPage')
+				}
 			}
 
-			const res = await fetch(
-				`${process.env.REACT_APP_BACKEND_URL}/worker-auth/login`,
-				{
-					method: 'post',
-					headers: { Authorization: `Bearer ${token}` }
-				}
-			)
+			// const res = await fetch(
+			// 	`${process.env.REACT_APP_BACKEND_URL}/worker-auth/login`,
+			// 	{
+			// 		method: 'post',
+			// 		headers: { Authorization: `Bearer ${token}` }
+			// 	}
+			// )
 
 			// if (res.status === 200) {
 			// 	const user = await res.json()
