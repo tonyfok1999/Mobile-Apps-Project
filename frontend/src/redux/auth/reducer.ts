@@ -2,22 +2,15 @@ import { AuthActions, loggedIn } from './action'
 import { User } from './state'
 
 export interface AuthState {
-	user: User
+	user: User | null
+	token: string | null
+	isLogin: boolean | null
 }
 
 const initialState: AuthState = {
-	user: {
-		id: null,
-		email: null,
-		nickname: null,
-		phone: null,
-		gender_id: null,
-		profile_photo: null,
-		is_worker: null,
-		worker_info_id: null,
-		score: null,
-		token: null
-	}
+	user: null,
+	token: null,
+	isLogin: null
 }
 
 export function authReducer(
@@ -28,23 +21,16 @@ export function authReducer(
 		case '@@auth/loggedIn':
 			return {
 				...state,
-				user: action.user
+				user: action.user,
+				token: action.token,
+				isLogin: true
 			}
 		case '@@auth/loggedOut':
 			return {
 				...state,
-				user: {
-					id: null,
-					email: null,
-					nickname: null,
-					phone: null,
-					gender_id: null,
-					profile_photo: null,
-					is_worker: null,
-					worker_info_id: null,
-					score: null,
-					token: null
-				}
+				user: null,
+				token: null,
+				isLogin: false
 			}
 		default:
 			return state

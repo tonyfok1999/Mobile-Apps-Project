@@ -4,6 +4,7 @@ import { InjectKnex, Knex } from 'nestjs-knex';
 import { nextTick } from 'process';
 import { AuthService } from 'src/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import '../models';
 
 @Injectable()
 export class AllUserJwtMiddleware implements NestMiddleware {
@@ -16,9 +17,10 @@ export class AllUserJwtMiddleware implements NestMiddleware {
     console.log(authorization);
 
     // check if the token exists
-    if (!authorization && !access_token) {
-      const jwt = await this.authService.generateJwt();
+    if (!authorization) {
+      const { jwt, userId } = await this.authService.generateJwt();
       Logger.log(`the new user has been assigned to new token: ${jwt}`, 'Middleware');
+      req.user = { id: userId };
       res.json({ Authorization: jwt });
       next();
     } else {

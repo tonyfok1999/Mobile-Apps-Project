@@ -93,4 +93,10 @@ export class UserService {
 
     return result;
   }
+
+  async findUserById(id: string) {
+    let result = await this.knex.select('*').from('users').where('id', id);
+
+    return result;
+  }
 }
