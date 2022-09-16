@@ -2,7 +2,7 @@ export interface SpeakData {
 	district: number
 	serviceSubType: number[]
     serviceType:number
-    budget?:number |null
+    budget:number 
     imageFileName?:string[] |null
     speakFileName?:string |null
     transcription?:string |null

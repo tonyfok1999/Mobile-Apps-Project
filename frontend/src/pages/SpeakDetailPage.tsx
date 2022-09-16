@@ -21,7 +21,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import BackIcon from '../components/BackIcon'
 import RightButton from '../components/RightButton'
-import { changeServiceType } from '../redux/speak/action'
+import { changeBudget, changeServiceType } from '../redux/speak/action'
 import { RootState } from '../store'
 import submit from '../srcImage/submit.png'
 
@@ -80,12 +80,14 @@ export default function SpeakDetailPage() {
 		}
 
 		console.log(serviceSubTypeNumber)
+		console.log('budget' + budget);
 	}, [
 		districts,
 		referenceTable,
 		districtNumber,
 		typeNumber,
-		serviceSubTypeNumber
+		serviceSubTypeNumber,
+		budget
 	])
 
 	// console.log(district);
@@ -339,7 +341,42 @@ export default function SpeakDetailPage() {
 								/>
 								預算
 							</IonRow>
-							<IonRow className='budgetText'>${budget}</IonRow>
+							<IonRow className='budgetText'>
+								$
+								<input
+									type='number'
+									id='newBudget'
+									defaultValue={budget}
+									
+									
+									onChange={(e) => {
+										console.log(e.target.value.length);
+										if(e.target.value[0] == '0' &&e.target.value.length != 1){
+											console.log(e.target.value[0]);
+											
+											let array = e.target.value.split("")
+											array.shift()
+											e.target.value = array.toString()
+										}
+
+										if(e.target.value != ''){
+
+											dispatch(
+												changeBudget(
+													parseInt(e.target.value)
+												))
+												
+												
+										}else {
+											e.target.value = '0'
+											dispatch(
+												changeBudget(
+													parseInt(e.target.value)
+												))
+										}
+									}
+									}></input>
+							</IonRow>
 						</IonCol>
 						<IonCol size='2' className='rightButtonCol'>
 							<RightButton thisPath='' />
