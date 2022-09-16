@@ -63,7 +63,7 @@ const App: React.FC = () => {
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
-		;(async function checkToken() {
+		(async function checkToken() {
 			const token = localStorage.getItem('token')
 
 			if (token == null) {
@@ -71,6 +71,7 @@ const App: React.FC = () => {
 
 				const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}`)
 				const token = (await res.json()).Authorization
+				
 				console.log(`the ${token} has been retrieved from the server`)
 				localStorage.setItem('token', token)
 				console.log(`the token ${token} has been saved in localStorage`)
