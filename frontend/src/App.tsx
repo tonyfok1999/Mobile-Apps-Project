@@ -63,7 +63,7 @@ const App: React.FC = () => {
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
-		;(async function checkToken() {
+		;(async () => {
 			const token = localStorage.getItem('token')
 
 			if (token == null) {
@@ -80,6 +80,7 @@ const App: React.FC = () => {
 			const res = await fetch(
 				`${process.env.REACT_APP_BACKEND_URL}/worker-auth/login`,
 				{
+					method: 'post',
 					headers: { Authorization: `Bearer ${token}` }
 				}
 			)
@@ -101,16 +102,28 @@ const App: React.FC = () => {
 						<HomePage />
 					</Route>
 
-				<Route exact path='/tabs/homepage' component={HomePage} />
-				<Route exact path='/Speak/SpeakPage' component={SpeakPage} />
-				<Route exact path='/tabs/chatlist' component={ChatList} />
-				<Route exact path='/tabs/changeDistricts' component={ChangeDistricts} />
-				<Route exact path='/tabs/changeSubType' component={ChangeSubType} />
-				<Route
-					exact
-					path='/Speak/SpeakDetailPage'
-					component={SpeakDetailPage}
-				/>
+					<Route exact path='/tabs/homepage' component={HomePage} />
+					<Route
+						exact
+						path='/Speak/SpeakPage'
+						component={SpeakPage}
+					/>
+					<Route exact path='/tabs/chatlist' component={ChatList} />
+					<Route
+						exact
+						path='/tabs/changeDistricts'
+						component={ChangeDistricts}
+					/>
+					<Route
+						exact
+						path='/tabs/changeSubType'
+						component={ChangeSubType}
+					/>
+					<Route
+						exact
+						path='/Speak/SpeakDetailPage'
+						component={SpeakDetailPage}
+					/>
 
 					<Route path='/chatroom/:chatroomId' component={ChatRoom} />
 					<Route

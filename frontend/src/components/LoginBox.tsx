@@ -6,6 +6,8 @@ import LoginMethods from './LoginMethods'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Method } from 'ionicons/dist/types/stencil-public-runtime'
 import { useIonAlert } from '@ionic/react'
+import { useAppDispatch } from '../store'
+import { loggedIn } from '../redux/auth/action'
 
 export default function LoginBox() {
 	const {
@@ -18,6 +20,8 @@ export default function LoginBox() {
 	const history = useHistory()
 
 	const [presentAlert] = useIonAlert()
+
+	const dispatch = useAppDispatch()
 
 	return (
 		<div
@@ -85,7 +89,7 @@ export default function LoginBox() {
 			<form
 				onSubmit={handleSubmit(async (body) => {
 					const res = await fetch(
-						'http://localhost:8000/user/login',
+						'http://localhost:8000/worker-auth/login',
 						{
 							method: 'POST',
 							headers: {
@@ -96,6 +100,9 @@ export default function LoginBox() {
 					)
 					const fetchData = await res.json()
 					if (fetchData.loginState === true) {
+						dispatch(
+							loggedIn(fetchData.user, fetchData.access_token)
+						)
 						history.push('/workerOrderPage')
 					} else {
 						presentAlert({

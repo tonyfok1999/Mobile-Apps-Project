@@ -1,10 +1,11 @@
 import { AppDispatch } from '../../store'
 import { User } from './state'
 
-export function loggedIn(user: User) {
+export function loggedIn(user: User, token: string) {
 	return {
 		type: '@@auth/loggedIn' as const,
 		user: user,
+		token: token
 	}
 }
 
@@ -20,9 +21,9 @@ export type LoggedOutAction = ReturnType<typeof loggedOut>
 
 export type AuthActions = LoggedInAction | LoggedOutAction
 
-export function logOut(){
+export function logOut() {
 	return (dispatch: AppDispatch) => {
-		localStorage.removeItem("token");
-		dispatch(loggedOut());
-	  };
+		localStorage.removeItem('token')
+		dispatch(loggedOut())
+	}
 }
