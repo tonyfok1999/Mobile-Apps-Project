@@ -1,12 +1,13 @@
 export class CreateUserDto {
-  email: string;
-  password: string;
-  nickname: string;
-  phone: number;
+  id: number;
+  email: string | null;
+  password: string | null;
+  nickname: string | null;
+  phone: number | null;
   gender_id?: number | null;
   profile_photo?: string | null;
   is_worker: boolean;
   worker_info_id?: number | null;
-  score?: number;
-  workerSubtypeId: number[];
+  score?: number | null;
+  workerSubtypeId: number[] | null;
 }

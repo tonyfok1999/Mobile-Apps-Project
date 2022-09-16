@@ -71,6 +71,7 @@ const App: React.FC = () => {
 
 				const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}`)
 				const token = (await res.json()).Authorization
+
 				console.log(`the ${token} has been retrieved from the server`)
 				localStorage.setItem('token', token)
 				console.log(`the token ${token} has been saved in localStorage`)
@@ -85,12 +86,12 @@ const App: React.FC = () => {
 				}
 			)
 
-			if (res.status === 200) {
-				const user = await res.json()
-				dispatch(loggedIn(user))
-			} else {
-				dispatch(logOut())
-			}
+			// if (res.status === 200) {
+			// 	const user = await res.json()
+			// 	dispatch(loggedIn(user))
+			// } else {
+			// 	dispatch(logOut())
+			// }
 		})()
 	}, [])
 
