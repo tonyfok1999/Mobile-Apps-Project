@@ -63,7 +63,7 @@ const App: React.FC = () => {
 	const dispatch = useAppDispatch()
 
 	useEffect(() => {
-		;(async function checkToken() {
+		(async function checkToken() {
 			const token = localStorage.getItem('token')
 
 			if (token == null) {
@@ -71,25 +71,26 @@ const App: React.FC = () => {
 
 				const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}`)
 				const token = (await res.json()).Authorization
+				
 				console.log(`the ${token} has been retrieved from the server`)
 				localStorage.setItem('token', token)
 				console.log(`the token ${token} has been saved in localStorage`)
 				return
 			}
 
-			const res = await fetch(
-				`${process.env.REACT_APP_BACKEND_URL}/worker-auth/login`,
-				{
-					headers: { Authorization: `Bearer ${token}` }
-				}
-			)
+			// const res = await fetch(
+			// 	`${process.env.REACT_APP_BACKEND_URL}/worker-auth/login`,
+			// 	{
+			// 		headers: { Authorization: `Bearer ${token}` }
+			// 	}
+			// )
 
-			if (res.status === 200) {
-				const user = await res.json()
-				dispatch(loggedIn(user))
-			} else {
-				dispatch(logOut())
-			}
+			// if (res.status === 200) {
+			// 	const user = await res.json()
+			// 	dispatch(loggedIn(user))
+			// } else {
+			// 	dispatch(logOut())
+			// }
 		})()
 	}, [])
 

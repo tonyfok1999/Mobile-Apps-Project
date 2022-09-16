@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
-import { WebsocketService } from './websocket.service';
-import { WebsocketController } from './websocket.controller';
-import { MyWebSocket } from './websocket';
+import { WebsocketService } from './notinuse/websocket.service';
+import { WebsocketController } from './notinuse/websocket.controller';
+import { MyWebSocket } from './websocketgateway';
+import { AuthModule } from 'src/auth/auth.module';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
-  controllers: [WebsocketController],
-  providers: [WebsocketService, MyWebSocket]
+  imports: [AuthModule, UserModule],
+  controllers: [],
+  providers: [MyWebSocket]
 })
 export class WebsocketModule {}
