@@ -11,6 +11,14 @@ export class AuthService {
     @InjectKnex() private readonly knex: Knex
     ) {}
 
+  async verifyJwt(jwt: string){
+    try{
+    const verifiedJwt = this.jwtService.verify(jwt)
+    return verifiedJwt
+  }catch{
+    return undefined;
+  }
+  }  
 
 
   async generateJwt() {
@@ -18,10 +26,12 @@ export class AuthService {
     const newUser = await this.knex('users').insert({
         email: uuidv4(),
         password: '',
-    }).returning('id')
+    }).returning(['id', 'email'])
 
-    const payload = { userId: newUser[0].id };
+    const payload = { id: newUser[0].id, email: newUser[0].email };
     const jwt = this.jwtService.sign(payload, {secret:'secretKey'})
     return jwt
   }
+
+
 }

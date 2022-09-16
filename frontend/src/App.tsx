@@ -78,19 +78,19 @@ const App: React.FC = () => {
 				return
 			}
 
-			const res = await fetch(
-				`${process.env.REACT_APP_BACKEND_URL}/worker-auth/login`,
-				{
-					headers: { Authorization: `Bearer ${token}` }
-				}
-			)
+			// const res = await fetch(
+			// 	`${process.env.REACT_APP_BACKEND_URL}/worker-auth/login`,
+			// 	{
+			// 		headers: { Authorization: `Bearer ${token}` }
+			// 	}
+			// )
 
-			if (res.status === 200) {
-				const user = await res.json()
-				dispatch(loggedIn(user))
-			} else {
-				dispatch(logOut())
-			}
+			// if (res.status === 200) {
+			// 	const user = await res.json()
+			// 	dispatch(loggedIn(user))
+			// } else {
+			// 	dispatch(logOut())
+			// }
 		})()
 	}, [])
 
