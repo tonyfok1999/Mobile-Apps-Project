@@ -39,7 +39,7 @@ export default function SpeakDetailPage() {
 		]
 	>()
 
-	const [districts, setDistricts] = useState<string>()
+	const [districts, setDistricts] = useState<string>('')
 
 	const districtNumber = useSelector(
 		(state: RootState) => state.speak.district
@@ -63,7 +63,10 @@ export default function SpeakDetailPage() {
 
 	useEffect(() => {
 		const fetchReferenceTable = async () => {
-			const res = await fetch('http://localhost:8000/referencesTable')
+			const res = await fetch('http://localhost:8000/referencesTable', {
+				method: 'GET',
+				headers: { authorization: window.localStorage.token }
+			})
 			const data = await res.json()
 			setReferenceTable(data)
 		}
@@ -80,7 +83,7 @@ export default function SpeakDetailPage() {
 		}
 
 		console.log(serviceSubTypeNumber)
-		console.log('budget' + budget);
+		console.log('budget' + budget)
 	}, [
 		districts,
 		referenceTable,
@@ -90,7 +93,35 @@ export default function SpeakDetailPage() {
 		budget
 	])
 
-	// console.log(district);
+	async function sendOder() {
+		// const test = "test"
+		// let datas: {
+		// 	district: string
+		// typeNumber: number
+		// serviceSubTypeNumber: number[]
+		// budget: number
+		// speakFileName: string
+		// transcription: string
+		// } = {
+		// 	district: test  ,
+		// typeNumber: typeNumber,
+		// serviceSubTypeNumber: serviceSubTypeNumber,
+		// budget: budget,
+		// speakFileName: speakFileName,
+		// transcription: transcription
+		// }
+console.log(  window.localStorage.token);
+
+		let testdata = await fetch(
+			'http://localhost:8000/speech/submitOderFrom',
+			{
+				method: 'POST',
+				headers: { authorization: window.localStorage.token },
+				body: JSON.stringify({ district: 'test' })
+			}
+		)
+		console.log(await testdata.json())
+	}
 
 	return (
 		<IonPage
@@ -347,35 +378,34 @@ export default function SpeakDetailPage() {
 									type='number'
 									id='newBudget'
 									defaultValue={budget}
-									
-									
 									onChange={(e) => {
-										console.log(e.target.value.length);
-										if(e.target.value[0] == '0' &&e.target.value.length != 1){
-											console.log(e.target.value[0]);
-											
-											let array = e.target.value.split("")
+										console.log(e.target.value.length)
+										if (
+											e.target.value[0] == '0' &&
+											e.target.value.length != 1
+										) {
+											console.log(e.target.value[0])
+
+											let array = e.target.value.split('')
 											array.shift()
 											e.target.value = array.toString()
 										}
 
-										if(e.target.value != ''){
-
+										if (e.target.value != '') {
 											dispatch(
 												changeBudget(
 													parseInt(e.target.value)
-												))
-												
-												
-										}else {
+												)
+											)
+										} else {
 											e.target.value = '0'
 											dispatch(
 												changeBudget(
 													parseInt(e.target.value)
-												))
+												)
+											)
 										}
-									}
-									}></input>
+									}}></input>
 							</IonRow>
 						</IonCol>
 						<IonCol size='2' className='rightButtonCol'>
@@ -404,14 +434,19 @@ export default function SpeakDetailPage() {
 									className='locationIcon'
 									icon={micOutline}
 								/>
-								上傳語音
+								上傳語音識別結果
 							</IonRow>
-							<IonRow className=''></IonRow>
+							<IonRow className=''>
+								<span>{transcription}</span>
+							</IonRow>
 						</IonCol>
 					</IonRow>
 
 					<IonRow className='submitBar'>
-						<button>
+						<button
+							onClick={() => {
+								sendOder()
+							}}>
 							<img src={submit} alt='logo img'></img>
 						</button>
 					</IonRow>

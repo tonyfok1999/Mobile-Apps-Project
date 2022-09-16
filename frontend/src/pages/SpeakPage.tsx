@@ -52,7 +52,8 @@ export default function SpeakPage() {
 	}
 
 	useEffect(() => {
-		// console.log(mediaRecorder?.state)
+		
+		
 		let chunks: any[] = []
 		if (mediaRecorder?.state === 'inactive' && recordState === true) {
 			mediaRecorder.start()
@@ -80,6 +81,9 @@ export default function SpeakPage() {
 					'http://localhost:8000/speech/uploadWebM',
 					{
 						method: 'POST',
+						headers:{'authorization' :window.localStorage.token
+
+						},
 						body: formData
 					}
 				)
