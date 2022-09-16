@@ -38,6 +38,13 @@
   dependencies:
     "@types/cordova" latest
 
+"@awesome-cordova-plugins/open-native-settings@^5.45.0":
+  version "5.45.0"
+  resolved "https://registry.yarnpkg.com/@awesome-cordova-plugins/open-native-settings/-/open-native-settings-5.45.0.tgz#9f127dd0c37de7dfa8afc6e0c156c52fa84c0c2d"
+  integrity sha512-ktay/JR/XHnZAVyPwtVf5SLVzVagms/JYl8YTmx8bN9xS3I2nCfoosZG98ud9ps2tahz2rKmRpYIuWdCq3vgfw==
+  dependencies:
+    "@types/cordova" latest
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.16.0", "@babel/code-frame@^7.18.6", "@babel/code-frame@^7.8.3":
   version "7.18.6"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.18.6.tgz#3b25d38c89600baa2dcc219edfa88a74eb2c427a"
@@ -1096,6 +1103,11 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
+"@capacitor/android@4.1.0":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@capacitor/android/-/android-4.1.0.tgz#d4f4a84213b948911757a00a58255418f126f2c7"
+  integrity sha512-aYHvpYVlS6WC+bG9jJfwqgHMxTw3e8f3taNnl/y9qCjglmMmtFcZWFAVLlOleVK4Q7olSirqjx37f0ppvxRTLg==
+
 "@capacitor/app@4.0.1":
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/@capacitor/app/-/app-4.0.1.tgz#05c60541c427ef30f4762d8f786e70d0ed32fe01"
@@ -1124,10 +1136,10 @@
     tslib "^2.4.0"
     xml2js "^0.4.23"
 
-"@capacitor/core@4.1.0":
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-4.1.0.tgz#4f5b80cd9cbf65bfc5a203082399fa794ffc5f45"
-  integrity sha512-bMYFnC5l5n11D/kLTz9TOOJfUH+nQqYRwzG7h5h4AXIm8aFxH5ZY3iFlDZd7R4xcyrlnfxzfoooSH9trPjRBLA==
+"@capacitor/core@^4.1.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@capacitor/core/-/core-4.2.0.tgz#608285d4d8d60388940fc8f25dc1576aa99187e4"
+  integrity sha512-kHKn6693Yt9TWfuJ0Q+fyxYCpYAvVMKdu3t500seMEfdgNlF6BGaX5GbOnXkU4cnM9p+sIhRiwXv8Iqwm0E+NA==
   dependencies:
     tslib "^2.1.0"
 
@@ -3789,6 +3801,11 @@ cookie@0.5.0:
   version "0.5.0"
   resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.5.0.tgz#d1f5d71adec6558c58f389987c366aa47e994f8b"
   integrity sha512-YZ3GUyn/o8gfKJlnlX7g7xq4gyO6OSuhGPKaaGssGB2qgDUS0gPgtTvoyZLTt9Ab6dC4hfc9dV5arkvc/OCmrw==
+
+cordova-open-native-settings@^1.5.5:
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/cordova-open-native-settings/-/cordova-open-native-settings-1.5.5.tgz#963b50d65cf20c2f6c7603dc1d4f42c7389697bd"
+  integrity sha512-t3we7dUTUamuxVMl/nE6RBNqEyTtUuxvtjXI/BrevuoBIl2nI9GJpTvD9witJkpzf0isCv3zMuiLd9tP+2+LVw==
 
 core-js-compat@^3.25.1:
   version "3.25.1"
