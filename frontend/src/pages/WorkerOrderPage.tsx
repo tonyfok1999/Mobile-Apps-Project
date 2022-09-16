@@ -40,13 +40,17 @@ export default function WorkerOrderPage() {
 
 	useEffect(() => {
 		const fetchOrdersData = async () => {
-			const res = await fetch('http://localhost:8000/orders')
+			const res = await fetch('http://localhost:8000/orders', {
+				headers: { Authorization: `whatever` }
+			})
 			const data = await res.json()
 			setOrdersInfo(data)
 		}
 
 		const fetchReferenceTable = async () => {
-			const res = await fetch('http://localhost:8000/referencesTable')
+			const res = await fetch('http://localhost:8000/referencesTable', {
+				headers: { Authorization: `whatever` }
+			})
 			const data = await res.json()
 			setReferenceTable(data)
 		}
@@ -86,8 +90,8 @@ export default function WorkerOrderPage() {
 								<div>
 									服務範圍
 									<span>
-										{
-											referenceTable![1].filter(
+										{referenceTable &&
+											referenceTable[1].filter(
 												(type) =>
 													type.id ==
 													referenceTable![2].filter(
@@ -95,20 +99,18 @@ export default function WorkerOrderPage() {
 															subType.id ==
 															orderInfo.service_subtype_id
 													)[0].service_type_id
-											)[0].type
-										}
+											)[0].type}
 									</span>
 								</div>
 								<div>
 									維修類別
 									<span>
-										{
-											referenceTable![2].filter(
+										{referenceTable &&
+											referenceTable[2].filter(
 												(subType) =>
 													subType.id ==
 													orderInfo.service_subtype_id
-											)[0].subtype
-										}
+											)[0].subtype}
 									</span>
 								</div>
 								<div>

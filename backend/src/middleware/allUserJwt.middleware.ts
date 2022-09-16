@@ -25,11 +25,14 @@ export class AllUserJwtMiddleware implements NestMiddleware {
       res.json({ Authorization: jwt });
       next();
     } else {
-      const verifiedJwt = await this.authService.verifyJwt(authorization.slice(7, authorization.length));
-      Logger.log(verifiedJwt);
+      const payload = await this.authService.verifyJwt(authorization.slice(7, authorization.length));
+      Logger.log(payload);
       Logger.log('the user has token already');
-      req.user = { id: '' + verifiedJwt.id };
-
+      try {
+        req.user = { id: '' + payload.id };
+      } catch (error) {
+        Logger.log('nothing in the payload');
+      }
       next();
     }
   }

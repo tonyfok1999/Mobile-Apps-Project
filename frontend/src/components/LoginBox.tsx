@@ -93,16 +93,17 @@ export default function LoginBox() {
 						{
 							method: 'POST',
 							headers: {
-								'Content-Type': 'application/json'
+								'Content-Type': 'application/json',
+								Authorization: `whatever`
 							},
 							body: JSON.stringify(body)
 						}
 					)
 					const fetchData = await res.json()
-					if (fetchData.loginState === true) {
-						dispatch(
-							loggedIn(fetchData.user, fetchData.access_token)
-						)
+					if (fetchData.user) {
+						const token = fetchData.access_token
+						localStorage.setItem('token', token)
+						dispatch(loggedIn(fetchData.user, token))
 						history.push('/workerOrderPage')
 					} else {
 						presentAlert({
