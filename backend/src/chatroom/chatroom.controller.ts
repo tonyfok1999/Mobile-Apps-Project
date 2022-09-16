@@ -1,8 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseInterceptors, UploadedFile, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ChatroomService } from './chatroom.service';
-import { CreateChatroomDto } from './dto/create-chatroom.dto';
-import { UpdateChatroomDto } from './dto/update-chatroom.dto';
 import { Message } from './dto/message.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';

@@ -20,12 +20,14 @@ import {
 
 } from '@ionic/react'
 import { IoMenuSharp } from 'react-icons/io5'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ChatTab from '../components/ChatTab'
 import ClientTabBar from '../nav/ClientTabBar'
+import { WebSocketContext } from '../context/WebScoketContext'
 
 
 const ChatList: React.FC = () => {
+
 	return (<>
 		<IonMenu content-id='main-content'>
 			<IonHeader>

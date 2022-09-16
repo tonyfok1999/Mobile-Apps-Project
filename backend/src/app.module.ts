@@ -32,7 +32,6 @@ const knexConfigs = require('../knexfile');
     OrderModule,
     ReferencesTableModule,
     AuthModule,
-    WebsocketModule,
     WorkerAuthModule,
   ],
   controllers: [AppController],
