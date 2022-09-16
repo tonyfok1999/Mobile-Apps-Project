@@ -6,8 +6,8 @@ const defaultState = {
 	serviceType: 1,
 	budget: 1,
 	imageFileName: [],
-	speakFileName: '',
-	transcription: ''
+	speakFileName: '0',
+	transcription: '0'
 }
 
 export function speakReducer(

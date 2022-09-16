@@ -48,7 +48,10 @@ export default function ChangeDistricts() {
 
 	useEffect(() => {
 		const fetchReferenceTable = async () => {
-			const res = await fetch('http://localhost:8000/referencesTable')
+			const res = await fetch('http://localhost:8000/referencesTable', {
+				method: 'GET',
+				headers: { authorization: window.localStorage.token }
+			})
 			const data = await res.json()
 			setReferenceTable(data)
 		}

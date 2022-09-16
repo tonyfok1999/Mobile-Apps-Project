@@ -15,16 +15,15 @@ export class WorkerAuthService {
 
     const isSamePassword = await bcrypt.compare(password, user[0].password);
 
-    // console.log(user[0], isSamePassword);
     if (!user[0] || !isSamePassword) {
       return (user = []);
     }
     return user;
   }
 
-  generateJwt(user: { id: number; email: string }) {
-    const { id, email } = user;
-    const payload = { id, email };
+  generateJwt(user: { id: number; email: string; is_worker: boolean }) {
+    const { id, email, is_worker } = user;
+    const payload = { id, email, is_worker };
     return {
       access_token: this.jwtService.sign(payload),
     };

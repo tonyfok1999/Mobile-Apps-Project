@@ -1,9 +1,11 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseGuards, Req } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { LoginUserDto } from './dto/login.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { Request, Response } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -14,14 +16,15 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @Get('me')
+  findUserById(@Req() req: Request) {
+    const id = req.user['id'];
+    return this.userService.findUserById(id);
+  }
+
   @Get(':id')
   getUserById(@Param('id', ParseIntPipe) id: number) {
     return this.userService.getUserById(id);
-  }
-
-  @Post('login')
-  login(@Body() user: LoginUserDto) {
-    return this.userService.login(user);
   }
 
   @Patch(':id')

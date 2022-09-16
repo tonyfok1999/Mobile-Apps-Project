@@ -6,10 +6,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private jwtService: JwtService, 
-    @InjectKnex() private readonly knex: Knex
-    ) {}
+  constructor(private jwtService: JwtService, @InjectKnex() private readonly knex: Knex) {}
 
   async verifyJwt(jwt: string){
     try{
@@ -21,18 +18,16 @@ export class AuthService {
   }
   }  
 
-
   async generateJwt() {
-
-    const newUser = await this.knex('users').insert({
+    const newUser = await this.knex('users')
+      .insert({
         email: uuidv4(),
         password: '',
-    }).returning(['id', 'email'])
+      })
+      .returning(['id', 'email']);
 
     const payload = { id: newUser[0].id, email: newUser[0].email };
-    const jwt = this.jwtService.sign(payload, {secret:'secretKey'})
-    return jwt
+    const jwt = this.jwtService.sign(payload, { secret: 'secretKey' });
+    return { jwt: jwt, userId: newUser[0].id };
   }
-
-
 }

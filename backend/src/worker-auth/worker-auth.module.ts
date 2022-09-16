@@ -7,6 +7,7 @@ import { WorkerAuthService } from './worker-auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LocalAuthGuard } from './local-auth.guard';
+import { JwtStrategy } from './stratgies/jwt.stratrgy';
 
 @Module({
   imports: [
@@ -18,6 +19,6 @@ import { LocalAuthGuard } from './local-auth.guard';
     }),
   ],
   controllers: [WorkerAuthController],
-  providers: [WorkerAuthService, LocalStrategy, LocalAuthGuard],
+  providers: [WorkerAuthService, LocalStrategy, LocalAuthGuard, JwtStrategy],
 })
 export class WorkerAuthModule {}

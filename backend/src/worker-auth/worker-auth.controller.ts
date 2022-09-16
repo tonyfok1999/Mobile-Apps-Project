@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
 import { Request, Response } from 'express';
@@ -18,17 +17,20 @@ export class WorkerAuthController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@Req() request: Request) {
-    return this.authService.generateJwt(request.user as { id: number; email: string });
-  }
-
-  @UseGuards(LocalAuthGuard)
-  @Get('login')
-  async checkLogin(@Req() req: Request, @Res() res: Response) {
-    try{
-      res.status(200)
-      //return user info
-    } catch {
-
-    }
+    const { access_token } = this.authService.generateJwt(request.user as { id: number; email: string; is_worker: boolean });
+    return {
+      user: {
+        id: request.user['id'],
+        email: request.user['email'],
+        nickname: request.user['nickname'],
+        phone: request.user['phone'],
+        gender_id: request.user['gender_id'],
+        profile_photo: request.user['profile_photo'],
+        is_worker: request.user['is_worker'],
+        worker_info_id: request.user['worker_info_id'],
+        score: request.user['score'],
+      },
+      access_token: access_token,
+    };
   }
 }
