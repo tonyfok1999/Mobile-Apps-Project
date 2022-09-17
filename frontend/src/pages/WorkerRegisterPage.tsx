@@ -115,7 +115,8 @@ export default function WorkerRegisterPage() {
 								nickname: formData.nickname,
 								email: formData.email,
 								password: formData.confirmedPassword,
-								phone: formData.phone
+								phone: formData.phone,
+								isLocalRegister: true
 							})
 						)
 					})}>

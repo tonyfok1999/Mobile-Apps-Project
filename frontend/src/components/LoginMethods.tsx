@@ -1,11 +1,26 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import React from 'react'
+import React, { useState } from 'react'
 import { BsLinkedin } from 'react-icons/bs'
 import { FaGooglePlus } from 'react-icons/fa'
 import { BsFacebook } from 'react-icons/bs'
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
+import { useDispatch } from 'react-redux'
+import { storeAccount } from '../redux/register/action'
+import { useHistory } from 'react-router'
 
 export default function LoginMethods() {
+	GoogleAuth.initialize({
+		clientId:
+			'708322933526-0359al7b0ul1qll3i971rqu49jb7d7co.apps.googleusercontent.com',
+		scopes: ['profile', 'email'],
+		grantOfflineAccess: true
+	})
+
+	const [userInfo, setUserInfo] = useState('')
+	const dispatch = useDispatch()
+	const history = useHistory()
+
 	return (
 		<span
 			css={css`
@@ -30,7 +45,41 @@ export default function LoginMethods() {
 					font-size: 30px;
 				}
 			`}>
-			<a>
+			<a
+				onClick={async () => {
+					const userinfo = await GoogleAuth.signIn()
+
+					const res = await fetch(
+						'http://localhost:8000/worker-auth/webGoogleLogin',
+						{
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+								Authorization: `whatever`
+							},
+							body: JSON.stringify({ email: userinfo.email })
+						}
+					)
+					const fetchData = await res.json()
+
+					if (fetchData.message) {
+						dispatch(
+							storeAccount({
+								nickname: userinfo.familyName,
+								email: userinfo.email,
+								password: userinfo.email,
+								phone: parseInt(userinfo.id.slice(0, 8)),
+								isLocalRegister: false
+							})
+						)
+						history.push('/workerRegisterPageForTypeOfService')
+					} else {
+						localStorage.setItem('token', fetchData.access_token)
+						history.push('/workerOrderPage')
+					}
+
+					setUserInfo(JSON.stringify(userinfo))
+				}}>
 				<BsLinkedin />
 			</a>
 			<a>
@@ -39,6 +88,7 @@ export default function LoginMethods() {
 			<a>
 				<BsFacebook />
 			</a>
+			{userInfo}
 		</span>
 	)
 }
