@@ -17,7 +17,6 @@ export default function LoginMethods() {
 		grantOfflineAccess: true
 	})
 
-	const [userInfo, setUserInfo] = useState('')
 	const dispatch = useDispatch()
 	const history = useHistory()
 
@@ -77,8 +76,6 @@ export default function LoginMethods() {
 						localStorage.setItem('token', fetchData.access_token)
 						history.push('/workerOrderPage')
 					}
-
-					setUserInfo(JSON.stringify(userinfo))
 				}}>
 				<BsLinkedin />
 			</a>
@@ -88,7 +85,6 @@ export default function LoginMethods() {
 			<a>
 				<BsFacebook />
 			</a>
-			{userInfo}
 		</span>
 	)
 }

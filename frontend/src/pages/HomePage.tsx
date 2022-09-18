@@ -49,7 +49,7 @@ const HomePage: React.FC = () => {
 				const userinfo = await res.json()
 				dispatch(loggedIn(userinfo[0], token))
 
-				if (userinfo[0].is_worker === true) {
+				if (userinfo[0].is_worker) {
 					history.replace('/workerOrderPage')
 				}
 			}
@@ -119,25 +119,29 @@ const HomePage: React.FC = () => {
 					margin: 0;
 				}
 			`}>
-			<IonGrid>
-				<IonRow className='logoCol'>
-					<IonCol className='center'>
-						<Logo />
-					</IonCol>
-				</IonRow>
-				<IonRow className='infoCol'>
-					<IonCol className='center'>
-						<h1>只需要以語音說明你所需要的服務便可</h1>
-					</IonCol>
-				</IonRow>
-				<IonRow className='info2Col'>
-					<IonCol className='center'>
-						<IonButton fill='clear' routerLink='/Speak/SpeakPage'>
-							<h3>按一下開始</h3>
-						</IonButton>
-					</IonCol>
-				</IonRow>
-			</IonGrid>
+			<IonContent>
+				<IonGrid>
+					<IonRow className='logoCol'>
+						<IonCol className='center'>
+							<Logo />
+						</IonCol>
+					</IonRow>
+					<IonRow className='infoCol'>
+						<IonCol className='center'>
+							<h1>只需要以語音說明你所需要的服務便可</h1>
+						</IonCol>
+					</IonRow>
+					<IonRow className='info2Col'>
+						<IonCol className='center'>
+							<IonButton
+								fill='clear'
+								routerLink='/Speak/SpeakPage'>
+								<h3>按一下開始</h3>
+							</IonButton>
+						</IonCol>
+					</IonRow>
+				</IonGrid>
+			</IonContent>
 			<ClientTabBar />
 		</IonPage>
 	)

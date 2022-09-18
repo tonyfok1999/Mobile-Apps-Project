@@ -7,6 +7,7 @@ import Logo from '../components/Logo'
 
 import {
 	IonButton,
+	IonContent,
 	IonHeader,
 	IonIcon,
 	IonPage,
@@ -55,15 +56,20 @@ export default function WorkerLoginPage() {
 					}
 				}
 			`}>
-			<IonButton size='large' fill='clear' routerLink='/'>
-				<IonIcon className='icon' icon={arrowBackOutline} />
-			</IonButton>
-			<Logo />
-			<LoginBox />
-			<span>
-				師傅想加入我們?
-				<NavLink to='/workerRegisterPage'>註冊</NavLink>
-			</span>
+			<IonContent>
+				<IonButton
+					size='large'
+					fill='clear'
+					routerLink='/Speak/SpeakPage'>
+					<IonIcon className='icon' icon={arrowBackOutline} />
+				</IonButton>
+				<Logo />
+				<LoginBox />
+				<span>
+					師傅想加入我們?
+					<NavLink to='/workerRegisterPage'>註冊</NavLink>
+				</span>
+			</IonContent>
 		</IonPage>
 	)
 }

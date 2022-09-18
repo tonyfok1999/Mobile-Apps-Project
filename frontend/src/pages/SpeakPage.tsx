@@ -25,9 +25,9 @@ import {
 } from '../redux/speak/action'
 import { useSelector } from 'react-redux'
 import { RootState } from '../store'
-import { useHistory } from "react-router-dom";
+import { useHistory } from 'react-router-dom'
 export default function SpeakPage() {
-	const history = useHistory();
+	const history = useHistory()
 	const dispatch = useDispatch()
 	const [recordState, setRecordState] = useState<boolean>(false)
 	const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder>()
@@ -52,8 +52,6 @@ export default function SpeakPage() {
 	}
 
 	useEffect(() => {
-		
-		
 		let chunks: any[] = []
 		if (mediaRecorder?.state === 'inactive' && recordState === true) {
 			mediaRecorder.start()
@@ -70,9 +68,9 @@ export default function SpeakPage() {
 				const blob = new Blob(chunks, {
 					type: 'audio/WebM; codecs=opus'
 				})
-				let speakUrl = window.URL.createObjectURL(blob);
-				console.log(speakUrl);
-				
+				let speakUrl = window.URL.createObjectURL(blob)
+				console.log(speakUrl)
+
 				// console.log(blob)
 				formData.append('record', blob)
 				// console.log(formData)
@@ -81,9 +79,7 @@ export default function SpeakPage() {
 					'http://192.168.80.56:8000/speech/uploadWebM',
 					{
 						method: 'POST',
-						headers:{'authorization' :window.localStorage.token
-
-						},
+						headers: { authorization: window.localStorage.token },
 						body: formData
 					}
 				)
@@ -94,11 +90,10 @@ export default function SpeakPage() {
 				dispatch(changeSpeakFileName(datas.speakFileName))
 				dispatch(changeTranscription(datas.transcription))
 				chunks = []
-				history.push("/Speak/SpeakDetailPage");
+				history.push('/Speak/SpeakDetailPage')
 			}
 			mediaRecorder.stop()
 			// console.log(mediaRecorder.state)
-			
 		}
 	}, [recordState, mediaRecorder])
 
@@ -155,7 +150,7 @@ export default function SpeakPage() {
 				<IonGrid>
 					<IonRow className='topBar'>
 						<IonCol className='topBar'>
-							<TopBar thisBackPath={'/tabs/homepage'}/>
+							<TopBar thisBackPath={'/'} />
 						</IonCol>
 					</IonRow>
 					<IonRow className='logoCol'>
@@ -180,8 +175,7 @@ export default function SpeakPage() {
 										onClick={() => {
 											setRecordState(false)
 											closeMediaDevices()
-										}}
-										>
+										}}>
 										<h3>聆聽中,按一下結束 </h3>
 									</IonButton>
 								</IonCol>
