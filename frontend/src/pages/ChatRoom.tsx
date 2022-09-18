@@ -160,8 +160,8 @@ const Chatroom: React.FC = () => {
 				<IonContent>
 					<div>
 						{
-							messages.map((message,idx) =>
-								<MessageBubble key={idx} content={message} />
+						messages.map(
+							(message,idx) => <MessageBubble key={idx} content={message} />
 						)
 						}
 					</div>

@@ -76,7 +76,8 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
   @SubscribeMessage('newMessage')
   async onNewMessage(@MessageBody() message: Message) {
     console.log(message);
-    const attendees = await this.chatroomService.getAllUserIdByChatroomId(message.chatroomId)
+    // const attendees = await this.chatroomService.getAllUserIdByChatroomId(message.chatroomId)
+    const attendees = [{user_id:1}, {user_id: 1992}]
     console.log(attendees)
     const connections = []
 

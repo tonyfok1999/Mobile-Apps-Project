@@ -14,11 +14,11 @@ const ChatInput: React.FC = () => {
 	const [message, setMessage] = useState('')
 	const socket = useContext(WebSocketContext)
 	const params = useParams<{ chatroomId: string }>()
-	const chatroomId= parseInt(params.chatroomId)
+	const chatroomId = parseInt(params.chatroomId)
 	const userId = useAppSelector((state) => state.auth.user!.id)
 
 	// useEffect(() => {
-		
+
 	// 	socket.on('connect', ()=>{
 	// 		console.log('Connected')
 	// 	})
@@ -35,24 +35,26 @@ const ChatInput: React.FC = () => {
 	}
 
 	const handleEmojiClick = (event: any, emojiObject: { emoji: string }) => {
- 		setMessage(message + emojiObject.emoji)
+		setMessage(message + emojiObject.emoji)
 	}
 
 	const token = localStorage.getItem('token')
 
-	const handleSendMessage =async (message: string,formData: FormData) => {
-		
-		const blob = new Blob([JSON.stringify({sender_id: 1, text: message})], {type : 'application/json'});
+	const handleSendMessage = async (message: string, formData: FormData) => {
+		const blob = new Blob(
+			[JSON.stringify({ sender_id: 1, text: message })],
+			{ type: 'application/json' }
+		)
 		formData.append('blob', blob)
 
-		await fetch(
-			`${process.env.REACT_APP_BACKEND_URL}/chatroom/1/message`,
-			{ 
+		await fetch(`${process.env.REACT_APP_BACKEND_URL}/chatroom/1/message`, {
 			method: 'POST',
-			headers:{'Content-Type': 'application/json; charset=utf-8', Authorization: `Bearer ${token}`},
-			body: JSON.stringify({sender_id: 1, text: message})
-			}
-		)
+			headers: {
+				'Content-Type': 'application/json; charset=utf-8',
+				Authorization: `Bearer ${token}`
+			},
+			body: JSON.stringify({ sender_id: 1, text: message })
+		})
 		console.log('message has been sent')
 	}
 
@@ -83,9 +85,9 @@ const ChatInput: React.FC = () => {
 					align-content: flex-start;
 					align-items: flex-start;
 
-					.emoji-picker-react{
+					.emoji-picker-react {
 						position: absolute;
-						top:-350px;
+						top: -350px;
 					}
 				}
 
@@ -100,35 +102,55 @@ const ChatInput: React.FC = () => {
 					}
 				}
 
-				label .text-input textarea{
+				label .text-input textarea {
 					width: 100%;
 				}
 			`}
 			onSubmit={(event) => {
-				event.preventDefault();
+				event.preventDefault()
 				let form = event.currentTarget
 				let formData = new FormData(form)
 
-				if(message.length>0){
+				if (message.length > 0) {
 					console.log(formData)
-					handleSendMessage(message, formData);
+					handleSendMessage(message, formData)
 					socket.emit('newMessage', {
-						chatroomId: chatroomId, 
+						chatroomId: chatroomId,
 						senderId: userId,
 						text: message
 					})
 					console.log(`the message ${message} has been submit`)
 					setMessage('')
-				}}
-			}
-			>
-			<label className='text-input' css={css`width: 100%;`}>
-				<textarea css={css`width: 100%;`}
-				key="textarea" role="textbox"
-				placeholder='Type something here...'
-				form='input-container' 
-				value={message}
-				onChange={(e)=>setMessage(e.target.value)}
+				}
+			}}>
+			<label
+				className='text-input'
+				css={css`
+					width: 100%;
+				`}>
+				<textarea
+				rows={1}	
+				css={css`
+						width: 100%;
+						border: none;
+						resize: none;
+						max-height: 6.5rem;
+						:focus-visible {
+							outline: none;
+						}
+					`}
+					key='textarea'
+					role='textbox'
+					placeholder='Type something here...'
+					form='input-container'
+					value={message}
+					onChange={(e) => {
+						e.target.style.height = 'auto'
+						setMessage(e.target.value)
+						let scHeight = e.target.scrollHeight
+						e.target.style.height = scHeight + 'px'
+					}}
+					contentEditable
 				/>
 			</label>
 			{/* <input type='text'		
@@ -150,7 +172,12 @@ const ChatInput: React.FC = () => {
 						font-size: 1.5rem;
 					`}
 				/>
-				{showEmojiPicker && <Picker onEmojiClick={handleEmojiClick} disableSearchBar={true} />}
+				{showEmojiPicker && (
+					<Picker
+						onEmojiClick={handleEmojiClick}
+						disableSearchBar={true}
+					/>
+				)}
 			</div>
 			<button className='submit'> send </button>
 		</form>
