@@ -2,7 +2,7 @@
 import { css } from '@emotion/react'
 import { IonButton, IonContent, IonPage } from '@ionic/react'
 import React, { useEffect, useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useHistory } from 'react-router-dom'
 import WorkerTabBar from '../nav/WorkerTabBar'
 
 export default function WorkerOrderPage() {
@@ -59,35 +59,93 @@ export default function WorkerOrderPage() {
 		fetchOrdersData()
 	}, [])
 
+	const history = useHistory()
+
 	return (
-		<IonPage
-			css={css`
-				.order {
-					display: flex;
-					flex-direction: column;
-					width: 90%;
-					height: 13rem;
-					justify-content: center;
-					align-items: center;
-					box-sizing: border-box;
-					box-shadow: 0px 0px 10px #cccddd;
-					border-radius: 1rem;
-					padding: 0.5rem;
-					margin-top: 1rem;
-					margin-left: auto;
-					margin-right: auto;
-				}
-			`}>
-			<IonContent>
+		<IonPage>
+			<IonContent
+				css={css`
+					.order {
+						display: flex;
+						flex-direction: column;
+						width: 90%;
+						height: 43%;
+						justify-content: center;
+						align-items: center;
+						box-sizing: border-box;
+						box-shadow: 0px 0px 10px #cccddd;
+						border-radius: 1rem;
+						padding: 0.5rem;
+						margin-top: 1rem;
+						margin-left: auto;
+						margin-right: auto;
+						div {
+							margin-bottom: 0.8rem;
+						}
+					}
+					a {
+						text-decoration: none;
+					}
+					.address {
+						font-weight: bold;
+						color: black;
+						margin-bottom: 0 !important;
+					}
+					.orderId {
+						width: 100%;
+						display: flex;
+						justify-content: center;
+						border-bottom: solid #cccddd;
+					}
+					.service {
+						display: flex;
+						width: 100%;
+						justify-content: space-between;
+						span {
+							color: #fa7268;
+						}
+					}
+					.type {
+						display: flex;
+						width: 100%;
+						justify-content: space-between;
+						span {
+							border-color: #fa7268;
+							background-color: #fa7268;
+							color: white;
+							padding: 2px;
+							border-radius: 1rem;
+							min-width: 3rem;
+						}
+					}
+					.budget {
+						display: flex;
+						width: 100%;
+						justify-content: space-between;
+						span {
+							color: black;
+						}
+					}
+
+					button {
+						width: 13rem;
+						background-color: #7ed321;
+						color: white;
+						padding: 0.7rem;
+						border-radius: 3rem;
+					}
+				`}>
 				{ordersInfo &&
 					ordersInfo.map((orderInfo) => (
 						<NavLink
 							key={orderInfo.id}
 							to={`/orderDetailPage/${orderInfo.id}`}>
 							<div className='order'>
-								<div>{orderInfo.working_address}</div>
-								<div>{orderInfo.id}</div>
-								<div>
+								<div className='address'>
+									{orderInfo.working_address}
+								</div>
+								<div className='orderId'>{orderInfo.id}</div>
+								<div className='service'>
 									服務範圍
 									<span>
 										{referenceTable &&
@@ -102,9 +160,9 @@ export default function WorkerOrderPage() {
 											)[0].type}
 									</span>
 								</div>
-								<div>
+								<div className='type'>
 									維修類別
-									<span>
+									<span className='btn btn-outline-danger'>
 										{referenceTable &&
 											referenceTable[2].filter(
 												(subType) =>
@@ -113,12 +171,15 @@ export default function WorkerOrderPage() {
 											)[0].subtype}
 									</span>
 								</div>
-								<div>
-									預算<span>{orderInfo.budget}</span>
+								<div className='budget'>
+									預算<span>${orderInfo.budget}</span>
 								</div>
-								<IonButton routerLink='/tabs/chatlist'>
+								<button
+									onClick={() => {
+										history.replace('/tabs/chatlist')
+									}}>
 									聯絡客戶
-								</IonButton>
+								</button>
 							</div>
 						</NavLink>
 					))}
