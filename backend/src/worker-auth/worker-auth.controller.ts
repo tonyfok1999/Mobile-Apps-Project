@@ -13,6 +13,15 @@ export class WorkerAuthController {
   register(@Body() user: CreateUserDto) {
     return this.userService.register(user);
   }
+  @Post('webGoogleLogin')
+  async webGoogleLogin(@Body() user: CreateUserDto) {
+    const logInOrRegister = await this.userService.webGoogleLogin(user);
+    if (logInOrRegister.message == 'login') {
+      const { access_token } = this.authService.generateJwt(logInOrRegister.user);
+      return { access_token: access_token };
+    }
+    return logInOrRegister;
+  }
 
   @UseGuards(LocalAuthGuard)
   @Post('login')

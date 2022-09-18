@@ -22,7 +22,6 @@ export class UserService {
 
     if (typeof result[0] == 'undefined') {
       const hash = await bcrypt.hash(user.password, 1);
-      console.log(hash);
       let workerId = await this.knex('users')
         .insert({
           email: user.email,
@@ -45,6 +44,14 @@ export class UserService {
       return { message: 'used email' };
     }
     return { message: 'register_success' };
+  }
+
+  async webGoogleLogin(user: CreateUserDto) {
+    let result = await this.knex.select('*').from('users').where('email', user.email);
+
+    if (typeof result[0] == 'undefined') {
+      return { message: 'register' };
+    } else return { message: 'login', user: { id: parseInt(result[0].id), email: result[0].email, is_worker: true } };
   }
 
   async findAll() {

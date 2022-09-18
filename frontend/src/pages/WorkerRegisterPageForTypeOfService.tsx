@@ -44,7 +44,11 @@ export default function WorkerRegisterPageForTypeOfService() {
 
 	useEffect(() => {
 		const fetchReferenceTable = async () => {
-			const res = await fetch('http://localhost:8000/referencesTable')
+			const res = await fetch('http://localhost:8000/referencesTable', {
+				headers: {
+					Authorization: `whatever`
+				}
+			})
 			const data = await res.json()
 			setReferenceTable(data)
 		}
@@ -64,6 +68,10 @@ export default function WorkerRegisterPageForTypeOfService() {
 	const phone = useSelector(
 		(state: RootState) => state.register.account?.phone
 	)
+	const isLocalRegister = useSelector(
+		(state: RootState) => state.register.account?.isLocalRegister
+	)
+
 	const history = useHistory()
 
 	// email: string;
@@ -117,22 +125,6 @@ export default function WorkerRegisterPageForTypeOfService() {
 				<form
 					onSubmit={async (e) => {
 						e.preventDefault()
-						const res = await fetch(
-							'http://localhost:8000/user/register',
-							{
-								method: 'post',
-								headers: {
-									'Content-Type': 'application/json'
-								},
-								body: JSON.stringify({
-									email: email,
-									nickname: nickname,
-									password: password,
-									phone: phone,
-									workerSubtypeId: workerSubtypeId
-								})
-							}
-						)
 					}}>
 					<div>維修範圍*</div>
 					{referenceTable &&
@@ -193,8 +185,43 @@ export default function WorkerRegisterPageForTypeOfService() {
 						type='submit'
 						value='註冊'
 						disabled={cannotRegister}
-						onClick={() => {
-							history.push('/registerSuccess')
+						onClick={async () => {
+							const res = await fetch(
+								'http://localhost:8000/worker-auth/register',
+								{
+									method: 'post',
+									headers: {
+										'Content-Type': 'application/json',
+										Authorization: `whatever`
+									},
+									body: JSON.stringify({
+										email: email,
+										nickname: nickname,
+										password: password,
+										phone: phone,
+										is_worker: true,
+										workerSubtypeId: workerSubtypeId
+									})
+								}
+							)
+							if (!isLocalRegister) {
+								const res = await fetch(
+									'http://localhost:8000/worker-auth/webGoogleLogin',
+									{
+										method: 'POST',
+										headers: {
+											'Content-Type': 'application/json',
+											Authorization: `whatever`
+										},
+										body: JSON.stringify({ email: email })
+									}
+								)
+								const jwt = (await res.json()).access_token
+								localStorage.setItem('token', jwt)
+								history.replace('/workerOrderPage')
+							} else {
+								history.replace('/registerSuccess')
+							}
 						}}></input>
 				</form>
 			</IonContent>
