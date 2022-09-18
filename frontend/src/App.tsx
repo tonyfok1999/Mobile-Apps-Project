@@ -68,8 +68,6 @@ const App: React.FC = () => {
 					<Route exact path='/'>
 						<HomePage />
 					</Route>
-
-					<Route exact path='/tabs/homepage' component={HomePage} />
 					<Route
 						exact
 						path='/Speak/SpeakPage'

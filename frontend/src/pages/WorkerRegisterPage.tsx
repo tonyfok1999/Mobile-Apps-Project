@@ -16,6 +16,7 @@ import LoginMethods from '../components/LoginMethods'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
 import { storeAccount } from '../redux/register/action'
+import { arrowBackOutline, eyeOffOutline, eyeOutline } from 'ionicons/icons'
 
 export default function WorkerRegisterPage() {
 	const history = useHistory()
@@ -31,83 +32,88 @@ export default function WorkerRegisterPage() {
 	const [cannotNextStep, setCannotNextStep] = useState<boolean>(true)
 	const [isDuplicateEmail, setIsDuplicateEmail] = useState<boolean>(false)
 	const [isSamePassword, setIsSamePassword] = useState<boolean>(true)
-
+	const [icon1, setIcon1] = useState(eyeOutline)
+	const [show1, setShow1] = useState('password')
+	const [icon2, setIcon2] = useState(eyeOutline)
+	const [show2, setShow2] = useState('password')
 	return (
-		<IonPage
-			css={css`
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: stretch;
-				div:nth-of-type(1) {
-					display: flex;
+		<IonPage>
+			<IonContent
+				css={css`
+					.line {
+						border-bottom: solid 1px #cccddd;
+						width: 100%;
+						margin-bottom: 1rem;
+					}
 					ion-button {
-						position: absolute;
-						left: 0;
+						width: 5rem;
+						display: block;
 					}
-					span {
-						position: absolute;
-						right: 0;
-					}
-					a {
-						text-decoration: none;
+					h1 {
+						display: flex;
 						color: #fa7268;
 						font-weight: bold;
+						margin-top: 1rem;
+						justify-content: center;
 					}
-				}
-				h1 {
-					color: #fa7268;
-					font-weight: bold;
-					margin-top: 5rem;
-				}
-				span:nth-of-type(1) {
-					margin: 1rem;
-				}
-				div:nth-of-type(2) {
-					color: #777777;
-					margin: 1rem;
-				}
-				form {
-					display: flex;
-					flex-direction: column;
-					width: 95%;
-					input {
-						border: none;
-						border-bottom: solid 1px #cccddd;
-						display: block;
-						margin-top: 1.5rem;
+					.methods {
+						display: flex;
+						flex-direction: column;
+						align-items: center;
+						div {
+							margin: 1rem;
+						}
 					}
-					a {
-						margin-left: auto;
-						font-size: 0.6rem;
-						color: #777777;
-						text-decoration: none;
+					form {
+						display: flex;
+						flex-direction: column;
+						width: 95%;
+						input {
+							margin-left: 0.5rem;
+							border: none;
+							display: block;
+							margin-top: 1.5rem;
+						}
+						input[type='submit'] {
+							position: absolute;
+							padding: 0;
+							width: 3rem;
+							bottom: 3rem;
+							left: 0;
+							right: 0;
+							margin-left: auto;
+							margin-right: auto;
+							border-bottom: none;
+							font-weight: bold;
+							background: linear-gradient(
+								45deg,
+								rgb(56, 28, 129),
+								rgb(254, 121, 89)
+							);
+							-webkit-background-clip: text;
+							color: transparent;
+						}
 					}
-					input[type='submit'] {
+					.passwordContainer {
+						position: relative;
+					}
+					.icon {
 						position: absolute;
-						padding: 0;
-						width: 3rem;
-						bottom: 3rem;
-						left: 0;
+						top: 2rem;
 						right: 0;
-						margin-left: auto;
-						margin-right: auto;
-						border-bottom: none;
-						font-weight: bold;
-						background: linear-gradient(
-							45deg,
-							rgb(56, 28, 129),
-							rgb(254, 121, 89)
-						);
-						-webkit-background-clip: text;
-						color: transparent;
 					}
-				}
-			`}>
-			<IonContent>
+				`}>
+				<IonButton
+					size='large'
+					fill='clear'
+					routerLink='/workerLoginPage'>
+					<IonIcon className='icon' icon={arrowBackOutline} />
+				</IonButton>
 				<h1>師傅註冊</h1>
-				<LoginMethods />
-				<div>或</div>
+				<div className='methods'>
+					<LoginMethods />
+					<div>或</div>
+				</div>
 				<form
 					onSubmit={handleSubmit((formData) => {
 						dispatch(
@@ -125,6 +131,7 @@ export default function WorkerRegisterPage() {
 						placeholder='顯示名稱*'
 						{...register('nickname', { required: true })}
 					/>
+					<div className='line'></div>
 					<input
 						type='email'
 						placeholder='電郵*'
@@ -150,26 +157,60 @@ export default function WorkerRegisterPage() {
 							}
 						})}
 					/>
+					<div className='line'></div>
 					{isDuplicateEmail && (
 						<div className='error'> this email is duplicated</div>
 					)}
-					<input
-						type='password'
-						placeholder='密碼*'
-						{...register('password', { required: true })}
-					/>
-					<input
-						type='password'
-						placeholder='確定密碼*'
-						{...register('confirmedPassword', {
-							required: true,
-							onBlur: () => {
-								watch('password') == watch('confirmedPassword')
-									? setIsSamePassword(true)
-									: setIsSamePassword(false)
-							}
-						})}
-					/>
+					<div className='passwordContainer'>
+						<input
+							type={show1}
+							placeholder='密碼*'
+							{...register('password', { required: true })}
+						/>
+						<IonIcon
+							className='icon'
+							icon={icon1}
+							onClick={() => {
+								if (show1 === 'password') {
+									setShow1('text')
+									setIcon1(eyeOffOutline)
+								} else {
+									setShow1('password')
+									setIcon1(eyeOutline)
+								}
+							}}
+						/>
+					</div>
+					<div className='line'></div>
+					<div className='passwordContainer'>
+						<input
+							type={show2}
+							placeholder='確定密碼*'
+							{...register('confirmedPassword', {
+								required: true,
+								onBlur: () => {
+									watch('password') ==
+									watch('confirmedPassword')
+										? setIsSamePassword(true)
+										: setIsSamePassword(false)
+								}
+							})}
+						/>
+						<IonIcon
+							className='icon'
+							icon={icon2}
+							onClick={() => {
+								if (show2 === 'password') {
+									setShow2('text')
+									setIcon2(eyeOffOutline)
+								} else {
+									setShow2('password')
+									setIcon2(eyeOutline)
+								}
+							}}
+						/>
+					</div>
+					<div className='line'></div>
 					{!isSamePassword && (
 						<div className='error'>
 							the password is not the same of above
@@ -185,6 +226,7 @@ export default function WorkerRegisterPage() {
 							}
 						})}
 					/>
+					<div className='line'></div>
 					<input
 						type='submit'
 						value='下一步'

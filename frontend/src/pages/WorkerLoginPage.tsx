@@ -18,45 +18,48 @@ import { arrowBackOutline } from 'ionicons/icons'
 
 export default function WorkerLoginPage() {
 	return (
-		<IonPage
-			css={css`
-				display: flex;
-				flex-direction: column;
-				justify-content: stretch;
+		<IonPage>
+			<IonContent
+				css={css`
+					display: flex;
+					flex-direction: column;
+					justify-content: stretch;
 
-				ion-button {
-					width: 5rem;
-				}
-				img {
-					margin-left: auto;
-					margin-right: auto;
-					max-width: 40%;
-				}
+					ion-button {
+						width: 5rem;
+						display: block;
+					}
+					img {
+						display: block;
+						margin-left: auto;
+						margin-right: auto;
+						margin-bottom: 1rem;
+						max-width: 40%;
+					}
 
-				.container {
-					margin-left: auto;
-					margin-right: auto;
-					h1 {
-						margin: auto;
+					.container {
+						margin-left: auto;
+						margin-right: auto;
+						h1 {
+							margin: auto;
+						}
 					}
-				}
-				> span {
-					position: absolute;
-					width: 10.5rem;
-					bottom: 1rem;
-					left: 0;
-					right: 0;
-					margin-left: auto;
-					margin-right: auto;
-					a {
-						margin-left: 0.5rem;
-						text-decoration: none;
-						color: #fa7268;
-						font-weight: bold;
+					> span {
+						position: absolute;
+						width: 10.5rem;
+						bottom: 1rem;
+						left: 0;
+						right: 0;
+						margin-left: auto;
+						margin-right: auto;
+						a {
+							margin-left: 0.5rem;
+							text-decoration: none;
+							color: #fa7268;
+							font-weight: bold;
+						}
 					}
-				}
-			`}>
-			<IonContent>
+				`}>
 				<IonButton
 					size='large'
 					fill='clear'

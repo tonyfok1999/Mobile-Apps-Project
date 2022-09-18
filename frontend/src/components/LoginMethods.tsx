@@ -71,10 +71,10 @@ export default function LoginMethods() {
 								isLocalRegister: false
 							})
 						)
-						history.push('/workerRegisterPageForTypeOfService')
+						history.replace('/workerRegisterPageForTypeOfService')
 					} else {
 						localStorage.setItem('token', fetchData.access_token)
-						history.push('/workerOrderPage')
+						history.replace('/workerOrderPage')
 					}
 				}}>
 				<BsLinkedin />
