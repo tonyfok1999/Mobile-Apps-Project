@@ -1,6 +1,7 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseInterceptors, UploadedFile, ParseIntPipe, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseInterceptors, UploadedFile, ParseIntPipe, UseGuards, Query, Logger } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ChatroomService } from './chatroom.service';
+import { UserService } from 'src/user/user.service';
 import { Message } from './dto/message.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -8,9 +9,12 @@ import { get } from 'http';
 import console from 'console';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
-@Controller('/chatroom')
+@Controller('chatroom')
 export class ChatroomController {
-  constructor(private readonly chatroomService: ChatroomService) {}
+  constructor(
+    private readonly chatroomService: ChatroomService, 
+    private readonly userService: UserService
+    ) {}
 
   @Get('/:chatroomId/message')
   async getMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number) {
@@ -40,7 +44,7 @@ export class ChatroomController {
   )
   async postMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number, @Body() message: Message, @UploadedFile() file?:Express.Multer.File) {
 
-    if (chatroomId === undefined || message.sender_id === undefined) {
+    if (chatroomId === undefined || message.senderId === undefined) {
       throw new HttpException('sender_id and chatroom_id are required', HttpStatus.NOT_FOUND);
     } else if (message.text === undefined || message.text === '' && file === undefined) {
       throw new HttpException('both message and file are missing', HttpStatus.NOT_FOUND);
@@ -52,6 +56,18 @@ export class ChatroomController {
     } catch {
       throw new HttpException('message cannot be posted', HttpStatus.BAD_REQUEST);;
     }
+  }
+
+  @Get('/find-by-nickname')
+  async findAllByNickname(@Query() query: {nickname: string}){
+
+    const nickname = query.nickname
+    const user = await this.userService.findAllByNickname(nickname)
+    Logger.debug(`searched user ${JSON.stringify(user)}`,'ChatroomService')
+    if (user.length = 0) {
+      throw new HttpException('user cannot be found', HttpStatus.BAD_REQUEST);
+    }
+    return user
   }
 
   // @Get()

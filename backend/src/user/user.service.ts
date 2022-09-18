@@ -1,5 +1,5 @@
 /* eslint-disable prettier/prettier */
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectKnex, Knex } from 'nestjs-knex';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -77,6 +77,7 @@ export class UserService {
       let result = await this.knex.select(['id', 'email', 'nickname', 'phone', 'gender_id', 'profile_photo', 'is_worker', 'worker_info_id', 'score']).from('users').where('id', id);
       return result;
     } catch {
+      Logger.error(`the searched user id ${id} does not exist`, 'UserService')
       return [];
     }
   }
@@ -105,5 +106,14 @@ export class UserService {
     let result = await this.knex.select(['id', 'email', 'nickname', 'phone', 'gender_id', 'profile_photo', 'is_worker', 'worker_info_id', 'score']).from('users').where('id', id);
 
     return result;
+  }
+
+  async findAllByNickname(nickname: string){
+    try {
+      const result = await this.knex.raw(`select id, email, nickname, phone, gender_id, profile_photo, is_worker, worker_info_id, score from users where nickname Like '%${nickname}%'`)
+      return result.rows
+    }catch{
+      return undefined
+    }
   }
 }

@@ -9,8 +9,7 @@ import { ReferencesTableModule } from './references_table/references_table.modul
 import { AuthMiddleware } from './middleware/auth.middleware';
 import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
-import { WebsocketModule } from './websocket/websocket.module';
-import { AllUserJwtMiddleware } from './middleware/alluserjwt.middleware';
+import { AllUserJwtMiddleware } from './middleware/all-user-jwt.middleware';
 import { JwtService } from '@nestjs/jwt';
 import { WorkerAuthModule } from './worker-auth/worker-auth.module';
 import SecretConfigFactory from './config/secret.config';

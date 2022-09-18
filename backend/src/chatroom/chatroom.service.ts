@@ -25,7 +25,13 @@ export class ChatroomService {
     ON chatroom_records.chatroom_id = chatrooms.id
     WHERE user_id = ?;
     `, userId)
-    return chatrooms.rows
+    
+    return chatrooms.rows 
+  }
+
+  async getAllUserIdByChatroomId(chatroomId: number){
+    const allUserIds = await this.knex.raw(`SELECT user_id from attendees where chatroom_id = 1;`, chatroomId)
+    return allUserIds
   }
 
   async getMessage(chatroomId: number) {
@@ -33,7 +39,7 @@ export class ChatroomService {
   }
 
   async postMessage(chatroomId: number, message: Message, file?: Express.Multer.File) {
-    await this.knex('chatroom_records').insert({ chatroom_id: chatroomId, sender_id: message.sender_id, text: message.text, image: file?.filename });
+    await this.knex('chatroom_records').insert({ chatroom_id: chatroomId, sender_id: message.senderId, text: message.text, image: file?.filename });
   }
 
   findAll() {
