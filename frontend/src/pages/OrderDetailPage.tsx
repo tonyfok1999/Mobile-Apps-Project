@@ -124,7 +124,7 @@ export default function OrderDetailPage() {
 				</div>
 				<h1>資料</h1>
 				<div className='address'>
-					<IonIcon className='locationIcon' icon={locationSharp} />
+					<IonIcon className='icon' icon={locationSharp} />
 					<div>
 						<div>地區</div>
 						<div>{orderInfo?.working_address}</div>
@@ -155,18 +155,18 @@ export default function OrderDetailPage() {
 				</div>
 				<div className='line'></div>
 				<div>
-					<IonIcon className='locationIcon' icon={cashOutline} /> 預算
+					<IonIcon className='icon' icon={cashOutline} /> 預算
 					<div>$ {orderInfo?.budget}</div>
 				</div>
 				<div className='line'></div>
 				<div>
-					<IonIcon className='locationIcon' icon={cameraOutline} />
+					<IonIcon className='icon' icon={cameraOutline} />
 					相片
 					<div>相片</div>
 				</div>
 				<div className='line'></div>
 				<div>
-					<IonIcon className='locationIcon' icon={micOutline} /> 語音
+					<IonIcon className='icon' icon={micOutline} /> 語音
 					<div>語音</div>
 				</div>
 				<div>語音文字</div>

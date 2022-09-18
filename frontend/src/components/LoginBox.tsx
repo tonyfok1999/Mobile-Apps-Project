@@ -5,9 +5,10 @@ import { NavLink, useHistory } from 'react-router-dom'
 import LoginMethods from './LoginMethods'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { Method } from 'ionicons/dist/types/stencil-public-runtime'
-import { useIonAlert } from '@ionic/react'
+import { IonIcon, useIonAlert } from '@ionic/react'
 import { useAppDispatch } from '../store'
 import { loggedIn } from '../redux/auth/action'
+import { eyeOffOutline, eyeOutline } from 'ionicons/icons'
 
 export default function LoginBox() {
 	const {
@@ -23,6 +24,9 @@ export default function LoginBox() {
 
 	const dispatch = useAppDispatch()
 
+	const [icon, setIcon] = useState(eyeOutline)
+	const [show, setShow] = useState('password')
+
 	return (
 		<div
 			className='container'
@@ -37,6 +41,11 @@ export default function LoginBox() {
 				border-radius: 1rem;
 				padding: 0.5rem;
 
+				.line {
+					border-bottom: solid 1px #cccddd;
+					width: 100%;
+					margin-bottom: 1rem;
+				}
 				h1 {
 					color: #fa7268;
 					font-weight: bold;
@@ -48,7 +57,6 @@ export default function LoginBox() {
 					width: 95%;
 					input {
 						border: none;
-						border-bottom: solid 1px #cccddd;
 						display: block;
 						margin-top: 1.5rem;
 					}
@@ -84,6 +92,14 @@ export default function LoginBox() {
 						color: #777777;
 					}
 				}
+				.passwordContainer {
+					position: relative;
+				}
+				.icon {
+					position: absolute;
+					top: 2rem;
+					right: 0;
+				}
 			`}>
 			<h1>登入</h1>
 			<form
@@ -118,11 +134,29 @@ export default function LoginBox() {
 					placeholder='電郵'
 					{...register('email', { required: true })}
 				/>
-				<input
-					type='password'
-					placeholder='密碼'
-					{...register('password', { required: true })}
-				/>
+				<div className='line'></div>
+				<div className='passwordContainer'>
+					<input
+						type={show}
+						placeholder='密碼'
+						{...register('password', { required: true })}
+					/>
+
+					<IonIcon
+						className='icon'
+						icon={icon}
+						onClick={() => {
+							if (show === 'password') {
+								setShow('text')
+								setIcon(eyeOffOutline)
+							} else {
+								setShow('password')
+								setIcon(eyeOutline)
+							}
+						}}
+					/>
+				</div>
+				<div className='line'></div>
 				<NavLink to='#'>忘記密碼?</NavLink>
 				<input type='submit' value='登入' />
 			</form>
