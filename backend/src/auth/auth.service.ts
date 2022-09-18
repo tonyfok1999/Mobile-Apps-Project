@@ -19,9 +19,12 @@ export class AuthService {
   }  
 
   async generateJwt() {
+    const nextUserId= await this.knex.select('last_value').from('users_id_seq')
+
     const newUser = await this.knex('users')
       .insert({
         email: uuidv4(),
+        nickname: `未註冊用戶${(parseInt(nextUserId[0].last_value)+1)}`,
         password: '',
       })
       .returning(['id', 'email']);

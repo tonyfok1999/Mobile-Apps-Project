@@ -1,4 +1,5 @@
 export class Message {
-  sender_id: number;
+  chatroomId?: number;
+  senderId: number;
   text?: string;
 }

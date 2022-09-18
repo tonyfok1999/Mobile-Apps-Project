@@ -30,3 +30,12 @@ ON chatroom_records.chatroom_id = chatrooms.id
 WHERE attendees.user_id = 2;
 
 select * from chatroom_records;
+
+-- Search user with nickname
+
+select id, email, nickname, phone, gender_id, profile_photo, is_worker, worker_info_id, score from users where nickname Like '%未%';
+
+
+-- Get all the users from the same chatroom
+
+SELECT user_id from attendees where chatroom_id = 1;
