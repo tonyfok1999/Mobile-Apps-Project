@@ -3,15 +3,18 @@ import { type } from 'os'
 import { TypedUseSelectorHook, useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { authReducer } from './redux/auth/reducer'
+import { chatroomReducer } from './redux/chatroom/reducer'
 import { districtReducer } from './redux/districts/reducer'
 import { registerReducer } from './redux/register/reducer'
 import { speakReducer } from './redux/speak/reducer'
+
 
 const reducers = combineReducers({
 	auth: authReducer,
 	districts: districtReducer,
 	register: registerReducer,
-	speak: speakReducer
+	speak: speakReducer,
+	chatroom: chatroomReducer
 })
 
 export type RootState = ReturnType<typeof reducers>

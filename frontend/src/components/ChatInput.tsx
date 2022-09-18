@@ -6,11 +6,16 @@ import React, { useContext, useEffect, useState } from 'react'
 import Picker from 'emoji-picker-react'
 import { Message } from './ChatContainer'
 import { WebSocketContext } from '../context/WebScoketContext'
+import { useParams } from 'react-router'
+import { useAppSelector } from '../store'
 
 const ChatInput: React.FC = () => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false)
 	const [message, setMessage] = useState('')
 	const socket = useContext(WebSocketContext)
+	const params = useParams<{ chatroomId: string }>()
+	const chatroomId= parseInt(params.chatroomId)
+	const userId = useAppSelector((state) => state.auth.user!.id)
 
 	// useEffect(() => {
 		
@@ -33,6 +38,8 @@ const ChatInput: React.FC = () => {
  		setMessage(message + emojiObject.emoji)
 	}
 
+	const token = localStorage.getItem('token')
+
 	const handleSendMessage =async (message: string,formData: FormData) => {
 		
 		const blob = new Blob([JSON.stringify({sender_id: 1, text: message})], {type : 'application/json'});
@@ -42,7 +49,7 @@ const ChatInput: React.FC = () => {
 			`${process.env.REACT_APP_BACKEND_URL}/chatroom/1/message`,
 			{ 
 			method: 'POST',
-			headers:{'Content-Type': 'application/json; charset=utf-8'},
+			headers:{'Content-Type': 'application/json; charset=utf-8', Authorization: `Bearer ${token}`},
 			body: JSON.stringify({sender_id: 1, text: message})
 			}
 		)
@@ -51,7 +58,7 @@ const ChatInput: React.FC = () => {
 
 	return (
 		<form
-			className='input-container'
+			key='input-container'
 			css={css`
 				width: 100%;
 				display: flex;
@@ -92,6 +99,10 @@ const ChatInput: React.FC = () => {
 						outline: none;
 					}
 				}
+
+				label .text-input textarea{
+					width: 100%;
+				}
 			`}
 			onSubmit={(event) => {
 				event.preventDefault();
@@ -101,13 +112,28 @@ const ChatInput: React.FC = () => {
 				if(message.length>0){
 					console.log(formData)
 					handleSendMessage(message, formData);
-					socket.emit('newMessage', message)
-					console.log('the message has been submit')
+					socket.emit('newMessage', {
+						chatroomId: chatroomId, 
+						senderId: userId,
+						text: message
+					})
+					console.log(`the message ${message} has been submit`)
 					setMessage('')
 				}}
 			}
 			>
-			<input type='text' placeholder='Type something here...' value={message} onChange={(e)=>setMessage(e.target.value)} />
+			<label className='text-input' css={css`width: 100%;`}>
+				<textarea css={css`width: 100%;`}
+				key="textarea" role="textbox"
+				placeholder='Type something here...'
+				form='input-container' 
+				value={message}
+				onChange={(e)=>setMessage(e.target.value)}
+				/>
+			</label>
+			{/* <input type='text'		
+			placeholder='Type something here...' value={message} 
+			onChange={(e)=>setMessage(e.target.value)} /> */}
 			<div
 				className='emojiButton'
 				css={css`

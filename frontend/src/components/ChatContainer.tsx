@@ -28,6 +28,7 @@ const VirtualScroll = require('react-dynamic-virtual-scroll')
 export interface Message {
 	sender_id: number
 	text?: string
+	created_at?: Date
 }
 
 const ChatContainer: React.FC = () => {

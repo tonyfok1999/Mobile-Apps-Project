@@ -8,7 +8,9 @@ import { Message } from './ChatContainer'
 function MessageBubble(props: { content?: Message }) {
 	return (
 		<>
-			<div
+			<div css={css`
+			margin: 1rem
+			`}
 				className={`message ${
 					props.content?.sender_id == 1 ? 'sender' : 'receiver'
 				}`}>

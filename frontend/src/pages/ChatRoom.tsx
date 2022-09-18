@@ -14,7 +14,7 @@ import {
 	IonLabel,
 	IonFooter
 } from '@ionic/react'
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { IoArrowBackSharp } from 'react-icons/io5'
 import { useParams } from 'react-router'
 import ChatInput from '../components/ChatInput'
@@ -22,22 +22,92 @@ import { useVirtualizer } from '@tanstack/react-virtual'
 import Chats from '../components/Chats'
 import ChatContainer from '../components/ChatContainer'
 import { useAppDispatch } from '../store'
+import MessageBubble from '../components/MessageBubble'
+import { WebSocketContext } from '../context/WebScoketContext'
+
+export interface Message {
+	sender_id: number
+	text?: string
+	created_at?: Date
+}
 
 const Chatroom: React.FC = () => {
 	const params = useParams<{ chatroomId: string }>()
+	console.log('params' + JSON.stringify(params))
 
-	// const handleSendMessage = async (message: Message) => {}
+	const initialState: Message[] = [
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() },
+		{ sender_id: 1, text: 'Hello', created_at: new Date() }
+	]
+
+	const [messages, setMessages] = useState<Message[]>(initialState)
+
+	const socket = useContext(WebSocketContext)
+
+	const token = localStorage.getItem('token')
+
+	useEffect(() => {
+		const getMessages = async () => {
+			const res = await fetch(
+				`${process.env.REACT_APP_BACKEND_URL}/chatroom/${params.chatroomId}/message`,
+				{ headers: { Authorization: `Bearer ${token}` } }
+			)
+			const json = await res.json()
+			console.log(json)
+			console.log('calling getMessages')
+			setMessages(() => json)
+		}
+
+		getMessages()
+
+		console.log('container lifecycle starting')
+
+		// socket.on('connect', ()=>{
+		// 	console.log('socket connected')
+		// 	getMessages()
+		// })
+
+		socket.on('onMessage', (data)=>{
+			console.log('onMessage event received')
+			console.log(data)
+			setMessages((prev) => [...prev, data])
+		})
+
+		return () => {
+			console.log('Unregistering Event')
+			socket.off('connect')
+			socket.off('onMessage')
+		}
+
+	}, [])
+
+	console.log(`message: ` + JSON.stringify(messages))
 
 	return (
 		<>
 			<IonPage
 				css={css`
-
-				ion-avatar {
-					padding-left: 20px;
-					align-items: center;
-					display: flex;
-				}
+					ion-avatar {
+						padding-left: 20px;
+						align-items: center;
+						display: flex;
+					}
 
 					.avatar {
 						padding-left: 20px;
@@ -59,14 +129,17 @@ const Chatroom: React.FC = () => {
 						width: 100%;
 					}
 
-					.input-container{
-					height: 2.15rem;
-					bottom: 0;
-					background: white;
-				}
+					.input-container {
+						height: 2.15rem;
+						bottom: 0;
+						background: white;
+					}
 				`}>
 				<IonHeader>
-					<IonToolbar css={css`--border-style: none;`}>
+					<IonToolbar
+						css={css`
+							--border-style: none;
+						`}>
 						<IonButtons slot='start'>
 							<IonBackButton text='' defaultHref='/tabs/chatlist'>
 								<IoArrowBackSharp size='1.5rem' />
@@ -83,13 +156,19 @@ const Chatroom: React.FC = () => {
 						</div>
 					</IonToolbar>
 				</IonHeader>
-				
+
 				<IonContent>
-				<ChatContainer/>
+					<div>
+						{
+							messages.map((message,idx) =>
+								<MessageBubble key={idx} content={message} />
+						)
+						}
+					</div>
 				</IonContent>
 
 				<IonFooter>
-				<ChatInput/>
+					<ChatInput />
 				</IonFooter>
 			</IonPage>
 		</>

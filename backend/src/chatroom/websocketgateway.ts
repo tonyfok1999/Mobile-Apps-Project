@@ -7,7 +7,7 @@ import { UserService } from 'src/user/user.service';
 import { ChatroomService } from 'src/chatroom/chatroom.service';
 import { Attendees } from './dto/attendees.dto';
 import { ConnectedUserService } from 'src/chatroom/socket-connected-user/connected-user.service';
-import { Message } from './dto/message.dto';
+import { Message } from '../../../models/message.model';
 
 @WebSocketGateway({
   cors: {
@@ -57,7 +57,7 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
       
       const chatrooms = await this.chatroomService.getAllChatroomsbyUserId(user[0].id);
 
-      Logger.debug(chatrooms, 'SocketGateway');
+      Logger.debug(JSON.stringify(chatrooms.rows), 'SocketGateway');
 
       // Only emit rooms to the specific connected client
       return this.server.to(socket.id).emit('chatrooms', chatrooms);
@@ -77,10 +77,11 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
   async onNewMessage(@MessageBody() message: Message) {
     console.log(message);
     const attendees = await this.chatroomService.getAllUserIdByChatroomId(message.chatroomId)
+    console.log(attendees)
     const connections = []
 
     // get socket id of all the users in the same room
-    for (const attendee of attendees.rows) {
+    for (const attendee of attendees) {
       const attendeeSocket = await this.connectedUserService.getSocketIdByUserId(attendee.user_id)
       connections.push(attendeeSocket[0].socket_id)
     }

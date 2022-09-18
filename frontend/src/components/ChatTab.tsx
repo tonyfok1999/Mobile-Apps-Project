@@ -6,11 +6,20 @@ import Tabs from 'react-bootstrap/Tabs'
 
 import './ChatTab.css'
 
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Chats from './Chats'
 
 import { WebSocketContext } from '../context/WebScoketContext'
 import { Timestamp } from 'rxjs'
+
+import { Chatroom } from '../../../models/chatroom.model'
+import { useSelector } from 'react-redux'
+import { useAppDispatch, useAppSelector } from '../store'
+import {
+	startLoading,
+	loadChatrooms,
+	finishLoading
+} from '../redux/chatroom/action'
 
 // export default function ChatTab() {
 //   return (
@@ -18,34 +27,58 @@ import { Timestamp } from 'rxjs'
 //   )
 // }
 
-export interface Chatroom {
-	chatroomId: number
-	senderId: number
-	text: string
-	lastUpdateTime: string
-}
-
 const ChatTab: React.FC = () => {
 	const [key, setKey] = useState('allChats')
 	const socket = useContext(WebSocketContext)
-	const chatListInitialState: Chatroom[] = [
-		{
-			chatroomId: 0,
-			senderId: 0,
-			text: 'Loading',
-			lastUpdateTime: '2022-09-09 11:11:49.936 +0800'
-		}
-	]
-	const [chatrooms, setChatrooms] = useState(chatListInitialState)
+	const token = localStorage.getItem('token')
+	const userId = useAppSelector((state) => state.auth.user!.id)
+	const dispatch = useAppDispatch()
+	console.log('userid' + userId)
 
-	socket.on('chatrooms', (chatrooms) => {
-		setChatrooms(chatrooms)
-	})
+	// const chatListInitialState: Chatroom[] = [
+	// 	{
+	// 		chatroom_id: 0,
+	// 		sender_id: 0,
+	// 		text: 'Loading',
+	// 		lastUpdateTime: '2022-09-09 11:11:49.936 +0800'
+	// 	}
+	// ]
+	// const [chatrooms, setChatrooms] = useState(chatListInitialState)
+
+	useEffect(() => {
+		;(async () => {
+			dispatch(startLoading())
+
+			const res = await fetch(
+				`${process.env.REACT_APP_BACKEND_URL}/chatroom/${userId}`,
+				{ headers: { Authorization: `Bearer ${token}` } }
+			)
+
+			const chatrooms: Chatroom[] = await res.json()
+
+			dispatch(loadChatrooms(chatrooms))
+
+			dispatch(finishLoading())
+
+			socket.on('chatrooms', (chatrooms) => {
+				dispatch(startLoading())
+				dispatch(loadChatrooms(chatrooms))
+				dispatch(finishLoading())
+			})
+
+			return () => {
+				console.log('Unregistering Event')
+				socket.off('chatrooms')
+			}
+		})()
+	}, [])
+
+
 
 	// TODO: create room with user 1983 whenever a new user come in
 	// socket.emit('createRoom', {workerId: 1983, userId: 'current userId'} )
-
-	console.log('The Chatrooms are: ' + chatrooms)
+	const chatrooms = useAppSelector((state) => state.chatroom.chatrooms)
+	console.log('The Chatrooms are: ' + JSON.stringify(chatrooms))
 
 	return (
 		<>
@@ -62,8 +95,8 @@ const ChatTab: React.FC = () => {
 					))}
 				</Tab>
 				<Tab eventKey='storedChats' title='已收藏對話'>
-					{chatrooms.map((chatroom) => (
-						<Chats chatroom={chatroom} />
+					{chatrooms.map((chatroom, idx) => (
+						<Chats key={idx} chatroom={chatroom} />
 					))}
 				</Tab>
 			</Tabs>

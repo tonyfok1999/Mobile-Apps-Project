@@ -13,7 +13,7 @@ import {
 } from '@ionic/react'
 
 import { trash, archive } from 'ionicons/icons'
-import { Chatroom } from './ChatTab'
+import {Chatroom} from '../../../models/chatroom.model'
 
 export default function Chats(props: { chatroom: Chatroom }) {
 	return(
@@ -21,12 +21,12 @@ export default function Chats(props: { chatroom: Chatroom }) {
 		<IonList>
 			{/* Multi-line sliding item with icon options on both sides */}
 			<IonItemSliding id='item100'>
-				<IonItem routerLink='/chatroom/1'>
+				<IonItem routerLink={`/chatroom/${props.chatroom.chatroom_id}`}>
 					<IonAvatar slot='start'>
 						<IonImg src='https://picsum.photos/id/237/64/64'></IonImg>
 					</IonAvatar>
 					<IonLabel>
-						<h2>{props.chatroom.senderId}</h2>
+						<h2>{props.chatroom.sender_id}</h2>
 						<p>{props.chatroom.text}</p>
 					</IonLabel>
 					<IonNote slot='end'>{props.chatroom.lastUpdateTime}</IonNote>

@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpS
 import { Request, Response } from 'express';
 import { ChatroomService } from './chatroom.service';
 import { UserService } from 'src/user/user.service';
-import { Message } from './dto/message.dto';
+import { Message } from '../../../models/message.model';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { get } from 'http';
@@ -16,6 +16,22 @@ export class ChatroomController {
     private readonly userService: UserService
     ) {}
 
+  @Get('/:userId')
+  async getAllChatrooms(@Param('userId', ParseIntPipe) userId: number) {
+  
+    if (typeof(userId) !== 'number') {
+      throw new HttpException('user_id need to be a number', HttpStatus.NOT_FOUND);
+    }
+
+    try {
+      const result= await this.chatroomService.getAllChatroomsbyUserId(userId);
+      return result.rows 
+    } catch {
+      throw new HttpException('chatrooms cannot be found', HttpStatus.BAD_REQUEST);;
+    }
+
+  }
+
   @Get('/:chatroomId/message')
   async getMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number) {
     
@@ -25,10 +41,6 @@ export class ChatroomController {
 
     try {
       const result= await this.chatroomService.getMessage(chatroomId);
-
-      if (result.rowCount === 0) {
-        throw new HttpException('chatroom_id is out of range', HttpStatus.NOT_FOUND);
-      }
 
       return result.rows
     } catch {

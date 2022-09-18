@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, Logger } from '@nestjs/common';
 import { Chatroom } from './dto/chatroom.dto';
-import { Message } from './dto/message.dto';
+import { Message } from '../../../models/message.model';
 import { Knex } from 'knex';
 import { InjectKnex } from 'nestjs-knex';
 import { Attendees } from './dto/attendees.dto';
@@ -19,19 +19,26 @@ export class ChatroomService {
   async getAllChatroomsbyUserId(userId: number) {
     
     const chatrooms = await this.knex.raw(`
-    SELECT chatrooms.id as chatroomId, chatroom_records.created_at as lastUpdateTime, text, sender_id FROM attendees
+    SELECT chatrooms.id as chatroom_id, chatroom_records.created_at as lastUpdateTime, text, sender_id FROM attendees
     LEFT JOIN chatrooms ON chatrooms.id = attendees.chatroom_id 
     LEFT JOIN (SELECT text, sender_id, chatroom_id, created_at FROM chatroom_records ORDER BY created_at DESC LIMIT 1) as chatroom_records
     ON chatroom_records.chatroom_id = chatrooms.id
     WHERE user_id = ?;
     `, userId)
     
-    return chatrooms.rows 
+    return chatrooms
   }
 
   async getAllUserIdByChatroomId(chatroomId: number){
-    const allUserIds = await this.knex.raw(`SELECT user_id from attendees where chatroom_id = 1;`, chatroomId)
+    try{
+    Logger.debug(chatroomId, 'ChatroomService')
+    // const allUserIds = await this.knex.raw(`SELECT user_id FROM attendees WHERE chatroom_id = ?;`, chatroomId.toString())
+    const allUserIds = await this.knex.select('user_id').from('attendees').where('chatroom_id', chatroomId)
+    Logger.debug(allUserIds, 'ChatroomService')
     return allUserIds
+    }catch{
+      Logger.error('Fail to get all user id by chatroom id', 'ChatroomService')
+    }
   }
 
   async getMessage(chatroomId: number) {
