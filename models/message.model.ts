@@ -1,5 +1,5 @@
 export interface Message {
-  chatroomId?: number;
-  senderId: number;
+  chatroom_id?: number;
+  sender_id: number;
   text?: string;
 }

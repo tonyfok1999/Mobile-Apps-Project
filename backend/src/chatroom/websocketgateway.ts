@@ -80,26 +80,31 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
   // listening to 'newMessage' events
   @SubscribeMessage('newMessage')
   async onNewMessage(@MessageBody() message: Message) {
-    console.log(message);
-    console.log({'v': message.chatroomId});
-    console.log('chatroomId' + message.chatroomId);
-    const attendees = await this.chatroomService.getAllUserIdByChatroomId(message.chatroomId)
+    console.log('message' + JSON.stringify(message))
+    const attendees = await this.chatroomService.getAllUserIdByChatroomId(message.chatroom_id)
     // const attendees = [{ user_id: 1 }, { user_id: 1992 }];
-    console.log(attendees);
     const connections = [];
 
     // get socket id of all the users in the same room
-    for (const attendee of attendees) {
+    for (const attendee of attendees.rows) {
+      console.log('attendee' + JSON.stringify(attendee))
       const attendeeSocket = await this.connectedUserService.getSocketIdByUserId(attendee.user_id);
-      connections.push(attendeeSocket[0].socket_id);
+      console.log('socket id: ' + JSON.stringify(attendeeSocket))
+
+      if (attendeeSocket.length === 0) {
+        connections.push(0)
+      } else {
+        connections.push(attendeeSocket[0].socket_id);
+      }
     }
 
     // emit a new message to users in the same room
     for (const connection of connections) {
-      this.server.to(connection).emit('onMessage', {
-        senderId: message.senderId,
+      if (connection)
+      {this.server.to(connection).emit('onMessage', {
+        sender_id: message.sender_id,
         text: message.text,
-      });
+      })}
     }
   }
 

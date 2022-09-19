@@ -61,7 +61,7 @@ export class ChatroomController {
   )
   async postMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number, @Body() message: Message, @UploadedFile() file?:Express.Multer.File) {
 
-    if (chatroomId === undefined || message.senderId === undefined) {
+    if (chatroomId === undefined || message.sender_id === undefined) {
       throw new HttpException('sender_id and chatroom_id are required', HttpStatus.NOT_FOUND);
     } else if (message.text === undefined || message.text === '' && file === undefined) {
       throw new HttpException('both message and file are missing', HttpStatus.NOT_FOUND);

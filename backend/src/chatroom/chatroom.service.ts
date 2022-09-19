@@ -37,9 +37,9 @@ export class ChatroomService {
     // Logger.debug(allUserIds, 'ChatroomService')
     // return [{user_id:1}, {user_id: 1992}]
     return allUserIds
-    }catch{
-      Logger.error('Fail to get all user id by chatroom id', 'ChatroomService')
-      return [{user_id:1}, {user_id: 1992}]
+    }catch(e){
+      Logger.error(e, 'ChatroomService')
+      return []
     }
   }
 
@@ -48,7 +48,7 @@ export class ChatroomService {
   }
 
   async postMessage(chatroomId: number, message: Message, file?: Express.Multer.File) {
-    await this.knex('chatroom_records').insert({ chatroom_id: chatroomId, sender_id: message.senderId, text: message.text, image: file?.filename });
+    await this.knex('chatroom_records').insert({ chatroom_id: chatroomId, sender_id: message.sender_id, text: message.text, image: file?.filename });
   }
 
   findAll() {

@@ -4,7 +4,7 @@ import { VscSmiley } from 'react-icons/vsc'
 import Button from 'react-bootstrap/Button'
 import React, { useContext, useEffect, useState } from 'react'
 import Picker from 'emoji-picker-react'
-import { Message } from './ChatContainer'
+import { Message } from '../../../models/message.model'
 import { WebSocketContext } from '../context/WebScoketContext'
 import { useParams } from 'react-router'
 import { useAppSelector } from '../store'
@@ -47,13 +47,13 @@ const ChatInput: React.FC = () => {
 		)
 		formData.append('blob', blob)
 
-		await fetch(`${process.env.REACT_APP_BACKEND_URL}/chatroom/1/message`, {
+		await fetch(`${process.env.REACT_APP_BACKEND_URL}/chatroom/${chatroomId}/message`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
 				Authorization: `Bearer ${token}`
 			},
-			body: JSON.stringify({ sender_id: 1, text: message })
+			body: JSON.stringify({ sender_id: userId, text: message })
 		})
 		console.log('message has been sent')
 	}
@@ -115,8 +115,8 @@ const ChatInput: React.FC = () => {
 					console.log(formData)
 					handleSendMessage(message, formData)
 					socket.emit('newMessage', {
-						chatroomId: chatroomId,
-						senderId: userId,
+						chatroom_id: chatroomId,
+						sender_id: userId,
 						text: message
 					})
 					console.log(`the message ${message} has been submit`)
