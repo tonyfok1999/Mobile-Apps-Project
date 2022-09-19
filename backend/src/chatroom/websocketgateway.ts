@@ -68,8 +68,12 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
  async handleDisconnect(socket: Socket) {
+    
+  if(socket.data.user.id){
     await this.connectedUserService.deleteByUserId(socket.data.user.id)
-    Logger.warn(`userId ${socket.data.user.id} disconnected websocket gateway - socketid: ${socket.id}`, 'SocketGateway');
+  }
+    
+  Logger.warn(`userId ${socket.data.user.id} disconnected websocket gateway - socketid: ${socket.id}`, 'SocketGateway');
   }
 
   // listening to 'newMessage' events
