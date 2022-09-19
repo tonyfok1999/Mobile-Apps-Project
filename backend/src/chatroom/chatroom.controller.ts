@@ -25,6 +25,11 @@ export class ChatroomController {
 
     try {
       const result= await this.chatroomService.getAllChatroomsbyUserId(userId);
+
+      if(result.rows.length < 0) {
+        return []
+      }
+
       return result.rows 
     } catch {
       throw new HttpException('chatrooms cannot be found', HttpStatus.BAD_REQUEST);;
