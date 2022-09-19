@@ -32,10 +32,11 @@ export class ChatroomService {
   async getAllUserIdByChatroomId(chatroomId: number){
     try{
     Logger.debug(chatroomId, 'ChatroomService')
-    // const allUserIds = await this.knex.raw(`SELECT user_id FROM attendees WHERE chatroom_id = ?`, [chatroomId])
+    const allUserIds = await this.knex.raw(`SELECT user_id FROM attendees WHERE chatroom_id = ?`, [chatroomId])
     // const allUserIds = await this.knex.select('user_id').from('attendees').where('chatroom_id', chatroomId)
     // Logger.debug(allUserIds, 'ChatroomService')
-    return [{user_id:1}, {user_id: 1992}]
+    // return [{user_id:1}, {user_id: 1992}]
+    return allUserIds
     }catch{
       Logger.error('Fail to get all user id by chatroom id', 'ChatroomService')
       return [{user_id:1}, {user_id: 1992}]
