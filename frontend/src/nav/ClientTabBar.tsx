@@ -75,7 +75,7 @@ const ClientTabBar: React.FC = () => {
 			<IonTabButton
 				tab='homepage'
 				className='home-icon'
-				href='/tabs/homePage'>
+				href='/'>
 				<IonIcon size='large' icon={mic} />
 			</IonTabButton>
 
