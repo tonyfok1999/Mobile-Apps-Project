@@ -71,7 +71,7 @@ const ChatTab: React.FC = () => {
 				socket.off('chatrooms')
 			}
 		})()
-	}, [])
+	}, [token])
 
 
 
