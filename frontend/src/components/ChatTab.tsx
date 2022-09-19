@@ -90,14 +90,11 @@ const ChatTab: React.FC = () => {
 				className='mb-3'
 				id='chatTab'>
 				<Tab eventKey='allChats' title='全部對話'>
-					{chatrooms.map((chatroom) => (
-						<Chats chatroom={chatroom} />
-					))}
-				</Tab>
-				<Tab eventKey='storedChats' title='已收藏對話'>
 					{chatrooms.map((chatroom, idx) => (
 						<Chats key={idx} chatroom={chatroom} />
 					))}
+				</Tab>
+				<Tab eventKey='storedChats' title='已收藏對話'>
 				</Tab>
 			</Tabs>
 		</>
