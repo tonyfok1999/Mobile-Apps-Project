@@ -13,7 +13,7 @@ import {
 } from '@ionic/react'
 
 import { trash, archive } from 'ionicons/icons'
-import {Chatroom} from '../../../models/chatroom.model'
+import { Chatroom } from './ChatTab'
 
 export default function Chats(props: { chatroom: Chatroom }) {
 	return(

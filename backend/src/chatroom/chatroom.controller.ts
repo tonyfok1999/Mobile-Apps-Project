@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpS
 import { Request, Response } from 'express';
 import { ChatroomService } from './chatroom.service';
 import { UserService } from 'src/user/user.service';
-import { Message } from '../../../models/message.model';
+import { Message } from './dto/message.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { get } from 'http';
@@ -49,12 +49,9 @@ export class ChatroomController {
     try {
       const attendees: Attendees = {workerId: workerId, userId: userId}
       const chatroomId = await this.chatroomService.createChatroom(attendees);
-
-      console.log({chatroomId: chatroomId})
-
-      return {message: 'success'}
-    } catch (e) {
-      throw new HttpException(e, HttpStatus.BAD_REQUEST);;
+      return {chatroomId: chatroomId}
+    } catch {
+      throw new HttpException("chatroom can't be created", HttpStatus.BAD_REQUEST);;
     }
 
   }

@@ -4,10 +4,16 @@ import { VscSmiley } from 'react-icons/vsc'
 import Button from 'react-bootstrap/Button'
 import React, { useContext, useEffect, useState } from 'react'
 import Picker from 'emoji-picker-react'
-import { Message } from '../../../models/message.model'
+
 import { WebSocketContext } from '../context/WebScoketContext'
 import { useParams } from 'react-router'
 import { useAppSelector } from '../store'
+
+export interface Message {
+	chatroom_id?: number;
+	sender_id: number;
+	text?: string;
+  }
 
 const ChatInput: React.FC = () => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false)

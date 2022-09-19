@@ -7,7 +7,7 @@ import { UserService } from 'src/user/user.service';
 import { ChatroomService } from 'src/chatroom/chatroom.service';
 import { Attendees } from './dto/attendees.dto';
 import { ConnectedUserService } from 'src/chatroom/socket-connected-user/connected-user.service';
-import { Message } from '../../../models/message.model';
+import { Message } from './dto/message.dto';
 
 @WebSocketGateway({
   cors: true,

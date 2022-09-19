@@ -65,7 +65,7 @@ const Chatroom: React.FC = () => {
 	const scrollRef =  React.useRef() as React.MutableRefObject<HTMLInputElement>
 
 	useEffect(()=>{
-		scrollRef.current!.scrollIntoView({behavior: 'auto'})
+		scrollRef.current?.scrollIntoView({behavior: 'auto'})
 	},[messages])
 	
 
@@ -101,7 +101,7 @@ const Chatroom: React.FC = () => {
 			socket.off('connect')
 			socket.off('onMessage')
 		}
-	}, [])
+	}, [token, params.chatroomId])
 
 	console.log(`message: ` + JSON.stringify(messages))
 

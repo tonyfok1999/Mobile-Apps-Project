@@ -63,21 +63,6 @@ export default function WorkerOrderPage() {
 		fetchOrdersData()
 	}, [])
 
-	
-	async function createChatroom(userId: number){
-			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/chatroom/user/${userId}/worker/${workerId}`, {
-			method: 'POST',
-			headers: {
-				Authorization: `Bearer ${token}`
-			}
-		})
-
-		const chatroomId = await res.json()
-		console.log(chatroomId)
-	}
-
-	
-
 	const history = useHistory()
 
 	return (
@@ -159,9 +144,7 @@ export default function WorkerOrderPage() {
 						<div>
 							<NavLink
 								key={orderInfo.id}
-								to={`/orderDetailPage/${orderInfo.id}`}
-								
-								>
+								to={`/orderDetailPage/${orderInfo.id}`}>
 								<div className='order'>
 									<div className='address'>
 										{orderInfo.working_address}
@@ -203,13 +186,26 @@ export default function WorkerOrderPage() {
 
 							<button
 								onClick={() => {
-									
 									// pass in the id of user (not worker) who submit the order
 
-									const chatroomId = createChatroom(orderInfo.user_id)
-									history.replace('/tabs/chatlist')
-								}}
-								>
+									;(async () => {
+										const res = await fetch(
+											`${process.env.REACT_APP_BACKEND_URL}/chatroom/user/${orderInfo.user_id}/worker/${workerId}`,
+											{
+												method: 'POST',
+												headers: {
+													Authorization: `Bearer ${token}`
+												}
+											}
+										)
+
+										const chatroomId = await res.json()
+										console.log({ chatroomId: chatroomId })
+										history.replace(`/chatroom/${chatroomId.chatroomId}`)
+									})()
+									
+									//
+								}}>
 								聯絡客戶
 							</button>
 						</div>

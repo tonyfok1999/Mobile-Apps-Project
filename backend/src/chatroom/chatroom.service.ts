@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable, Logger } from '@nestjs/common';
 import { Chatroom } from './dto/chatroom.dto';
-import { Message } from '../../../models/message.model';
+import { Message } from './dto/message.dto';
 import { Knex } from 'knex';
 import { InjectKnex } from 'nestjs-knex';
 import { Attendees } from './dto/attendees.dto';
@@ -13,9 +13,8 @@ export class ChatroomService {
   async createChatroom(attendees: Attendees){
     const result = await this.knex.raw(`INSERT INTO chatrooms VALUES (default) RETURNING id;`)
     const chatroomId = result.rows[0].id
-
     await this.knex('attendees').insert([{ user_id: attendees.workerId, chatroom_id: chatroomId},{ user_id: attendees.userId, chatroom_id: chatroomId}])
-    Logger.log(`A new chatroom ${chatroomId} with worker id ${attendees.workerId} and user id ${attendees.userId} has been created`, 'Chatroom')
+    Logger.log(`A new chatroom ${chatroomId} with worker id ${attendees.workerId} and user id ${attendees.userId} has been created`, 'ChatroomService')
     return chatroomId
   }
 
