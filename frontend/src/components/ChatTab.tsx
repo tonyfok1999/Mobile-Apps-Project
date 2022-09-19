@@ -12,7 +12,7 @@ import Chats from './Chats'
 import { WebSocketContext } from '../context/WebScoketContext'
 import { Timestamp } from 'rxjs'
 
-import { Chatroom } from '../../../models/chatroom.model'
+
 import { useSelector } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../store'
 import {
@@ -26,6 +26,13 @@ import {
 //     <div>ChatTab</div>
 //   )
 // }
+export interface Chatroom {
+	chatroom_id: number
+    nickname?: string
+	sender_id: number
+	text: string
+	lastUpdateTime: string
+}
 
 const ChatTab: React.FC = () => {
 	const [key, setKey] = useState('allChats')

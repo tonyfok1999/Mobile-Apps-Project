@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 import './MessageBubble.css'
 import { EmotionJSX } from '@emotion/react/types/jsx-namespace'
 import React from 'react'
-import { Message } from '../../../models/message.model'
+import { Message } from './ChatInput'
 import { useAppSelector } from '../store'
 
 function MessageBubble(props: { content?: Message }) {

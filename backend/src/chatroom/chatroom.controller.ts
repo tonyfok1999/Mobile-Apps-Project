@@ -2,12 +2,13 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpS
 import { Request, Response } from 'express';
 import { ChatroomService } from './chatroom.service';
 import { UserService } from 'src/user/user.service';
-import { Message } from '../../../models/message.model';
+import { Message } from './dto/message.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { get } from 'http';
 import console from 'console';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { Attendees } from './dto/attendees.dto';
 
 @Controller('chatroom')
 export class ChatroomController {
@@ -24,6 +25,7 @@ export class ChatroomController {
     }
 
     try {
+   
       const result= await this.chatroomService.getAllChatroomsbyUserId(userId);
 
       if(result.rows.length < 0) {
@@ -33,6 +35,23 @@ export class ChatroomController {
       return result.rows 
     } catch {
       throw new HttpException('chatrooms cannot be found', HttpStatus.BAD_REQUEST);;
+    }
+
+  }
+
+  @Post('/user/:userId/worker/:workerId')
+  async createChatroom(@Param('userId', ParseIntPipe) userId: number, @Param('workerId', ParseIntPipe) workerId: number) {
+  
+    if (typeof(userId) !== 'number' || typeof(workerId) !== 'number') {
+      throw new HttpException('user_id need to be a number', HttpStatus.NOT_FOUND);
+    }
+
+    try {
+      const attendees: Attendees = {workerId: workerId, userId: userId}
+      const chatroomId = await this.chatroomService.createChatroom(attendees);
+      return {chatroomId: chatroomId}
+    } catch {
+      throw new HttpException("chatroom can't be created", HttpStatus.BAD_REQUEST);;
     }
 
   }

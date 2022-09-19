@@ -14,7 +14,7 @@ import {
 	IonLabel,
 	IonFooter
 } from '@ionic/react'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { IoArrowBackSharp } from 'react-icons/io5'
 import { useParams } from 'react-router'
 import ChatInput from '../components/ChatInput'
@@ -62,6 +62,13 @@ const Chatroom: React.FC = () => {
 
 	const token = localStorage.getItem('token')
 
+	const scrollRef =  React.useRef() as React.MutableRefObject<HTMLInputElement>
+
+	useEffect(()=>{
+		scrollRef.current?.scrollIntoView({behavior: 'auto'})
+	},[messages])
+	
+
 	useEffect(() => {
 		const getMessages = async () => {
 			const res = await fetch(
@@ -83,7 +90,7 @@ const Chatroom: React.FC = () => {
 		// 	getMessages()
 		// })
 
-		socket.on('onMessage', (data)=>{
+		socket.on('onMessage', (data) => {
 			console.log('onMessage event received')
 			console.log(data)
 			setMessages((prev) => [...prev, data])
@@ -94,8 +101,7 @@ const Chatroom: React.FC = () => {
 			socket.off('connect')
 			socket.off('onMessage')
 		}
-
-	}, [])
+	}, [token, params.chatroomId])
 
 	console.log(`message: ` + JSON.stringify(messages))
 
@@ -159,11 +165,11 @@ const Chatroom: React.FC = () => {
 
 				<IonContent>
 					<div>
-						{
-						messages.map(
-							(message,idx) => <MessageBubble key={idx} content={message} />
-						)
-						}
+						{messages.map((message, idx) => (
+							<div ref={scrollRef}>
+								<MessageBubble key={idx} content={message} />
+							</div>
+						))}
 					</div>
 				</IonContent>
 
