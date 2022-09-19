@@ -58,6 +58,8 @@ const ChatInput: React.FC = () => {
 		console.log('message has been sent')
 	}
 
+	const [row, setRow]	 = useState(47)
+
 	return (
 		<form
 			key='input-container'
@@ -122,6 +124,7 @@ const ChatInput: React.FC = () => {
 					console.log(`the message ${message} has been submit`)
 					setMessage('')
 				}
+				setRow(47)
 			}}>
 			<label
 				className='text-input'
@@ -144,11 +147,12 @@ const ChatInput: React.FC = () => {
 					placeholder='Type something here...'
 					form='input-container'
 					value={message}
+					
 					onChange={(e) => {
 						e.target.style.height = 'auto'
 						setMessage(e.target.value)
-						let scHeight = e.target.scrollHeight
-						e.target.style.height = scHeight + 'px'
+						e.target.style.height = e.target.scrollHeight + 'px'
+				
 					}}
 					contentEditable
 				/>

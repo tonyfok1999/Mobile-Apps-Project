@@ -11,9 +11,12 @@ export class ChatroomService {
   constructor(@InjectKnex() private readonly knex: Knex) {}
 
   async createChatroom(attendees: Attendees){
-    const chatroomId = await this.knex.raw(`INSERT INTO chatrooms VALUES (default) RETURNING id;`)
+    const result = await this.knex.raw(`INSERT INTO chatrooms VALUES (default) RETURNING id;`)
+    const chatroomId = result.rows[0].id
+
     await this.knex('attendees').insert([{ user_id: attendees.workerId, chatroom_id: chatroomId},{ user_id: attendees.userId, chatroom_id: chatroomId}])
     Logger.log(`A new chatroom ${chatroomId} with worker id ${attendees.workerId} and user id ${attendees.userId} has been created`, 'Chatroom')
+    return chatroomId
   }
 
   async getAllChatroomsbyUserId(userId: number) {

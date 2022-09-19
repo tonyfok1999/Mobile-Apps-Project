@@ -1,11 +1,15 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { IonButton, IonContent, IonPage } from '@ionic/react'
-import React, { useEffect, useState } from 'react'
+import { construct } from 'ionicons/icons'
+import React, { useEffect, useInsertionEffect, useState } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import WorkerTabBar from '../nav/WorkerTabBar'
+import { useAppSelector } from '../store'
 
 export default function WorkerOrderPage() {
+	const token = localStorage.getItem('token')
+	const workerId = useAppSelector((state) => state.auth.user!.id)
 	const [ordersInfo, setOrdersInfo] = useState<
 		{
 			id: number
@@ -58,6 +62,21 @@ export default function WorkerOrderPage() {
 		fetchReferenceTable()
 		fetchOrdersData()
 	}, [])
+
+	
+	async function createChatroom(userId: number){
+			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/chatroom/user/${userId}/worker/${workerId}`, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${token}`
+			}
+		})
+
+		const chatroomId = await res.json()
+		console.log(chatroomId)
+	}
+
+	
 
 	const history = useHistory()
 
@@ -137,51 +156,63 @@ export default function WorkerOrderPage() {
 				`}>
 				{ordersInfo &&
 					ordersInfo.map((orderInfo) => (
-						<NavLink
-							key={orderInfo.id}
-							to={`/orderDetailPage/${orderInfo.id}`}>
-							<div className='order'>
-								<div className='address'>
-									{orderInfo.working_address}
+						<div>
+							<NavLink
+								key={orderInfo.id}
+								to={`/orderDetailPage/${orderInfo.id}`}
+								
+								>
+								<div className='order'>
+									<div className='address'>
+										{orderInfo.working_address}
+									</div>
+									<div className='orderId'>
+										{orderInfo.id}
+									</div>
+									<div className='service'>
+										服務範圍
+										<span>
+											{referenceTable &&
+												referenceTable[1].filter(
+													(type) =>
+														type.id ==
+														referenceTable![2].filter(
+															(subType) =>
+																subType.id ==
+																orderInfo.service_subtype_id
+														)[0].service_type_id
+												)[0].type}
+										</span>
+									</div>
+									<div className='type'>
+										維修類別
+										<span className='btn btn-outline-danger'>
+											{referenceTable &&
+												referenceTable[2].filter(
+													(subType) =>
+														subType.id ==
+														orderInfo.service_subtype_id
+												)[0].subtype}
+										</span>
+									</div>
+									<div className='budget'>
+										預算<span>${orderInfo.budget}</span>
+									</div>
 								</div>
-								<div className='orderId'>{orderInfo.id}</div>
-								<div className='service'>
-									服務範圍
-									<span>
-										{referenceTable &&
-											referenceTable[1].filter(
-												(type) =>
-													type.id ==
-													referenceTable![2].filter(
-														(subType) =>
-															subType.id ==
-															orderInfo.service_subtype_id
-													)[0].service_type_id
-											)[0].type}
-									</span>
-								</div>
-								<div className='type'>
-									維修類別
-									<span className='btn btn-outline-danger'>
-										{referenceTable &&
-											referenceTable[2].filter(
-												(subType) =>
-													subType.id ==
-													orderInfo.service_subtype_id
-											)[0].subtype}
-									</span>
-								</div>
-								<div className='budget'>
-									預算<span>${orderInfo.budget}</span>
-								</div>
-								<button
-									onClick={() => {
-										history.replace('/tabs/chatlist')
-									}}>
-									聯絡客戶
-								</button>
-							</div>
-						</NavLink>
+							</NavLink>
+
+							<button
+								onClick={() => {
+									
+									// pass in the id of user (not worker) who submit the order
+
+									const chatroomId = createChatroom(orderInfo.user_id)
+									history.replace('/tabs/chatlist')
+								}}
+								>
+								聯絡客戶
+							</button>
+						</div>
 					))}
 			</IonContent>
 			<WorkerTabBar />
