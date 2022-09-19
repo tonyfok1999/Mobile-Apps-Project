@@ -39,10 +39,15 @@ export class ChatroomService {
     // Logger.debug(allUserIds, 'ChatroomService')
     // return [{user_id:1}, {user_id: 1992}]
     return allUserIds
-    }catch(e){
-      Logger.error(e, 'ChatroomService')
+    }catch{
+      Logger.error("the user id cannot be searched", 'ChatroomService')
       return []
     }
+  }
+
+  async checkWorkersOfOrder(workerId: number, orderId: number){
+    const result = await this.knex.raw('SELECT * FROM workers_of_order WHERE worker_id = ? AND order_id = ?', [workerId, orderId])
+    return result
   }
 
   async getMessage(chatroomId: number) {
