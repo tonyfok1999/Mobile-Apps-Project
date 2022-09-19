@@ -10,9 +10,7 @@ import { ConnectedUserService } from 'src/chatroom/socket-connected-user/connect
 import { Message } from '../../../models/message.model';
 
 @WebSocketGateway({
-  cors: {
-    origin: [`${process.env.REACT_URL}`, 'https://hoppscotch.io'],
-  },
+  cors: true,
 })
 export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
