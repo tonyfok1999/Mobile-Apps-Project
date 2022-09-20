@@ -42,9 +42,11 @@ export class ChatroomController {
       if (result.length < 0) {
         return [];
       }
+
       for(let i = 0; i < result.length; i++) {
+      // attendees = [{user_id: number, nickname: string}, {user_id: number, nickname: string}]
       const attendees = await this.chatroomService.getAllUserIdByChatroomId(result[i].chatroom_id)
-      // attendees = [{user_id: number}, {user_id: number}]
+      
       result[i]['attendees'] = attendees
       }
 

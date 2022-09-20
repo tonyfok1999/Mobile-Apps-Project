@@ -32,6 +32,12 @@ export interface Chatroom {
 	sender_id: number
 	text: string
 	lastUpdateTime: string
+	attendees: Attendee[]
+
+}
+
+export interface Attendee {
+	user_id: number, nickname: string
 }
 
 const ChatTab: React.FC = () => {
