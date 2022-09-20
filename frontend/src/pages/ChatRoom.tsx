@@ -65,7 +65,7 @@ const Chatroom: React.FC = () => {
 	const scrollRef =  React.useRef() as React.MutableRefObject<HTMLInputElement>
 
 	useEffect(()=>{
-		scrollRef.current?.scrollIntoView({behavior: 'auto'})
+		scrollRef.current?.scrollIntoView({behavior: 'smooth'})
 	},[messages])
 	
 

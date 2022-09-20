@@ -36,9 +36,9 @@ select * from chatroom_records;
 select id, email, nickname, phone, gender_id, profile_photo, is_worker, worker_info_id, score from users where nickname Like '%未%';
 
 
--- Get all the users from the same chatroom
+-- Get all the users and nickname from the same chatroom
 
-SELECT user_id from attendees where chatroom_id = 1;
+SELECT attendees.user_id, users.nickname FROM attendees INNER JOIN users ON users.id = attendees.user_id WHERE chatroom_id = 1;
 
 -- check whether workers has taken the order
 
