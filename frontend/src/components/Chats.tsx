@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
 	IonList,
 	IonItemSliding,
@@ -15,10 +15,13 @@ import {
 import { trash, archive } from 'ionicons/icons'
 import { Attendee, Chatroom } from './ChatTab'
 import { useAppSelector } from '../store'
+import { WebSocketContext } from '../context/WebScoketContext'
+import { useParams } from 'react-router'
 
 export default function Chats(props: { chatroom: Chatroom }) {
 	const userId = useAppSelector((state) => state.auth.user!.id)
-
+	const socket = useContext(WebSocketContext)
+	
 	return (
 		<>
 			<IonList>
@@ -56,7 +59,7 @@ export default function Chats(props: { chatroom: Chatroom }) {
 					<IonItemOptions side='end'>
 						<IonItemOption
 							color='danger'
-							onClick={() => console.log('share clicked')}
+							onClick={() => socket.emit('deleteChat', props.chatroom.chatroom_id)}
 							expandable>
 							<IonIcon slot='icon-only' icon={trash} />
 						</IonItemOption>

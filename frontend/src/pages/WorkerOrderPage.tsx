@@ -206,7 +206,7 @@ export default function WorkerOrderPage() {
 										console.log({ chatroomId: chatroomId })
 										history.replace(`/chatroom/${chatroomId.chatroomId}`)
 
-										socket.emit('createChatroom', chatroomId)
+										// socket.emit('setChatroom', chatroomId)
 									})()
 									
 									//

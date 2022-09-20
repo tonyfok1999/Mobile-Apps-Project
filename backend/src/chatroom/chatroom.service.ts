@@ -69,6 +69,13 @@ export class ChatroomService {
     return result.rows
   }
 
+  async deleteChat(chatroomId: number){
+    await this.knex.raw('DELETE FROM attendees WHERE chatroom_id = ?', [chatroomId])
+    await this.knex.raw('DELETE FROM chatroom_records WHERE chatroom_id = ?', [chatroomId])
+    await this.knex.raw('DELETE FROM workers_of_order WHERE chatroom_id = ?', [chatroomId])
+    await this.knex.raw('DELETE FROM chatrooms WHERE id = ?', [chatroomId])
+  }
+
   async getMessage(chatroomId: number) {
     return await this.knex.raw(`SELECT sender_id, text FROM chatroom_records WHERE chatroom_id = ?`, chatroomId)
   }
