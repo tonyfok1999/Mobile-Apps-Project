@@ -2,7 +2,7 @@
 import { css } from '@emotion/react'
 import { VscSmiley } from 'react-icons/vsc'
 import Button from 'react-bootstrap/Button'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Picker from 'emoji-picker-react'
 
 import { WebSocketContext } from '../context/WebScoketContext'
@@ -22,6 +22,7 @@ const ChatInput: React.FC = () => {
 	const params = useParams<{ chatroomId: string }>()
 	const chatroomId = parseInt(params.chatroomId)
 	const userId = useAppSelector((state) => state.auth.user!.id)
+	const textareaRef = React.useRef() as React.MutableRefObject<HTMLTextAreaElement>
 
 	// useEffect(() => {
 
@@ -64,7 +65,29 @@ const ChatInput: React.FC = () => {
 		console.log('message has been sent')
 	}
 
-	const [row, setRow]	 = useState(47)
+	const handleFormSubmit = (event: any) => {
+		event.preventDefault()
+		let form = event.currentTarget
+		let formData = new FormData(form)
+
+		if (message.length > 0) {
+			console.log(formData)
+			handleSendMessage(message, formData)
+			socket.emit('newMessage', {
+				chatroom_id: chatroomId,
+				sender_id: userId,
+				text: message
+			})
+
+			socket.emit("createChatroom", chatroomId)
+
+			console.log(`the message ${message} has been submit`)
+			setMessage('')
+			textareaRef.current.style.height = 'auto'
+		}
+	}
+
+
 
 	return (
 		<form
@@ -114,34 +137,15 @@ const ChatInput: React.FC = () => {
 					width: 100%;
 				}
 			`}
-			onSubmit={(event) => {
-				event.preventDefault()
-				let form = event.currentTarget
-				let formData = new FormData(form)
-
-				if (message.length > 0) {
-					console.log(formData)
-					handleSendMessage(message, formData)
-					socket.emit('newMessage', {
-						chatroom_id: chatroomId,
-						sender_id: userId,
-						text: message
-					})
-
-					socket.emit("createChatroom", chatroomId)
-
-					console.log(`the message ${message} has been submit`)
-					setMessage('')
-				}
-				setRow(47)
-			}}>
+			onSubmit={(e)=> handleFormSubmit(e)}>
 			<label
 				className='text-input'
 				css={css`
 					width: 100%;
 				`}>
 				<textarea
-				rows={1}	
+				rows={1}
+				ref={textareaRef}	
 				css={css`
 						width: 100%;
 						border: none;
@@ -161,7 +165,7 @@ const ChatInput: React.FC = () => {
 						e.target.style.height = 'auto'
 						setMessage(e.target.value)
 						e.target.style.height = e.target.scrollHeight + 'px'
-				
+
 					}}
 					contentEditable
 				/>
