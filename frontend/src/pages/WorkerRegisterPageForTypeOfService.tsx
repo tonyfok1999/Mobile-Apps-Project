@@ -209,7 +209,7 @@ export default function WorkerRegisterPageForTypeOfService() {
 							)
 							if (!isLocalRegister) {
 								const res = await fetch(
-									`${process.env.REACT_APP_BACKEND_URL}/webGoogleLogin`,
+									`${process.env.REACT_APP_BACKEND_URL}/worker-auth/webGoogleLogin`,
 									{
 										method: 'POST',
 										headers: {
