@@ -42,7 +42,7 @@ export class ChatroomService {
     WHERE user_id = ?;
     `, userId)
     
-    return chatrooms
+    return chatrooms.rows
   }
 
   async getOneChatroombyUserIds(attendees: Attendees){
@@ -55,7 +55,7 @@ export class ChatroomService {
     try{
       // Logger.debug(chatroomId, 'ChatroomService')
       const allUserIds = await this.knex.raw(`SELECT user_id FROM attendees WHERE chatroom_id = ?`, [chatroomId])
-      return allUserIds
+      return allUserIds.rows
     }catch{
       Logger.error("the user id cannot be searched", 'ChatroomService')
       return []

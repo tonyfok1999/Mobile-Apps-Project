@@ -68,6 +68,7 @@ const ChatTab: React.FC = () => {
 			dispatch(loadChatrooms(chatrooms))
 
 			dispatch(finishLoading())
+		})()
 
 			socket.on('onChatroom', (chatrooms) => {
 				dispatch(startLoading())
@@ -76,13 +77,11 @@ const ChatTab: React.FC = () => {
 				dispatch(finishLoading())
 			})
 
-
-
 			return () => {
 				console.log('Unregistering Event')
 				socket.off('chatrooms')
 			}
-		})()
+		
 	}, [token])
 
 

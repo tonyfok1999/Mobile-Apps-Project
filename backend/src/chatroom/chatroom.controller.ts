@@ -39,11 +39,16 @@ export class ChatroomController {
     try {
       const result = await this.chatroomService.getAllChatroomsbyUserId(userId);
 
-      if (result.rows.length < 0) {
+      if (result.length < 0) {
         return [];
       }
+      for(let i = 0; i < result.length; i++) {
+      const attendees = await this.chatroomService.getAllUserIdByChatroomId(result[i].chatroom_id)
+      // attendees = [{user_id: number}, {user_id: number}]
+      result[i]['attendees'] = attendees
+      }
 
-      return result.rows;
+      return result;
     } catch {
       throw new HttpException('chatrooms cannot be found', HttpStatus.BAD_REQUEST);
     }
