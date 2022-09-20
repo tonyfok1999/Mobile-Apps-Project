@@ -54,7 +54,7 @@ export class ChatroomController {
     const orderId = parseInt(query.orderId)
     const userId = parseInt(query.userId)
     const workerId = parseInt(query.workerId)
-    Logger.log({ orderId: orderId, userId: userId, workerId: workerId },'ChatroomController')
+    // Logger.debug({ orderId: orderId, userId: userId, workerId: workerId },'ChatroomController')
 
     if (typeof(orderId) !== 'number' || typeof(userId) !== 'number' || typeof(workerId) !== 'number') {
       throw new HttpException('query params need to be a number', HttpStatus.NOT_FOUND);
@@ -62,12 +62,14 @@ export class ChatroomController {
 
     try {
       const result = await this.chatroomService.checkWorkersOfOrder(workerId, orderId); 
+      // Logger.debug({result: result}, 'ChatroomController')
       const attendees: Attendees = { workerId: workerId, userId: userId };
       if (result.rowCount > 0) {
-        // const chatroomId = await this.chatroomService.getOneChatroombyUserIds(attendees);
-        return  { chatroomId: 'none' }
+        const chatroomId = await this.chatroomService.getOneChatroombyUserIds(attendees);
+        Logger.warn(`chat id ${chatroomId} has been created before`,'ChatroomController')
+        return  { chatroomId: chatroomId }
       } else {
-        const chatroomId = await this.chatroomService.createChatroom(attendees);
+        const chatroomId = await this.chatroomService.createChatroom(attendees, orderId);
         Logger.log("chatroom has been created",'ChatroomController')
         return { chatroomId: chatroomId };
       }
