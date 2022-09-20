@@ -47,7 +47,7 @@ export default function OrderDetailPage() {
 	useEffect(() => {
 		const fetchOrderData = async () => {
 			const res = await fetch(
-				`http://localhost:8000/orders/${params.id}`,
+				`${process.env.REACT_APP_BACKEND_URL}/orders/${params.id}`,
 				{
 					headers: { Authorization: `whatever` }
 				}
@@ -57,7 +57,7 @@ export default function OrderDetailPage() {
 		}
 
 		const fetchReferenceTable = async () => {
-			const res = await fetch('http://localhost:8000/referencesTable', {
+			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/referencesTable`, {
 				headers: { Authorization: `whatever` }
 			})
 			const data = await res.json()

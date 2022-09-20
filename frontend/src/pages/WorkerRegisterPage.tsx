@@ -139,7 +139,7 @@ export default function WorkerRegisterPage() {
 							required: true,
 							onChange: async () => {
 								const res = await fetch(
-									'http://localhost:8000/user/checkEmail',
+									`${process.env.REACT_APP_BACKEND_URL}/user/checkEmail`,
 									{
 										method: 'POST',
 										headers: {
