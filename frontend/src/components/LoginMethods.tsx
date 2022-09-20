@@ -11,8 +11,7 @@ import { useHistory } from 'react-router'
 
 export default function LoginMethods() {
 	GoogleAuth.initialize({
-		clientId:
-			'708322933526-0359al7b0ul1qll3i971rqu49jb7d7co.apps.googleusercontent.com',
+		clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
 		scopes: ['profile', 'email'],
 		grantOfflineAccess: true
 	})
@@ -49,7 +48,7 @@ export default function LoginMethods() {
 					const userinfo = await GoogleAuth.signIn()
 
 					const res = await fetch(
-						'http://localhost:8000/worker-auth/webGoogleLogin',
+						`${process.env.REACT_APP_BACKEND_URL}/worker-auth/webGoogleLogin`,
 						{
 							method: 'POST',
 							headers: {

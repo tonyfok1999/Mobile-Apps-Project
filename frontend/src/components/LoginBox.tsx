@@ -105,7 +105,7 @@ export default function LoginBox() {
 			<form
 				onSubmit={handleSubmit(async (body) => {
 					const res = await fetch(
-						'http://localhost:8000/worker-auth/login',
+						`${process.env.REACT_APP_BACKEND_URL}/worker-auth/login`,
 						{
 							method: 'POST',
 							headers: {

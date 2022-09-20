@@ -106,11 +106,11 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
-  @SubscribeMessage('createRoom')
-  async onCreateRoom(socket: Socket, attendees: Attendees) {
-    // to get the socket user
-    Logger.log(`worker ${attendees.workerId} has created chatroom with user ${attendees.userId}`, 'SocketGateway');
-    // console.log(socket.data.user);
-    return await this.chatroomService.createChatroom(attendees);
-  }
+  // @SubscribeMessage('createRoom')
+  // async onCreateRoom(socket: Socket, attendees: Attendees) {
+  //   // to get the socket user
+  //   Logger.log(`worker ${attendees.workerId} has created chatroom with user ${attendees.userId}`, 'SocketGateway');
+  //   // console.log(socket.data.user);
+  //   return await this.chatroomService.createChatroom(attendees);
+  // }
 }
