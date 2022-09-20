@@ -7,7 +7,8 @@ import {
 	IonGrid,
 	IonIcon,
 	IonPage,
-	IonRow
+	IonRow,
+	useIonAlert
 } from '@ionic/react'
 import {
 	cameraOutline,
@@ -17,7 +18,7 @@ import {
 	locationSharp,
 	micOutline
 } from 'ionicons/icons'
-import React, { useEffect, useState } from 'react'
+import React, { SetStateAction, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import BackIcon from '../components/BackIcon'
@@ -25,8 +26,9 @@ import RightButton from '../components/RightButton'
 import { changeBudget, changeServiceType } from '../redux/speak/action'
 import { RootState } from '../store'
 import submit from '../srcImage/submit.png'
-import { Camera } from '@capacitor/camera'
+import { Camera, GalleryPhoto } from '@capacitor/camera'
 export default function SpeakDetailPage() {
+	const [presentAlert] = useIonAlert()
 	const dispatch = useDispatch()
 	const [referenceTable, setReferenceTable] = useState<
 		[
@@ -39,7 +41,7 @@ export default function SpeakDetailPage() {
 			}[] // [2] service subtypes
 		]
 	>()
-	const [images, setimages] = useState<string[]>([])
+	const [images, setimages] = useState<GalleryPhoto[]>([])
 	const [districts, setDistricts] = useState<string>('')
 
 	const districtNumber = useSelector(
@@ -239,9 +241,9 @@ export default function SpeakDetailPage() {
 					/* line-height: 5vh, */
 					font-size: 2.8vh;
 				}
-				.imageText{
-					height:6vh;
-			
+				.imageText {
+					height: 6vh;
+
 					/* max-height:9vh ; */
 				}
 			`}>
@@ -453,32 +455,51 @@ export default function SpeakDetailPage() {
 								/>
 								上傳照片
 							</IonRow>
-							<IonRow className='imageText'></IonRow>
+							<IonRow className='imageText'>{images.length>0 && images.map((image)=>(<IonCol key={image.webPath} size='4'><img src={image.webPath}></img></IonCol>))}</IonRow>
 						</IonCol>
 						<IonCol size='2' className='rightButtonCol'>
-							<IonButton size='large' fill='clear' onClick={()=>{
-								const takePicture = async () => {
-									// const image = await Camera.getPhoto({
-									//   quality: 90,
-									//   allowEditing: true,
-									//   resultType: CameraResultType.Uri
-									// });
-									const image = await Camera.pickImages({
-										quality: 90,
-										limit: 20,
-								  });
-									// image.webPath will contain a path that can be set as an image src.
-									// You can access the original file using image.path, which can be
-									// passed to the Filesystem API to read the raw data of the image,
-									// if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
-									
-								  console.log(image);
-								//   setimages(image.webPath)
-									// Can be set to the src of an image now
-									// imageElement.src = imageUrl;
-								  };
-								  takePicture()
-							}}>
+							<IonButton
+								size='large'
+								fill='clear'
+								onClick={() => {
+									const takePicture = async () => {
+										// const image = await Camera.getPhoto({
+										//   quality: 90,
+										//   allowEditing: true,
+										//   resultType: CameraResultType.Uri
+										// });
+										let image = await Camera.pickImages({
+											quality: 90,
+											limit: 3
+										})
+										// console.log(image.photos.length );
+										if (image.photos.length > 3) {
+											image = { photos: [] }
+											setimages(image.photos)
+											presentAlert({
+												header: 'Alert',
+												subHeader: '只限上傳3張相片',
+												message: '請重新選擇!',
+												buttons: ['OK']
+											})
+										} else {
+											console.log(image.photos);
+											
+											setimages(image.photos)
+										}
+										// image.webPath will contain a path that can be set as an image src.
+										// You can access the original file using image.path, which can be
+										// passed to the Filesystem API to read the raw data of the image,
+										// if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
+
+										console.log(images)
+										//   setimages(image.webPath)
+										// Can be set to the src of an image now
+										// imageElement.src = imageUrl;
+									}
+
+									takePicture()
+								}}>
 								<IonIcon
 									className='icon'
 									icon={chevronForwardOutline}
