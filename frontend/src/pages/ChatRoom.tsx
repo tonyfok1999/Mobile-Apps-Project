@@ -21,7 +21,7 @@ import ChatInput from '../components/ChatInput'
 import { useVirtualizer } from '@tanstack/react-virtual'
 import Chats from '../components/Chats'
 import ChatContainer from '../components/ChatContainer'
-import { useAppDispatch } from '../store'
+import { useAppDispatch, useAppSelector } from '../store'
 import MessageBubble from '../components/MessageBubble'
 import { WebSocketContext } from '../context/WebScoketContext'
 
@@ -33,26 +33,11 @@ export interface Message {
 
 const Chatroom: React.FC = () => {
 	const params = useParams<{ chatroomId: string }>()
-	console.log('params' + JSON.stringify(params))
+	const chatrooms = useAppSelector((state) => state.chatroom.chatrooms)
+	const userId = useAppSelector((state) => state.auth.user!.id)
+	const chatroomId = parseInt(params.chatroomId)
 
 	const initialState: Message[] = [
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
-		{ sender_id: 1, text: 'Hello', created_at: new Date() },
 		{ sender_id: 1, text: 'Hello', created_at: new Date() }
 	]
 
@@ -62,17 +47,16 @@ const Chatroom: React.FC = () => {
 
 	const token = localStorage.getItem('token')
 
-	const scrollRef =  React.useRef() as React.MutableRefObject<HTMLInputElement>
+	const scrollRef = React.useRef() as React.MutableRefObject<HTMLDivElement>
 
-	useEffect(()=>{
-		scrollRef.current?.scrollIntoView({behavior: 'smooth'})
-	},[messages])
-	
+	useEffect(() => {
+		scrollRef.current?.scrollIntoView({ behavior: 'auto' })
+	}, [messages])
 
 	useEffect(() => {
 		const getMessages = async () => {
 			const res = await fetch(
-				`${process.env.REACT_APP_BACKEND_URL}/chatroom/${params.chatroomId}/message`,
+				`${process.env.REACT_APP_BACKEND_URL}/chatroom/${chatroomId}/message`,
 				{ headers: { Authorization: `Bearer ${token}` } }
 			)
 			const json = await res.json()
@@ -85,11 +69,6 @@ const Chatroom: React.FC = () => {
 
 		console.log('container lifecycle starting')
 
-		// socket.on('connect', ()=>{
-		// 	console.log('socket connected')
-		// 	getMessages()
-		// })
-
 		socket.on('onMessage', (data) => {
 			console.log('onMessage event received')
 			console.log(data)
@@ -101,7 +80,7 @@ const Chatroom: React.FC = () => {
 			socket.off('connect')
 			socket.off('onMessage')
 		}
-	}, [token, params.chatroomId])
+	}, [token, chatroomId])
 
 	console.log(`message: ` + JSON.stringify(messages))
 
@@ -158,7 +137,17 @@ const Chatroom: React.FC = () => {
 
 						<div className='avatar'>
 							<img src='https://picsum.photos/id/237/64/64'></img>
-							<div className='username'>陳師傅</div>
+							<div className='username'>
+								{
+									chatrooms.filter(
+										(chatroom) => chatroom.chatroom_id === chatroomId
+									)[0].attendees
+									.filter(
+										(attendee) =>
+											attendee.user_id !== userId
+									)[0].nickname
+								}
+							</div>
 						</div>
 					</IonToolbar>
 				</IonHeader>

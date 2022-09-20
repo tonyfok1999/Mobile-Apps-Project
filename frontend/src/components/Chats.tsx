@@ -18,8 +18,7 @@ import { useAppSelector } from '../store'
 
 export default function Chats(props: { chatroom: Chatroom }) {
 	const userId = useAppSelector((state) => state.auth.user!.id)
-	const array=props.chatroom.attendees
-	// console.log({attendees: props.chatroom.attendees})
+
 	return (
 		<>
 			<IonList>
@@ -32,11 +31,10 @@ export default function Chats(props: { chatroom: Chatroom }) {
 						</IonAvatar>
 						<IonLabel>
 							<h2>
-								{/* {array.map((attendee:any)=> attendee)} */}
 								{
 								props.chatroom.attendees.filter(
-									(attendee:Attendee) => attendee.user_id !== userId
-								).map((attendee:Attendee) => attendee.nickname)
+									(attendee) => attendee.user_id !== userId
+								).map((attendee) => attendee.nickname)
 								}
 							</h2>
 							<p>{props.chatroom.text}</p>
