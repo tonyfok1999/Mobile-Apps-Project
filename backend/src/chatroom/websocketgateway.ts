@@ -75,42 +75,59 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
     }
   }
 
+  async mapUserIdsAndSocketInSameRoom(chatroomId: number) {
+    const attendees = await this.chatroomService.getAllUserIdByChatroomId(chatroomId);
+    const connections = [];
+
+    for (const attendee of attendees.rows) {
+      console.log('attendee' + JSON.stringify(attendee));
+      const attendeeSocket = await this.connectedUserService.getSocketIdByUserId(attendee.user_id);
+      console.log('socket id: ' + JSON.stringify(attendeeSocket));
+
+      if (attendeeSocket.length === 0) {
+        connections.push(0);
+      } else {
+        connections.push({ userId: attendee.user_id, userSocket: attendeeSocket[0].socket_id });
+      }
+    }
+
+    return connections;
+  }
+
   // listening to 'newMessage' events
   @SubscribeMessage('newMessage')
   async onNewMessage(@MessageBody() message: Message) {
-    console.log('message' + JSON.stringify(message))
-    const attendees = await this.chatroomService.getAllUserIdByChatroomId(message.chatroom_id)
-    // const attendees = [{ user_id: 1 }, { user_id: 1992 }];
-    const connections = [];
+    console.log('message' + JSON.stringify(message));
 
-    // get socket id of all the users in the same room
-    for (const attendee of attendees.rows) {
-      console.log('attendee' + JSON.stringify(attendee))
-      const attendeeSocket = await this.connectedUserService.getSocketIdByUserId(attendee.user_id);
-      console.log('socket id: ' + JSON.stringify(attendeeSocket))
+    const connections = await this.mapUserIdsAndSocketInSameRoom(message.chatroom_id);
 
-      if (attendeeSocket.length === 0) {
-        connections.push(0)
-      } else {
-        connections.push(attendeeSocket[0].socket_id);
+    // emit a new message to users in the same room
+    for (const connection of connections) {
+      if (connection.userSocket) {
+        this.server.to(connection.userSocket).emit('onMessage', {
+          sender_id: message.sender_id,
+          text: message.text,
+        })
       }
+    }
+
+    this.server.emit('createChatroom', message.chatroom_id)
+  }
+
+  @SubscribeMessage('createChatroom')
+  async onCreateRoom(socket: Socket, @MessageBody() chatroomId: number) {
+    const connections = await this.mapUserIdsAndSocketInSameRoom(chatroomId);
+
+    for (const connection of connections) {
+      const chatrooms = await this.chatroomService.getAllChatroomsbyUserId(connection.userId);
+      connection['chatrooms'] = chatrooms.rows;
     }
 
     // emit a new message to users in the same room
     for (const connection of connections) {
-      if (connection)
-      {this.server.to(connection).emit('onMessage', {
-        sender_id: message.sender_id,
-        text: message.text,
-      })}
+      if (connection.userSocket) {
+        this.server.to(connection.userSocket).emit('onChatroom', connection.chatrooms);
+      }
     }
   }
-
-  // @SubscribeMessage('createRoom')
-  // async onCreateRoom(socket: Socket, attendees: Attendees) {
-  //   // to get the socket user
-  //   Logger.log(`worker ${attendees.workerId} has created chatroom with user ${attendees.userId}`, 'SocketGateway');
-  //   // console.log(socket.data.user);
-  //   return await this.chatroomService.createChatroom(attendees);
-  // }
 }

@@ -41,6 +41,7 @@ const ChatTab: React.FC = () => {
 	const userId = useAppSelector((state) => state.auth.user!.id)
 	const dispatch = useAppDispatch()
 	console.log('userid' + userId)
+	const [chatlist, setChatlist] = useState<Chatroom[]>([])
 
 	// const chatListInitialState: Chatroom[] = [
 	// 	{
@@ -62,16 +63,20 @@ const ChatTab: React.FC = () => {
 			)
 
 			const chatrooms: Chatroom[] = await res.json()
-
+			
+			setChatlist(chatrooms)
 			dispatch(loadChatrooms(chatrooms))
 
 			dispatch(finishLoading())
 
-			socket.on('chatrooms', (chatrooms) => {
+			socket.on('onChatroom', (chatrooms) => {
 				dispatch(startLoading())
 				dispatch(loadChatrooms(chatrooms))
+				setChatlist(chatrooms)
 				dispatch(finishLoading())
 			})
+
+
 
 			return () => {
 				console.log('Unregistering Event')
@@ -84,8 +89,8 @@ const ChatTab: React.FC = () => {
 
 	// TODO: create room with user 1983 whenever a new user come in
 	// socket.emit('createRoom', {workerId: 1983, userId: 'current userId'} )
-	const chatrooms = useAppSelector((state) => state.chatroom.chatrooms)
-	console.log('The Chatrooms are: ' + JSON.stringify(chatrooms))
+	
+	console.log('The Chatrooms are: ' + JSON.stringify(chatlist))
 
 	return (
 		<>
@@ -97,8 +102,8 @@ const ChatTab: React.FC = () => {
 				className='mb-3'
 				id='chatTab'>
 				<Tab eventKey='allChats' title='全部對話'>
-					{chatrooms.map((chatroom, idx) => (
-						<Chats key={idx} chatroom={chatroom} />
+					{chatlist.map((chat, idx) => (
+						<Chats key={idx} chatroom={chat} />
 					))}
 				</Tab>
 				<Tab eventKey='storedChats' title='已收藏對話'>
