@@ -42,4 +42,8 @@ SELECT attendees.user_id, users.nickname FROM attendees INNER JOIN users ON user
 
 -- check whether workers has taken the order
 
-SELECT * FROM workers_of_order WHERE worker_id = 1 AND order_id = 2;
+SELECT * FROM workers_of_order WHERE worker_id = 2 AND order_id = 1;
+
+-- Insert into workers_of_order table
+
+INSERT INTO workers_of_order (user_id, worker_id, order_id, chatroom_id) VALUES (1, 2, 1, 1);
