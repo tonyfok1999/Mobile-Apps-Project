@@ -39,3 +39,7 @@ select id, email, nickname, phone, gender_id, profile_photo, is_worker, worker_i
 -- Get all the users from the same chatroom
 
 SELECT user_id from attendees where chatroom_id = 1;
+
+-- check whether workers has taken the order
+
+SELECT * FROM workers_of_order WHERE worker_id = 1 AND order_id = 2;

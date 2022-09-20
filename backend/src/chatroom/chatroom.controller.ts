@@ -1,4 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException, HttpStatus, UseInterceptors, UploadedFile, ParseIntPipe, UseGuards, Query, Logger } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpException,
+  HttpStatus,
+  UseInterceptors,
+  UploadedFile,
+  ParseIntPipe,
+  UseGuards,
+  Query,
+  Logger,
+} from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ChatroomService } from './chatroom.service';
 import { UserService } from 'src/user/user.service';
@@ -12,63 +28,68 @@ import { Attendees } from './dto/attendees.dto';
 
 @Controller('chatroom')
 export class ChatroomController {
-  constructor(
-    private readonly chatroomService: ChatroomService, 
-    private readonly userService: UserService
-    ) {}
+  constructor(private readonly chatroomService: ChatroomService, private readonly userService: UserService) {}
 
   @Get('/:userId')
   async getAllChatrooms(@Param('userId', ParseIntPipe) userId: number) {
-  
-    if (typeof(userId) !== 'number') {
+    if (typeof userId !== 'number') {
       throw new HttpException('user_id need to be a number', HttpStatus.NOT_FOUND);
     }
 
     try {
-   
-      const result= await this.chatroomService.getAllChatroomsbyUserId(userId);
+      const result = await this.chatroomService.getAllChatroomsbyUserId(userId);
 
-      if(result.rows.length < 0) {
-        return []
+      if (result.rows.length < 0) {
+        return [];
       }
 
-      return result.rows 
+      return result.rows;
     } catch {
-      throw new HttpException('chatrooms cannot be found', HttpStatus.BAD_REQUEST);;
+      throw new HttpException('chatrooms cannot be found', HttpStatus.BAD_REQUEST);
     }
-
   }
 
-  @Post('/user/:userId/worker/:workerId')
-  async createChatroom(@Param('userId', ParseIntPipe) userId: number, @Param('workerId', ParseIntPipe) workerId: number) {
-  
-    if (typeof(userId) !== 'number' || typeof(workerId) !== 'number') {
-      throw new HttpException('user_id need to be a number', HttpStatus.NOT_FOUND);
+  @Post('/orderChatroom')
+  async createChatroom(@Query() query: { orderId: string; userId: string; workerId: string }) {
+    const orderId = parseInt(query.orderId)
+    const userId = parseInt(query.userId)
+    const workerId = parseInt(query.workerId)
+    // Logger.debug({ orderId: orderId, userId: userId, workerId: workerId },'ChatroomController')
+
+    if (typeof(orderId) !== 'number' || typeof(userId) !== 'number' || typeof(workerId) !== 'number') {
+      throw new HttpException('query params need to be a number', HttpStatus.NOT_FOUND);
     }
 
     try {
-      const attendees: Attendees = {workerId: workerId, userId: userId}
-      const chatroomId = await this.chatroomService.createChatroom(attendees);
-      return {chatroomId: chatroomId}
+      const result = await this.chatroomService.checkWorkersOfOrder(workerId, orderId); 
+      // Logger.debug({result: result}, 'ChatroomController')
+      const attendees: Attendees = { workerId: workerId, userId: userId };
+      if (result.rowCount > 0) {
+        const chatroomId = await this.chatroomService.getOneChatroombyUserIds(attendees);
+        Logger.warn(`chat id ${chatroomId} has been created before`,'ChatroomController')
+        return  { chatroomId: chatroomId }
+      } else {
+        const chatroomId = await this.chatroomService.createChatroom(attendees, orderId);
+        Logger.log("chatroom has been created",'ChatroomController')
+        return { chatroomId: chatroomId };
+      }
     } catch {
-      throw new HttpException("chatroom can't be created", HttpStatus.BAD_REQUEST);;
+      throw new HttpException("chatroom can't be created", HttpStatus.BAD_REQUEST);
     }
-
   }
 
   @Get('/:chatroomId/message')
   async getMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number) {
-    
-    if (typeof(chatroomId) !== 'number') {
+    if (typeof chatroomId !== 'number') {
       throw new HttpException('chatroom_id need to be a number', HttpStatus.NOT_FOUND);
     }
 
     try {
-      const result= await this.chatroomService.getMessage(chatroomId);
+      const result = await this.chatroomService.getMessage(chatroomId);
 
-      return result.rows
+      return result.rows;
     } catch {
-      throw new HttpException('message cannot be found', HttpStatus.BAD_REQUEST);;
+      throw new HttpException('message cannot be found', HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -78,32 +99,30 @@ export class ChatroomController {
       dest: './uploads',
     })
   )
-  async postMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number, @Body() message: Message, @UploadedFile() file?:Express.Multer.File) {
-
+  async postMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number, @Body() message: Message, @UploadedFile() file?: Express.Multer.File) {
     if (chatroomId === undefined || message.sender_id === undefined) {
       throw new HttpException('sender_id and chatroom_id are required', HttpStatus.NOT_FOUND);
-    } else if (message.text === undefined || message.text === '' && file === undefined) {
+    } else if (message.text === undefined || (message.text === '' && file === undefined)) {
       throw new HttpException('both message and file are missing', HttpStatus.NOT_FOUND);
     }
 
     try {
       await this.chatroomService.postMessage(chatroomId, message, file);
-      return {'message': 'message is posted'}
+      return { message: 'message is posted' };
     } catch {
-      throw new HttpException('message cannot be posted', HttpStatus.BAD_REQUEST);;
+      throw new HttpException('message cannot be posted', HttpStatus.BAD_REQUEST);
     }
   }
 
   @Get('/find-by-nickname')
-  async findAllByNickname(@Query() query: {nickname: string}){
-
-    const nickname = query.nickname
-    const user = await this.userService.findAllByNickname(nickname)
-    Logger.debug(`searched user ${JSON.stringify(user)}`,'ChatroomService')
-    if (user.length = 0) {
+  async findAllByNickname(@Query() query: { nickname: string }) {
+    const nickname = query.nickname;
+    const user = await this.userService.findAllByNickname(nickname);
+    Logger.debug(`searched user ${JSON.stringify(user)}`, 'ChatroomService');
+    if ((user.length = 0)) {
       throw new HttpException('user cannot be found', HttpStatus.BAD_REQUEST);
     }
-    return user
+    return user;
   }
 
   // @Get()

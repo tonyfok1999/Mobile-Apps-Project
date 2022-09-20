@@ -10,12 +10,26 @@ import { FileLogger } from 'typeorm';
 export class ChatroomService {
   constructor(@InjectKnex() private readonly knex: Knex) {}
 
-  async createChatroom(attendees: Attendees){
+  async createChatroom(attendees: Attendees, orderId: number){
+    try{
+      const workerId = attendees.workerId;
+    const userId = attendees.userId;
+    
     const result = await this.knex.raw(`INSERT INTO chatrooms VALUES (default) RETURNING id;`)
     const chatroomId = result.rows[0].id
-    await this.knex('attendees').insert([{ user_id: attendees.workerId, chatroom_id: chatroomId},{ user_id: attendees.userId, chatroom_id: chatroomId}])
-    Logger.log(`A new chatroom ${chatroomId} with worker id ${attendees.workerId} and user id ${attendees.userId} has been created`, 'ChatroomService')
+    
+    // create a new chatroom
+    await this.knex('attendees').insert([{ user_id: workerId, chatroom_id: chatroomId},{ user_id: userId, chatroom_id: chatroomId}])
+    Logger.log(`A new chatroom ${chatroomId} with worker id ${workerId} and user id ${userId} has been created`, 'ChatroomService')
+    
+    // update the workers_of_order table for further handling
+    await this.knex('workers_of_order').insert([{ user_id: userId, worker_id: workerId, order_id: orderId, chatroom_id: chatroomId}])
+    Logger.log(`A new worker ${workerId} has taken the order id ${orderId} of user id ${userId}`, 'ChatroomService')
+
     return chatroomId
+    }catch{
+      Logger.error("chatroom can't be created", 'ChatroomService')
+    }
   }
 
   async getAllChatroomsbyUserId(userId: number) {
@@ -31,18 +45,27 @@ export class ChatroomService {
     return chatrooms
   }
 
+  async getOneChatroombyUserIds(attendees: Attendees){
+    const result = await this.knex.raw(`SELECT chatroom_id FROM workers_of_order WHERE worker_id = ? AND user_id = ?`, [attendees.workerId, attendees.userId])
+    // Logger.debug({result: result}, 'ChatroomService')
+    return result.rows[0].chatroom_id
+  }
+
   async getAllUserIdByChatroomId(chatroomId: number){
     try{
-    Logger.debug(chatroomId, 'ChatroomService')
-    const allUserIds = await this.knex.raw(`SELECT user_id FROM attendees WHERE chatroom_id = ?`, [chatroomId])
-    // const allUserIds = await this.knex.select('user_id').from('attendees').where('chatroom_id', chatroomId)
-    // Logger.debug(allUserIds, 'ChatroomService')
-    // return [{user_id:1}, {user_id: 1992}]
-    return allUserIds
-    }catch(e){
-      Logger.error(e, 'ChatroomService')
+      // Logger.debug(chatroomId, 'ChatroomService')
+      const allUserIds = await this.knex.raw(`SELECT user_id FROM attendees WHERE chatroom_id = ?`, [chatroomId])
+      return allUserIds
+    }catch{
+      Logger.error("the user id cannot be searched", 'ChatroomService')
       return []
     }
+  }
+
+  async checkWorkersOfOrder(workerId: number, orderId: number){
+    const result = await this.knex.raw('SELECT * FROM workers_of_order WHERE worker_id = ? AND order_id = ?', [workerId, orderId])
+    // Logger.debug({result: result}, 'ChatroomService')
+    return result
   }
 
   async getMessage(chatroomId: number) {
