@@ -44,11 +44,14 @@ export default function WorkerRegisterPageForTypeOfService() {
 
 	useEffect(() => {
 		const fetchReferenceTable = async () => {
-			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/referencesTable`, {
-				headers: {
-					Authorization: `whatever`
+			const res = await fetch(
+				`${process.env.REACT_APP_BACKEND_URL}/referencesTable`,
+				{
+					headers: {
+						Authorization: `whatever`
+					}
 				}
-			})
+			)
 			const data = await res.json()
 			setReferenceTable(data)
 		}
@@ -187,7 +190,7 @@ export default function WorkerRegisterPageForTypeOfService() {
 						disabled={cannotRegister}
 						onClick={async () => {
 							const res = await fetch(
-								'http://localhost:8000/worker-auth/register',
+								`${process.env.REACT_APP_BACKEND_URL}/worker-auth/register`,
 								{
 									method: 'post',
 									headers: {
@@ -206,7 +209,7 @@ export default function WorkerRegisterPageForTypeOfService() {
 							)
 							if (!isLocalRegister) {
 								const res = await fetch(
-									'http://localhost:8000/worker-auth/webGoogleLogin',
+									`${process.env.REACT_APP_BACKEND_URL}/worker-auth/webGoogleLogin`,
 									{
 										method: 'POST',
 										headers: {

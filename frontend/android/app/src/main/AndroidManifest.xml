@@ -37,7 +37,8 @@
     </application>
 
     <!-- Permissions -->
-
+  <uses-permission android:name="android.permission.MICROPHONE" />
+  <uses-feature android:name="android.hardware.microphone" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.webkit.resource.AUDIO_CAPTURE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
