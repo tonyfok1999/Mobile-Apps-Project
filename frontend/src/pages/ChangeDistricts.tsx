@@ -40,7 +40,7 @@ export default function ChangeDistricts() {
 
 	useEffect(() => {
 		const fetchReferenceTable = async () => {
-			const res = await fetch('http://localhost:8000/referencesTable', {
+			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/referencesTable`, {
 				method: 'GET',
 				headers: { authorization: window.localStorage.token }
 			})

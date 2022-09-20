@@ -46,7 +46,7 @@ export default function WorkerOrderPage() {
 
 	useEffect(() => {
 		const fetchOrdersData = async () => {
-			const res = await fetch('http://localhost:8000/orders', {
+			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/orders`, {
 				headers: { Authorization: `whatever` }
 			})
 			const data = await res.json()
@@ -54,7 +54,7 @@ export default function WorkerOrderPage() {
 		}
 
 		const fetchReferenceTable = async () => {
-			const res = await fetch('http://localhost:8000/referencesTable', {
+			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/referencesTable`, {
 				headers: { Authorization: `whatever` }
 			})
 			const data = await res.json()

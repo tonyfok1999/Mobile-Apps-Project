@@ -63,7 +63,7 @@ export default function SpeakDetailPage() {
 
 	useEffect(() => {
 		const fetchReferenceTable = async () => {
-			const res = await fetch('http://localhost:8000/referencesTable', {
+			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/referencesTable`, {
 				method: 'GET',
 				headers: { authorization: window.localStorage.token }
 			})
@@ -112,7 +112,7 @@ export default function SpeakDetailPage() {
 console.log(  window.localStorage.token);
 
 		let testdata = await fetch(
-			'http://localhost:8000/speech/submitOderFrom',
+			`${process.env.REACT_APP_BACKEND_URL}/speech/submitOderFrom`,
 			{
 				method: 'POST',
 				headers: { 

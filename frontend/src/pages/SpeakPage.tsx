@@ -76,7 +76,7 @@ export default function SpeakPage() {
 				// console.log(formData)
 
 				let data = await fetch(
-					'http://192.168.80.56:8000/speech/uploadWebM',
+					`${process.env.REACT_APP_BACKEND_URL}/speech/uploadWebM`,
 					{
 						method: 'POST',
 						headers: { authorization: window.localStorage.token },
