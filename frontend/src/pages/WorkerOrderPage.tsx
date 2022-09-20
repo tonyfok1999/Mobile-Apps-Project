@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { IonButton, IonContent, IonPage } from '@ionic/react'
+import { IonButton, IonContent, IonPage, useIonAlert } from '@ionic/react'
 import { construct } from 'ionicons/icons'
 import React, { useEffect, useInsertionEffect, useState } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
@@ -10,6 +10,7 @@ import { useAppSelector } from '../store'
 export default function WorkerOrderPage() {
 	const token = localStorage.getItem('token')
 	const workerId = useAppSelector((state) => state.auth.user!.id)
+	const [presentAlert] = useIonAlert()
 	const [ordersInfo, setOrdersInfo] = useState<
 		{
 			id: number
@@ -190,7 +191,7 @@ export default function WorkerOrderPage() {
 
 									;(async () => {
 										const res = await fetch(
-											`${process.env.REACT_APP_BACKEND_URL}/chatroom/user/${orderInfo.user_id}/worker/${workerId}`,
+											`${process.env.REACT_APP_BACKEND_URL}/chatroom/orderChatroom?orderId=${orderInfo.id}&userId=${orderInfo.user_id}&workerId=${workerId}`,
 											{
 												method: 'POST',
 												headers: {
@@ -198,6 +199,7 @@ export default function WorkerOrderPage() {
 												}
 											}
 										)
+
 
 										const chatroomId = await res.json()
 										console.log({ chatroomId: chatroomId })

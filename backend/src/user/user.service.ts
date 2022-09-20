@@ -5,11 +5,11 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import { LoginUserDto } from './dto/login.dto';
-import { AuthService } from 'src/auth/auth.service';
+// import { AuthService } from 'src/auth/auth.service';
 
 @Injectable()
 export class UserService {
-  constructor(@InjectKnex() private readonly knex: Knex, private authenticationService: AuthService) {}
+  constructor(@InjectKnex() private readonly knex: Knex /*, private authenticationService: AuthService*/) {}
 
   async register(user: CreateUserDto) {
     let result = await this.knex.select('email').from('users').where('email', user.email);
@@ -55,8 +55,7 @@ export class UserService {
   }
 
   async findAll() {
-    let result = await this.knex.select('*').from('users');
-
+    let result = await this.knex.select(['id', 'email', 'nickname', 'phone', 'gender_id', 'profile_photo', 'is_worker', 'worker_info_id', 'score']).from('users');
     return result;
   }
 
@@ -77,7 +76,7 @@ export class UserService {
       let result = await this.knex.select(['id', 'email', 'nickname', 'phone', 'gender_id', 'profile_photo', 'is_worker', 'worker_info_id', 'score']).from('users').where('id', id);
       return result;
     } catch {
-      Logger.error(`the searched user id ${id} does not exist`, 'UserService')
+      Logger.error(`the searched user id ${id} does not exist`, 'UserService');
       return [];
     }
   }
@@ -108,12 +107,14 @@ export class UserService {
     return result;
   }
 
-  async findAllByNickname(nickname: string){
+  async findAllByNickname(nickname: string) {
     try {
-      const result = await this.knex.raw(`select id, email, nickname, phone, gender_id, profile_photo, is_worker, worker_info_id, score from users where nickname Like '%${nickname}%'`)
-      return result.rows
-    }catch{
-      return undefined
+      const result = await this.knex.raw(
+        `select id, email, nickname, phone, gender_id, profile_photo, is_worker, worker_info_id, score from users where nickname Like '%${nickname}%'`
+      );
+      return result.rows;
+    } catch {
+      return undefined;
     }
   }
 }
