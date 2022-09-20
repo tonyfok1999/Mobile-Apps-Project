@@ -12,6 +12,7 @@ import {
 import {
 	cameraOutline,
 	cashOutline,
+	chevronForwardOutline,
 	locationOutline,
 	locationSharp,
 	micOutline
@@ -24,7 +25,7 @@ import RightButton from '../components/RightButton'
 import { changeBudget, changeServiceType } from '../redux/speak/action'
 import { RootState } from '../store'
 import submit from '../srcImage/submit.png'
-
+import { Camera } from '@capacitor/camera'
 export default function SpeakDetailPage() {
 	const dispatch = useDispatch()
 	const [referenceTable, setReferenceTable] = useState<
@@ -38,7 +39,7 @@ export default function SpeakDetailPage() {
 			}[] // [2] service subtypes
 		]
 	>()
-
+	const [images, setimages] = useState<string[]>([])
 	const [districts, setDistricts] = useState<string>('')
 
 	const districtNumber = useSelector(
@@ -63,10 +64,13 @@ export default function SpeakDetailPage() {
 
 	useEffect(() => {
 		const fetchReferenceTable = async () => {
-			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/referencesTable`, {
-				method: 'GET',
-				headers: { authorization: window.localStorage.token }
-			})
+			const res = await fetch(
+				`${process.env.REACT_APP_BACKEND_URL}/referencesTable`,
+				{
+					method: 'GET',
+					headers: { authorization: window.localStorage.token }
+				}
+			)
 			const data = await res.json()
 			setReferenceTable(data)
 		}
@@ -81,44 +85,42 @@ export default function SpeakDetailPage() {
 				].district
 			)
 		}
-
-
 	}, [
 		districts,
 		referenceTable,
 		districtNumber,
 		typeNumber,
 		serviceSubTypeNumber,
-		budget
+		budget,
+		images
 	])
 
 	async function sendOder() {
-		
 		let datas: {
 			district: string
-		typeNumber: number
-		serviceSubTypeNumber: number[]
-		budget: number
-		speakFileName: string
-		transcription: string
+			typeNumber: number
+			serviceSubTypeNumber: number[]
+			budget: number
+			speakFileName: string
+			transcription: string
 		} = {
-			district: districts  ,
-		typeNumber: typeNumber,
-		serviceSubTypeNumber: serviceSubTypeNumber,
-		budget: budget,
-		speakFileName: speakFileName,
-		transcription: transcription
+			district: districts,
+			typeNumber: typeNumber,
+			serviceSubTypeNumber: serviceSubTypeNumber,
+			budget: budget,
+			speakFileName: speakFileName,
+			transcription: transcription
 		}
-console.log(  window.localStorage.token);
+		console.log(window.localStorage.token)
 
 		let testdata = await fetch(
 			`${process.env.REACT_APP_BACKEND_URL}/speech/submitOderFrom`,
 			{
 				method: 'POST',
-				headers: { 
+				headers: {
 					'Content-Type': 'application/json',
 					authorization: window.localStorage.token
-				 },
+				},
 				body: JSON.stringify(datas)
 			}
 		)
@@ -143,7 +145,7 @@ console.log(  window.localStorage.token);
 					padding-left: 5px;
 				}
 				.districtBar {
-					height: 9vh;
+					height: 10vh;
 					border-bottom-style: groove;
 				}
 				.district {
@@ -184,11 +186,11 @@ console.log(  window.localStorage.token);
 					height: 1vh;
 				}
 				.serviceSubTypeBar {
-					height: 18vh;
+					height: 14vh;
 					border-bottom-style: groove;
 				}
 				.budgetBar {
-					height: 12vh;
+					height: 16vh;
 					border-bottom-style: groove;
 				}
 				/* .typebuttonText {
@@ -214,7 +216,7 @@ console.log(  window.localStorage.token);
 					padding-top: 1vh;
 				}
 				.imageBar {
-					height: 12vh;
+					height: 13vh;
 					border-bottom-style: groove;
 				}
 				.transcriptionBar {
@@ -223,6 +225,24 @@ console.log(  window.localStorage.token);
 				}
 				button {
 					padding: 0;
+				}
+				.budgetText {
+					border-right: 10px;
+					padding: 0;
+					font-size: 3vh;
+				}
+				.budgetInputIconText {
+					align-items: center;
+					font-size: 2.9vh;
+				}
+				.newBudgetNumber {
+					/* line-height: 5vh, */
+					font-size: 2.8vh;
+				}
+				.imageText{
+					height:6vh;
+			
+					/* max-height:9vh ; */
 				}
 			`}>
 			<IonContent>
@@ -368,51 +388,61 @@ console.log(  window.localStorage.token);
 					<IonRow className='budgetBar'>
 						<IonCol>
 							<IonRow>
-								<IonIcon
-									className='locationIcon'
-									icon={cashOutline}
-								/>
-								預算
+								<IonCol size='2'>
+									<IonIcon
+										className='locationIcon'
+										icon={cashOutline}
+									/>
+								</IonCol>
+								<IonCol>
+									<span className='budgetText'>預算</span>
+								</IonCol>
 							</IonRow>
-							<IonRow className='budgetText'>
-								$
-								<input
-									type='number'
-									id='newBudget'
-									defaultValue={budget}
-									onChange={(e) => {
-										console.log(e.target.value.length)
-										if (
-											e.target.value[0] == '0' &&
-											e.target.value.length != 1
-										) {
-											console.log(e.target.value[0])
+							<IonRow>
+								<IonCol
+									size='1'
+									className='budgetInputIconText'>
+									$
+								</IonCol>
+								<IonCol className='newBudgetNumber'>
+									<input
+										type='number'
+										id='newBudget'
+										defaultValue={budget}
+										onChange={(e) => {
+											console.log(e.target.value.length)
+											if (
+												e.target.value[0] == '0' &&
+												e.target.value.length != 1
+											) {
+												console.log(e.target.value[0])
 
-											let array = e.target.value.split('')
-											array.shift()
-											e.target.value = array.toString()
-										}
+												let array =
+													e.target.value.split('')
+												array.shift()
+												e.target.value =
+													array.toString()
+											}
 
-										if (e.target.value != '') {
-											dispatch(
-												changeBudget(
-													parseInt(e.target.value)
+											if (e.target.value != '') {
+												dispatch(
+													changeBudget(
+														parseInt(e.target.value)
+													)
 												)
-											)
-										} else {
-											e.target.value = '0'
-											dispatch(
-												changeBudget(
-													parseInt(e.target.value)
+											} else {
+												e.target.value = '0'
+												dispatch(
+													changeBudget(
+														parseInt(e.target.value)
+													)
 												)
-											)
-										}
-									}}></input>
+											}
+										}}></input>
+								</IonCol>
 							</IonRow>
 						</IonCol>
-						<IonCol size='2' className='rightButtonCol'>
-							<RightButton thisPath='' />
-						</IonCol>
+						<IonCol size='2' className='rightButtonCol'></IonCol>
 					</IonRow>
 					<IonRow className='imageBar'>
 						<IonCol>
@@ -423,10 +453,37 @@ console.log(  window.localStorage.token);
 								/>
 								上傳照片
 							</IonRow>
-							<IonRow className='budgetText'>暫沒有相片</IonRow>
+							<IonRow className='imageText'></IonRow>
 						</IonCol>
 						<IonCol size='2' className='rightButtonCol'>
-							<RightButton thisPath='' />
+							<IonButton size='large' fill='clear' onClick={()=>{
+								const takePicture = async () => {
+									// const image = await Camera.getPhoto({
+									//   quality: 90,
+									//   allowEditing: true,
+									//   resultType: CameraResultType.Uri
+									// });
+									const image = await Camera.pickImages({
+										quality: 90,
+										limit: 20,
+								  });
+									// image.webPath will contain a path that can be set as an image src.
+									// You can access the original file using image.path, which can be
+									// passed to the Filesystem API to read the raw data of the image,
+									// if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
+									
+								  console.log(image);
+								//   setimages(image.webPath)
+									// Can be set to the src of an image now
+									// imageElement.src = imageUrl;
+								  };
+								  takePicture()
+							}}>
+								<IonIcon
+									className='icon'
+									icon={chevronForwardOutline}
+								/>
+							</IonButton>
 						</IonCol>
 					</IonRow>
 					<IonRow className='transcriptionBar'>

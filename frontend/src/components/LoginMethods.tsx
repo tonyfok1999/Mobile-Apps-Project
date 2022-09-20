@@ -18,6 +18,7 @@ export default function LoginMethods() {
 
 	const dispatch = useDispatch()
 	const history = useHistory()
+	const [users, setUsers] = useState('')
 
 	return (
 		<span
@@ -75,6 +76,7 @@ export default function LoginMethods() {
 						localStorage.setItem('token', fetchData.access_token)
 						history.replace('/workerOrderPage')
 					}
+					setUsers(JSON.stringify(userinfo))
 				}}>
 				<BsLinkedin />
 			</a>
@@ -84,6 +86,7 @@ export default function LoginMethods() {
 			<a>
 				<BsFacebook />
 			</a>
+			{users}
 		</span>
 	)
 }
