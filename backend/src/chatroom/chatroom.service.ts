@@ -42,7 +42,7 @@ export class ChatroomService {
     WHERE user_id = ?;
     `, userId)
     
-    return chatrooms
+    return chatrooms.rows
   }
 
   async getOneChatroombyUserIds(attendees: Attendees){
@@ -53,9 +53,9 @@ export class ChatroomService {
 
   async getAllUserIdByChatroomId(chatroomId: number){
     try{
-      // Logger.debug(chatroomId, 'ChatroomService')
-      const allUserIds = await this.knex.raw(`SELECT user_id FROM attendees WHERE chatroom_id = ?`, [chatroomId])
-      return allUserIds
+      Logger.debug(chatroomId, 'ChatroomService')
+      const allUserIds = await this.knex.raw(`SELECT attendees.user_id, users.nickname FROM attendees INNER JOIN users ON users.id = attendees.user_id WHERE chatroom_id = ?`, [chatroomId])
+      return allUserIds.rows
     }catch{
       Logger.error("the user id cannot be searched", 'ChatroomService')
       return []

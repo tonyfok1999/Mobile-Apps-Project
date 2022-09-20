@@ -107,6 +107,14 @@ export class UserService {
     return result;
   }
 
+  async getNicknameById(userId: number) {
+    const result = await this.knex.raw(
+      `select nickname from users where id =?`, userId
+    );
+
+    return result.rows
+  }
+
   async findAllByNickname(nickname: string) {
     try {
       const result = await this.knex.raw(
