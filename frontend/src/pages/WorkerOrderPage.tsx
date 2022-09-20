@@ -2,15 +2,16 @@
 import { css } from '@emotion/react'
 import { IonButton, IonContent, IonPage, useIonAlert } from '@ionic/react'
 import { construct } from 'ionicons/icons'
-import React, { useEffect, useInsertionEffect, useState } from 'react'
+import React, { useContext, useEffect, useInsertionEffect, useState } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
+import { WebSocketContext } from '../context/WebScoketContext'
 import WorkerTabBar from '../nav/WorkerTabBar'
 import { useAppSelector } from '../store'
 
 export default function WorkerOrderPage() {
 	const token = localStorage.getItem('token')
 	const workerId = useAppSelector((state) => state.auth.user!.id)
-	const [presentAlert] = useIonAlert()
+	const socket = useContext(WebSocketContext)
 	const [ordersInfo, setOrdersInfo] = useState<
 		{
 			id: number
@@ -204,6 +205,8 @@ export default function WorkerOrderPage() {
 										const chatroomId = await res.json()
 										console.log({ chatroomId: chatroomId })
 										history.replace(`/chatroom/${chatroomId.chatroomId}`)
+
+										socket.emit('createChatroom', chatroomId)
 									})()
 									
 									//

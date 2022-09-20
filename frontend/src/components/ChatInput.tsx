@@ -127,6 +127,9 @@ const ChatInput: React.FC = () => {
 						sender_id: userId,
 						text: message
 					})
+
+					socket.emit("createChatroom", chatroomId)
+
 					console.log(`the message ${message} has been submit`)
 					setMessage('')
 				}
