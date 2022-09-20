@@ -11,7 +11,8 @@ import { useHistory } from 'react-router'
 
 export default function LoginMethods() {
 	GoogleAuth.initialize({
-		clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+		clientId:
+			'708322933526-0359al7b0ul1qll3i971rqu49jb7d7co.apps.googleusercontent.com',
 		scopes: ['profile', 'email'],
 		grantOfflineAccess: true
 	})
