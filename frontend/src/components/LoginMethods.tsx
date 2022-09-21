@@ -8,18 +8,15 @@ import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth'
 import { useDispatch } from 'react-redux'
 import { storeAccount } from '../redux/register/action'
 import { useHistory } from 'react-router'
+import { isPlatform } from '@ionic/core'
 
 export default function LoginMethods() {
-	GoogleAuth.initialize({
-		clientId:
-			'708322933526-0359al7b0ul1qll3i971rqu49jb7d7co.apps.googleusercontent.com',
-		scopes: ['profile', 'email'],
-		grantOfflineAccess: true
-	})
+	if (!isPlatform('capacitor')) {
+		GoogleAuth.initialize()
+	}
 
 	const dispatch = useDispatch()
 	const history = useHistory()
-	const [users, setUsers] = useState('')
 
 	return (
 		<span
@@ -45,6 +42,9 @@ export default function LoginMethods() {
 					font-size: 30px;
 				}
 			`}>
+			<a>
+				<BsLinkedin />
+			</a>
 			<a
 				onClick={async () => {
 					const userinfo = await GoogleAuth.signIn()
@@ -77,17 +77,12 @@ export default function LoginMethods() {
 						localStorage.setItem('token', fetchData.access_token)
 						history.replace('/workerOrderPage')
 					}
-					setUsers(JSON.stringify(userinfo))
 				}}>
-				<BsLinkedin />
-			</a>
-			<a>
 				<FaGooglePlus />
 			</a>
 			<a>
 				<BsFacebook />
 			</a>
-			{users}
 		</span>
 	)
 }
