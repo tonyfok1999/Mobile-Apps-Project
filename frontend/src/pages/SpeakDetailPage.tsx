@@ -24,9 +24,10 @@ import { useParams } from 'react-router-dom'
 import BackIcon from '../components/BackIcon'
 import RightButton from '../components/RightButton'
 import { changeBudget, changeServiceType } from '../redux/speak/action'
-import { RootState } from '../store'
+import { RootState, useAppSelector } from '../store'
 import submit from '../srcImage/submit.png'
 import { Camera, GalleryPhoto } from '@capacitor/camera'
+import { stringify, v4 as uuidv4 } from 'uuid'
 export default function SpeakDetailPage() {
 	const [presentAlert] = useIonAlert()
 	const dispatch = useDispatch()
@@ -63,6 +64,7 @@ export default function SpeakDetailPage() {
 	const transcription = useSelector(
 		(state: RootState) => state.speak.transcription
 	)
+	const user = useAppSelector((state) => state.auth.user!.id)
 
 	useEffect(() => {
 		const fetchReferenceTable = async () => {
@@ -113,20 +115,45 @@ export default function SpeakDetailPage() {
 			speakFileName: speakFileName,
 			transcription: transcription
 		}
-		console.log(window.localStorage.token)
-
-		let testdata = await fetch(
+		let sendDataToBackend = await fetch(
 			`${process.env.REACT_APP_BACKEND_URL}/speech/submitOderFrom`,
 			{
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
-					authorization: window.localStorage.token
+					authorization: window.localStorage.token,
+					userId: user as any,
 				},
 				body: JSON.stringify(datas)
 			}
 		)
-		console.log(await testdata.json())
+		let oderId = await sendDataToBackend.json()
+		// console.log(oderId.oderID[0].id);
+		
+		if (images.length > 0 && oderId.oderID[0].id) {
+			const formData = new FormData()
+			for (let img of images) {
+				let blob = await fetch(img.webPath).then((r) => r.blob())
+				// console.log(blob)
+				formData.append('oderImage', blob, `${uuidv4()}.png`)
+			}
+			console.log(formData.getAll('oderImage'))
+			console.log(oderId.oderID[0].id);
+			
+			let uploadOderImage = await fetch(
+				`${process.env.REACT_APP_BACKEND_URL}/speech/uploadOderImage`,
+				{
+					method: 'POST',
+					headers: {
+						authorization: window.localStorage.token,
+						oderId: oderId.oderID[0].id,
+					},
+					body: formData
+				}
+			)
+			console.log(await uploadOderImage.json())
+			setimages([])
+		}
 	}
 
 	return (
@@ -245,6 +272,9 @@ export default function SpeakDetailPage() {
 					height: 6vh;
 
 					/* max-height:9vh ; */
+				}
+				.inputImage {
+					height: 6vh;
 				}
 			`}>
 			<IonContent>
@@ -412,12 +442,12 @@ export default function SpeakDetailPage() {
 										id='newBudget'
 										defaultValue={budget}
 										onChange={(e) => {
-											console.log(e.target.value.length)
+											// console.log(e.target.value.length)
 											if (
 												e.target.value[0] == '0' &&
 												e.target.value.length != 1
 											) {
-												console.log(e.target.value[0])
+												// console.log(e.target.value[0])
 
 												let array =
 													e.target.value.split('')
@@ -455,7 +485,16 @@ export default function SpeakDetailPage() {
 								/>
 								上傳照片
 							</IonRow>
-							<IonRow className='imageText'>{images.length>0 && images.map((image)=>(<IonCol key={image.webPath} size='4'><img src={image.webPath}></img></IonCol>))}</IonRow>
+							<IonRow className='imageText'>
+								{images.length > 0 &&
+									images.map((image) => (
+										<IonCol key={image.webPath} size='4'>
+											<img
+												className='inputImage'
+												src={image.webPath}></img>
+										</IonCol>
+									))}
+							</IonRow>
 						</IonCol>
 						<IonCol size='2' className='rightButtonCol'>
 							<IonButton
@@ -472,6 +511,7 @@ export default function SpeakDetailPage() {
 											quality: 90,
 											limit: 3
 										})
+										console.log(image)
 										// console.log(image.photos.length );
 										if (image.photos.length > 3) {
 											image = { photos: [] }
@@ -483,8 +523,6 @@ export default function SpeakDetailPage() {
 												buttons: ['OK']
 											})
 										} else {
-											console.log(image.photos);
-											
 											setimages(image.photos)
 										}
 										// image.webPath will contain a path that can be set as an image src.
@@ -492,7 +530,6 @@ export default function SpeakDetailPage() {
 										// passed to the Filesystem API to read the raw data of the image,
 										// if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
 
-										console.log(images)
 										//   setimages(image.webPath)
 										// Can be set to the src of an image now
 										// imageElement.src = imageUrl;
