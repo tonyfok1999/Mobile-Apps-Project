@@ -2,12 +2,20 @@
 import { css } from '@emotion/react'
 import {
 	IonButton,
+	IonButtons,
 	IonCol,
 	IonContent,
 	IonGrid,
+	IonHeader,
 	IonIcon,
+	IonInput,
+	IonItem,
+	IonLabel,
+	IonModal,
 	IonPage,
 	IonRow,
+	IonTitle,
+	IonToolbar,
 	useIonAlert
 } from '@ionic/react'
 import {
@@ -18,7 +26,7 @@ import {
 	locationSharp,
 	micOutline
 } from 'ionicons/icons'
-import React, { SetStateAction, useEffect, useState } from 'react'
+import React, { SetStateAction, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import BackIcon from '../components/BackIcon'
@@ -26,8 +34,14 @@ import RightButton from '../components/RightButton'
 import { changeBudget, changeServiceType } from '../redux/speak/action'
 import { RootState, useAppSelector } from '../store'
 import submit from '../srcImage/submit.png'
-import { Camera, GalleryPhoto } from '@capacitor/camera'
+import {
+	Camera,
+	CameraResultType,
+	CameraSource,
+	GalleryPhoto
+} from '@capacitor/camera'
 import { stringify, v4 as uuidv4 } from 'uuid'
+import { OverlayEventDetail } from '@ionic/core'
 export default function SpeakDetailPage() {
 	const [presentAlert] = useIonAlert()
 	const dispatch = useDispatch()
@@ -65,7 +79,8 @@ export default function SpeakDetailPage() {
 		(state: RootState) => state.speak.transcription
 	)
 	const user = useAppSelector((state) => state.auth.user!.id)
-
+	const modal = useRef<HTMLIonModalElement>(null)
+	const input = useRef<HTMLIonInputElement>(null)
 	useEffect(() => {
 		const fetchReferenceTable = async () => {
 			const res = await fetch(
@@ -122,14 +137,14 @@ export default function SpeakDetailPage() {
 				headers: {
 					'Content-Type': 'application/json',
 					authorization: window.localStorage.token,
-					userId: user as any,
+					userId: user as any
 				},
 				body: JSON.stringify(datas)
 			}
 		)
 		let oderId = await sendDataToBackend.json()
 		// console.log(oderId.oderID[0].id);
-		
+
 		if (images.length > 0 && oderId.oderID[0].id) {
 			const formData = new FormData()
 			for (let img of images) {
@@ -138,15 +153,15 @@ export default function SpeakDetailPage() {
 				formData.append('oderImage', blob, `${uuidv4()}.png`)
 			}
 			console.log(formData.getAll('oderImage'))
-			console.log(oderId.oderID[0].id);
-			
+			console.log(oderId.oderID[0].id)
+
 			let uploadOderImage = await fetch(
 				`${process.env.REACT_APP_BACKEND_URL}/speech/uploadOderImage`,
 				{
 					method: 'POST',
 					headers: {
 						authorization: window.localStorage.token,
-						oderId: oderId.oderID[0].id,
+						oderId: oderId.oderID[0].id
 					},
 					body: formData
 				}
@@ -155,7 +170,13 @@ export default function SpeakDetailPage() {
 			setimages([])
 		}
 	}
-
+	function confirm() {
+		modal.current?.dismiss(input.current?.value, 'confirm')
+	}
+	function onWillDismiss(ev: CustomEvent<OverlayEventDetail>) {
+		if (ev.detail.role === 'confirm') {
+		}
+	}
 	return (
 		<IonPage
 			css={css`
@@ -190,6 +211,9 @@ export default function SpeakDetailPage() {
 					font-size: 4vh;
 				}
 				.locationIcon {
+					font-size: 4.5vh;
+				}
+				.imageIcon {
 					font-size: 4.5vh;
 				}
 				.districtInfo {
@@ -275,6 +299,9 @@ export default function SpeakDetailPage() {
 				}
 				.inputImage {
 					height: 6vh;
+				}
+				.imageInfoText {
+					font-size: 3vh;
 				}
 			`}>
 			<IonContent>
@@ -480,24 +507,161 @@ export default function SpeakDetailPage() {
 						<IonCol>
 							<IonRow>
 								<IonIcon
-									className='locationIcon'
+									className='imageIcon'
 									icon={cameraOutline}
 								/>
-								上傳照片
+								<span className='imageInfoText'>
+									上傳照片 上傳數量3張
+								</span>
 							</IonRow>
 							<IonRow className='imageText'>
 								{images.length > 0 &&
 									images.map((image) => (
-										<IonCol key={image.webPath} size='4'>
+										<IonCol key={images.indexOf(image)+100} size='4'>
+											<button onClick={()=>{
+												let delNumber = images.indexOf(image)
+												console.log(delNumber);
+												
+												// images.filter(image => images.indexOf(image))
+								
+												
+												setimages(images=>{
+													let array = [...images]
+													array.splice(delNumber, 1)
+													 return array
+													} )
+												console.log(images);
+												
+												
+												
+												}}>
+
 											<img
 												className='inputImage'
 												src={image.webPath}></img>
+												</button>
 										</IonCol>
 									))}
 							</IonRow>
 						</IonCol>
 						<IonCol size='2' className='rightButtonCol'>
 							<IonButton
+								id='open-modal'
+								size='large'
+								fill='clear'>
+								<IonIcon
+									className='icon'
+									icon={chevronForwardOutline}
+								/>
+							</IonButton>
+							<IonModal
+								ref={modal}
+								trigger='open-modal'
+								onWillDismiss={(ev) => onWillDismiss(ev)}>
+								<IonHeader>
+									<IonToolbar>
+										<IonButtons slot='start'>
+											<IonButton
+												onClick={() =>
+													modal.current?.dismiss()
+												}>
+												返回
+											</IonButton>
+										</IonButtons>
+										<IonTitle>試選擇</IonTitle>
+										<IonButtons slot='end'>
+											{/* <IonButton strong={true} onClick={() => confirm()}>
+                  Confirm
+                </IonButton> */}
+										</IonButtons>
+									</IonToolbar>
+								</IonHeader>
+								<IonContent className='ion-padding'>
+									<IonItem>
+										<IonButton
+											size='large'
+											fill='clear'
+											onClick={async () => {
+												if (images.length >= 3) {
+													presentAlert({
+														header: 'Alert',
+														subHeader:
+															'只限上傳3張相片',
+														message: '請重新選擇!',
+														buttons: ['OK']
+													})
+												} else {
+													let getPhoto =
+														await Camera.getPhoto({
+															resultType:
+																CameraResultType.Uri,
+															source: CameraSource.Camera,
+															quality: 90
+														})
+
+													console.log(getPhoto)
+													if (getPhoto.webPath) {
+														let photo: GalleryPhoto =
+															{
+																webPath:
+																	getPhoto.webPath,
+																format: 'jpeg'
+															}
+														console.log(photo)
+														setimages(images=>[...images,photo])
+													}
+
+
+												}
+
+												modal.current?.dismiss()
+											}}>
+											使用相機拍攝照片
+										</IonButton>
+										{/* <IonLabel position="stacked">使用相機拍攝照片</IonLabel> */}
+									</IonItem>
+									<IonItem>
+										<IonButton
+											size='large'
+											fill='clear'
+											onClick={async () => {
+												let image =
+													await Camera.pickImages({
+														quality: 90,
+														limit: 3
+													})
+												console.log(image)
+												// console.log(image.photos.length );
+												if (image.photos.length > 3 || images.length+image.photos.length>3) {
+													// image = { photos: [] }
+													// setimages(image.photos)
+													presentAlert({
+														header: 'Alert',
+														subHeader:
+															'只限上傳3張相片',
+														message: '請重新選擇!',
+														buttons: ['OK']
+													})
+												} else {
+													// setimages(image.photos)
+
+													setimages(images=>{
+														let array = [...images]
+														let Array2 = array.concat(image.photos)
+														return Array2
+														} )
+												}
+
+												modal.current?.dismiss()
+											}}>
+											從相片庫上傳
+										</IonButton>
+										{/* <IonLabel position="stacked">從相片庫上傳</IonLabel> */}
+									</IonItem>
+								</IonContent>
+							</IonModal>
+
+							{/* <IonButton
 								size='large'
 								fill='clear'
 								onClick={() => {
@@ -507,6 +671,14 @@ export default function SpeakDetailPage() {
 										//   allowEditing: true,
 										//   resultType: CameraResultType.Uri
 										// });
+
+										let getPhoto = await Camera.getPhoto({
+											resultType: CameraResultType.Uri,
+											source: CameraSource.Camera,
+											quality: 90
+										  });
+										console.log(getPhoto);
+
 										let image = await Camera.pickImages({
 											quality: 90,
 											limit: 3
@@ -541,7 +713,7 @@ export default function SpeakDetailPage() {
 									className='icon'
 									icon={chevronForwardOutline}
 								/>
-							</IonButton>
+							</IonButton> */}
 						</IonCol>
 					</IonRow>
 					<IonRow className='transcriptionBar'>
@@ -572,44 +744,3 @@ export default function SpeakDetailPage() {
 		</IonPage>
 	)
 }
-
-/* <div></div>
-					<div>資料</div>
-					<div>
-						icon <div>地區</div>
-						<div>{}</div>
-					</div>
-					<div>服務範圍</div>
-					<div>{}</div>
-					<div>維修類別</div>
-					<div>{}</div>
-					<div>icon 預算</div>
-					<div>$ {}</div>
-					<div>icon 相片</div>
-					<div>相片</div>
-					<div>icon 語音</div>
-					<div>語音</div>
-					<div>語音文字</div> */
-
-// <IonCol size='3' className='typebutton wind'>
-// 				<button className='typebuttonText btn btn-outline-danger'>
-// 					風
-// 				</button>
-// 			</IonCol>
-// 			<IonCol size='3' className='typebutton fire'>
-// 				<button className='typebuttonText btn btn-outline-danger'>
-// 					火
-// 				</button>
-// 			</IonCol>
-// 			<IonCol size='3' className='typebutton water'>
-// 				<button className='typebuttonText btn btn-outline-danger'>
-// 					水
-// 				</button>
-// 			</IonCol>
-// 			<IonCol
-// 				size='3'
-// 				className='typebutton electricity'>
-// 				<button className='typebuttonText btn btn-outline-danger'>
-// 					電
-// 				</button>
-// 			</IonCol>
