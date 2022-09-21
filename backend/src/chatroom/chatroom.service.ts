@@ -33,10 +33,22 @@ export class ChatroomService {
     }
   }
 
+  async getSpecificChatroombyUserId(chatroomId: number, userId: number){
+    const chatroom = await this.knex.raw(`
+    SELECT chatrooms.id as chatroom_id, chatroom_records.created_at as lastUpdateTime, text, sender_id, is_favourite FROM attendees
+    LEFT JOIN chatrooms ON chatrooms.id = attendees.chatroom_id 
+    LEFT JOIN (SELECT text, sender_id, chatroom_id, created_at FROM chatroom_records ORDER BY created_at DESC LIMIT 1) as chatroom_records
+    ON chatroom_records.chatroom_id = chatrooms.id
+    WHERE (chatrooms.id = ? AND attendees.user_id = ?);
+    `, [chatroomId, userId])
+
+    return chatroom.rows
+  }
+
   async getAllChatroomsbyUserId(userId: number) {
     
     const chatrooms = await this.knex.raw(`
-    SELECT chatrooms.id as chatroom_id, chatroom_records.created_at as lastUpdateTime, text, sender_id FROM attendees
+    SELECT chatrooms.id as chatroom_id, chatroom_records.created_at as lastUpdateTime, text, sender_id, is_favourite FROM attendees
     LEFT JOIN chatrooms ON chatrooms.id = attendees.chatroom_id 
     LEFT JOIN (SELECT text, sender_id, chatroom_id, created_at FROM chatroom_records ORDER BY created_at DESC LIMIT 1) as chatroom_records
     ON chatroom_records.chatroom_id = chatrooms.id
@@ -74,6 +86,11 @@ export class ChatroomService {
     await this.knex.raw('DELETE FROM chatroom_records WHERE chatroom_id = ?', [chatroomId])
     await this.knex.raw('DELETE FROM workers_of_order WHERE chatroom_id = ?', [chatroomId])
     await this.knex.raw('DELETE FROM chatrooms WHERE id = ?', [chatroomId])
+  }
+
+  async bookmarkChat(chatroomId: number, userId: number){
+    await this.knex.raw('UPDATE attendees SET is_favourite = !is_favourite WHERE chatroom_id = ? AND user_id = ?', [chatroomId, userId])
+    Logger.debug('bookmarked', 'ChatroomService')
   }
 
   async getMessage(chatroomId: number) {

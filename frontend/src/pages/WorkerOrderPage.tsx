@@ -200,13 +200,19 @@ export default function WorkerOrderPage() {
 												}
 											}
 										)
+								
+										const chatroom = await res.json()
+										const chatroomId = chatroom.chatroomId
+										console.log({ chatroom: chatroom })
 
+										if(chatroom.isNew){
+											socket.emit('createChatroom', chatroomId)
+										}
+										
 
-										const chatroomId = await res.json()
-										console.log({ chatroomId: chatroomId })
-										history.replace(`/chatroom/${chatroomId.chatroomId}`)
+										history.replace(`/chatroom/${chatroomId}`)
 
-										// socket.emit('setChatroom', chatroomId)
+										
 									})()
 									
 									//

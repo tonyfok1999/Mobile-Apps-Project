@@ -75,7 +75,7 @@ export default function LoginMethods() {
 						history.replace('/workerRegisterPageForTypeOfService')
 					} else {
 						localStorage.setItem('token', fetchData.access_token)
-						history.replace('/workerOrderPage')
+						history.replace('/tab/workerOrderPage')
 					}
 					setUsers(JSON.stringify(userinfo))
 				}}>

@@ -74,11 +74,11 @@ export class ChatroomController {
       if (result.length > 0) {
         const chatroomId = await this.chatroomService.getOneChatroombyUserIds(attendees);
         Logger.warn(`chat id ${chatroomId} has been created before`,'ChatroomController')
-        return  { chatroomId: chatroomId }
+        return  { chatroomId: chatroomId, isNew: false }
       } else {
         const chatroomId = await this.chatroomService.createChatroom(attendees, orderId);
         Logger.log(`chatroom id ${chatroomId}has been created`,'ChatroomController')
-        return { chatroomId: chatroomId };
+        return { chatroomId: chatroomId, isNew: true };
       }
     } catch {
       throw new HttpException("chatroom can't be created", HttpStatus.BAD_REQUEST);

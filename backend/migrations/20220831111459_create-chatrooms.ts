@@ -5,7 +5,6 @@ export async function up(knex: Knex): Promise<void> {
   if (!hasTable) {
     await knex.schema.createTable('chatrooms', (table) => {
       table.increments();
-      table.boolean('is_favourite').defaultTo(false).notNullable;
       table.timestamps(false, true);
     });
   }

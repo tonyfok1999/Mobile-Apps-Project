@@ -17,7 +17,13 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
 
-  constructor(private authService: AuthService, private userService: UserService, private chatroomService: ChatroomService, private connectedUserService: ConnectedUserService) {}
+  userIdfromSocket:number
+  socketId: string
+
+  constructor(private authService: AuthService, private userService: UserService, private chatroomService: ChatroomService, private connectedUserService: ConnectedUserService) {
+    this.userIdfromSocket = 1;
+    this.socketId = 'none'
+  }
 
   async onModuleInit() {
     await this.connectedUserService.deleteAll();
@@ -52,6 +58,8 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
 
         // store current user into the socket data
         socket.data.user = user[0];
+        this.userIdfromSocket = socket.data.user.id
+        this.socketId = socket.id
 
         // store the socketid corresponding userid
         await this.connectedUserService.createUser({ socketId: socket.id, userId: userId });
@@ -116,11 +124,11 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('setChatroom')
-  async onCreateRoom(socket: Socket, @MessageBody() chatroomId: number) {
+  async onCreateRoom(@MessageBody() chatroomId: number) {
     const connections = await this.mapUserIdsAndSocketInSameRoom(chatroomId);
-    
+
     Logger.debug({ connections: connections }, 'SocketGateway');
-    
+
     for (let i = 0; i < connections.length; i++) {
       const chatrooms = await this.chatroomService.getAllChatroomsbyUserId(connections[i].userId);
       connections[i]['chatrooms'] = chatrooms;
@@ -130,10 +138,10 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
 
     for (let i = 0; i < connections.length; i++) {
       for (let j = 0; j < connections[i].chatrooms.length; j++) {
-      Logger.debug({ chatroom_id: connections[i].chatrooms[j].chatroom_id }, 'SocketGateway');
-      const attendees = await this.chatroomService.getAllUserIdByChatroomId(connections[i].chatrooms[j].chatroom_id);
-      // attendees = [{user_id: number, nickname: string}, {user_id: number, nickname: string}]
-      connections[i]['chatrooms'][j]['attendees'] = attendees;
+        Logger.debug({ chatroom_id: connections[i].chatrooms[j].chatroom_id }, 'SocketGateway');
+        const attendees = await this.chatroomService.getAllUserIdByChatroomId(connections[i].chatrooms[j].chatroom_id);
+        // attendees = [{user_id: number, nickname: string}, {user_id: number, nickname: string}]
+        connections[i]['chatrooms'][j]['attendees'] = attendees;
       }
     }
 
@@ -146,11 +154,11 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('deleteChat')
-  async onDeleteChat(socket: Socket, @MessageBody() chatroomId: number) {
+  async onDeleteChat(@MessageBody() chatroomId: number) {
     const connections = await this.mapUserIdsAndSocketInSameRoom(chatroomId);
 
-    await this.chatroomService.deleteChat(chatroomId)
-    Logger.warn(`chatroom id ${chatroomId} is deleted`, 'SocketGateway')
+    await this.chatroomService.deleteChat(chatroomId);
+    Logger.warn(`chatroom id ${chatroomId} is deleted`, 'SocketGateway');
 
     for (let i = 0; i < connections.length; i++) {
       const chatrooms = await this.chatroomService.getAllChatroomsbyUserId(connections[i].userId);
@@ -159,19 +167,49 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
 
     for (let i = 0; i < connections.length; i++) {
       for (let j = 0; j < connections[i].chatrooms.length; j++) {
-      Logger.debug({ chatroom_id: connections[i].chatrooms[j].chatroom_id }, 'SocketGateway');
-      const attendees = await this.chatroomService.getAllUserIdByChatroomId(connections[i].chatrooms[j].chatroom_id);
-      // attendees = [{user_id: number, nickname: string}, {user_id: number, nickname: string}]
-      connections[i]['chatrooms'][j]['attendees'] = attendees;
+        Logger.debug({ chatroom_id: connections[i].chatrooms[j].chatroom_id }, 'SocketGateway');
+        const attendees = await this.chatroomService.getAllUserIdByChatroomId(connections[i].chatrooms[j].chatroom_id);
+        // attendees = [{user_id: number, nickname: string}, {user_id: number, nickname: string}]
+        connections[i]['chatrooms'][j]['attendees'] = attendees;
       }
     }
-    
+
     // emit a new message to users in the same room
     for (const connection of connections) {
       if (connection.userSocket) {
         this.server.to(connection.userSocket).emit('onChatroom', connection.chatrooms);
       }
     }
+  }
+
+  @SubscribeMessage('bookmarkChat')
+  async bookmarkChat(@MessageBody() chatroomId: number) {
+    Logger.debug({userId: this.userIdfromSocket}, 'SocketGateway')
+    await this.chatroomService.bookmarkChat( chatroomId, this.userIdfromSocket )
+    Logger.log(`the chatroom id ${chatroomId} has been bookmarked`, 'SocketGateway')
+    const chatrooms = await this.chatroomService.getAllChatroomsbyUserId( this.userIdfromSocket )
+
+    for( let i = 0; i < chatrooms.length; i++ ) {
+      const attendees = await this.chatroomService.getAllUserIdByChatroomId(chatrooms[i].chatroom_id);
+      chatrooms[i]['attendees'] = attendees;
+    }
+
+    Logger.debug({chatrooms: chatrooms}, 'SocketGateway')
+    this.server.to(this.socketId).emit('onChatroom', chatrooms);
+  }
+
+  @SubscribeMessage('createChatroom')
+  async createChatroom(@MessageBody() chatroomId: number){
+    const newChatroom = await this.chatroomService.getSpecificChatroombyUserId(chatroomId, this.userIdfromSocket)
+    
+    const attendees = await this.chatroomService.getAllUserIdByChatroomId(chatroomId)
+    Logger.debug({attendees: attendees}, 'SocketGateway')
+    
+    newChatroom[0]['attendees']= attendees
+
+    Logger.debug({newChatroom: newChatroom}, 'SocketGateway')
+    this.server.to(this.socketId).emit('newChatroom', newChatroom)
+    this.server.emit('setChatroom', chatroomId)
   }
 
 }

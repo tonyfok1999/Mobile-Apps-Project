@@ -221,7 +221,7 @@ export default function WorkerRegisterPageForTypeOfService() {
 								)
 								const jwt = (await res.json()).access_token
 								localStorage.setItem('token', jwt)
-								history.replace('/workerOrderPage')
+								history.replace('/tab/workerOrderPage')
 							} else {
 								history.replace('/registerSuccess')
 							}
