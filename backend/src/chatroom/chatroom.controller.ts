@@ -85,6 +85,19 @@ export class ChatroomController {
     }
   }
 
+  // @Get('/:chatroomId')
+  // async getChatroom(@Param("chatroomId", ParseIntPipe) chatroomId: number){
+  //   const newChatroom = await this.chatroomService.getSpecificChatroombyUserId(chatroomId, this.userIdfromSocket)
+  //   Logger.debug({newChatroom: newChatroom}, 'SocketGateway')
+
+  //   const attendees = await this.chatroomService.getAllUserIdByChatroomId(chatroomId)
+  //   Logger.debug({attendees: attendees}, 'SocketGateway')
+    
+  //   newChatroom[0]['attendees']= attendees
+
+  //   Logger.debug({newChatroom: newChatroom}, 'SocketGateway')
+  // }
+
   @Get('/:chatroomId/message')
   async getMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number) {
     if (typeof chatroomId !== 'number') {

@@ -12,7 +12,6 @@ import Chats from './Chats'
 import { WebSocketContext } from '../context/WebScoketContext'
 import { Timestamp } from 'rxjs'
 
-
 import { useSelector } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../store'
 import {
@@ -28,16 +27,16 @@ import {
 // }
 export interface Chatroom {
 	chatroom_id: number
-    nickname?: string
 	sender_id: number
 	text: string
 	lastUpdateTime: string
 	attendees: Attendee[]
-
+	is_favourite: boolean
 }
 
 export interface Attendee {
-	user_id: number, nickname: string
+	user_id: number
+	nickname: string
 }
 
 const ChatTab: React.FC = () => {
@@ -69,29 +68,27 @@ const ChatTab: React.FC = () => {
 			)
 
 			const chatrooms: Chatroom[] = await res.json()
-			
+
 			setChatlist(chatrooms)
 			dispatch(loadChatrooms(chatrooms))
 
 			dispatch(finishLoading())
 		})()
 
-			socket.on('onChatroom', (chatrooms) => {
-				setChatlist(chatrooms)
-			})
+		socket.on('onChatroom', (chatrooms) => {
+			setChatlist(chatrooms)
+			dispatch(loadChatrooms(chatrooms))
+		})
 
-			return () => {
-				console.log('Unregistering Event')
-				socket.off('chatrooms')
-			}
-		
+		return () => {
+			console.log('Unregistering Event')
+			socket.off('chatrooms')
+		}
 	}, [token])
-
-
 
 	// TODO: create room with user 1983 whenever a new user come in
 	// socket.emit('createRoom', {workerId: 1983, userId: 'current userId'} )
-	
+
 	console.log('The Chatrooms are: ' + JSON.stringify(chatlist))
 
 	return (
@@ -104,11 +101,18 @@ const ChatTab: React.FC = () => {
 				className='mb-3'
 				id='chatTab'>
 				<Tab eventKey='allChats' title='全部對話'>
-					{chatlist.map((chat, idx) => (
-						<Chats key={idx} chatroom={chat} />
-					))}
+					{chatlist
+						.filter((chat) => !chat.is_favourite)
+						.map((chat, idx) => (
+							<Chats key={idx} chatroom={chat} />
+						))}
 				</Tab>
 				<Tab eventKey='storedChats' title='已收藏對話'>
+					{chatlist
+						.filter((chat) => chat.is_favourite)
+						.map((chat, idx) => (
+							<Chats key={idx} chatroom={chat} />
+						))}
 				</Tab>
 			</Tabs>
 		</>

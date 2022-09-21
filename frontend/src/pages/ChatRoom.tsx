@@ -24,6 +24,7 @@ import ChatContainer from '../components/ChatContainer'
 import { useAppDispatch, useAppSelector } from '../store'
 import MessageBubble from '../components/MessageBubble'
 import { WebSocketContext } from '../context/WebScoketContext'
+import { loadChatrooms } from '../redux/chatroom/action'
 
 export interface Message {
 	sender_id: number
@@ -36,12 +37,14 @@ const Chatroom: React.FC = () => {
 	const chatrooms = useAppSelector((state) => state.chatroom.chatrooms)
 	const userId = useAppSelector((state) => state.auth.user!.id)
 	const chatroomId = parseInt(params.chatroomId)
+	const dispatch = useAppDispatch()
 
 	const initialState: Message[] = [
 		{ sender_id: 1, text: 'Hello', created_at: new Date() }
 	]
 
 	const [messages, setMessages] = useState<Message[]>(initialState)
+	const [chats, setChats] = useState(chatrooms)
 
 	const socket = useContext(WebSocketContext)
 
@@ -74,6 +77,11 @@ const Chatroom: React.FC = () => {
 			console.log(data)
 			setMessages((prev) => [...prev, data])
 		})
+
+		// socket.on('newChatroom', (chatroom) => {
+		// 	setChats((prev)=>[...prev, chatroom])
+		// 	console.log({chatroom: chats})
+		// })
 
 		return () => {
 			console.log('Unregistering Event')
@@ -139,9 +147,9 @@ const Chatroom: React.FC = () => {
 							<img src='https://picsum.photos/id/237/64/64'></img>
 							<div className='username'>
 								{
-									chatrooms.filter(
+									chats.filter(
 										(chatroom) => chatroom.chatroom_id === chatroomId
-									)[0].attendees
+									)[0]?.attendees
 									.filter(
 										(attendee) =>
 											attendee.user_id !== userId

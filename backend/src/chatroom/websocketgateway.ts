@@ -36,10 +36,11 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleConnection(socket: Socket) {
     try {
+
       const token = socket.handshake.headers.authorization;
       console.log({ token });
 
-      if (token) {
+      if (token !== 'newUser') {
         const decodedToken = await this.authService.verifyJwt(token);
 
         console.log({ decodedToken });
@@ -63,14 +64,11 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
 
         // store the socketid corresponding userid
         await this.connectedUserService.createUser({ socketId: socket.id, userId: userId });
-
-        const chatrooms = await this.chatroomService.getAllChatroomsbyUserId(user[0].id);
-
-        Logger.debug(JSON.stringify(chatrooms), 'SocketGateway');
-
-        // Only emit rooms to the specific connected client
-        return this.server.to(socket.id).emit('chatrooms', chatrooms);
+      }else{
+        Logger.warn(`user fail to connect from websocket gateway since he is the new user `, 'SocketGateway')
+        // this.disconnect(socket)
       }
+    
     } catch (e) {
       Logger.error(e, 'SocketGateway');
       socket.data.user = undefined;
@@ -198,18 +196,24 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
     this.server.to(this.socketId).emit('onChatroom', chatrooms);
   }
 
-  @SubscribeMessage('createChatroom')
-  async createChatroom(@MessageBody() chatroomId: number){
-    const newChatroom = await this.chatroomService.getSpecificChatroombyUserId(chatroomId, this.userIdfromSocket)
-    
-    const attendees = await this.chatroomService.getAllUserIdByChatroomId(chatroomId)
-    Logger.debug({attendees: attendees}, 'SocketGateway')
-    
-    newChatroom[0]['attendees']= attendees
+  // @SubscribeMessage('createChatroom')
+  // async createChatroom(@MessageBody() chatroomId: number){
+    // const newChatroom = await this.chatroomService.getSpecificChatroombyUserId(chatroomId, this.userIdfromSocket)
+    // Logger.debug({newChatroom: newChatroom}, 'SocketGateway')
 
-    Logger.debug({newChatroom: newChatroom}, 'SocketGateway')
-    this.server.to(this.socketId).emit('newChatroom', newChatroom)
-    this.server.emit('setChatroom', chatroomId)
+    // const attendees = await this.chatroomService.getAllUserIdByChatroomId(chatroomId)
+    // Logger.debug({attendees: attendees}, 'SocketGateway')
+    
+    // newChatroom[0]['attendees']= attendees
+
+    // Logger.debug({newChatroom: newChatroom}, 'SocketGateway')
+    // this.server.to(this.socketId).emit('newChatroom', newChatroom)
+    // this.server.emit('setChatroom', chatroomId)
+  // }
+
+  @SubscribeMessage('restartSocket')
+  restartSocket(socket: Socket){
+    socket.emit('startSocket')
   }
 
 }
