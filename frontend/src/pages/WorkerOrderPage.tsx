@@ -6,11 +6,13 @@ import React, { useContext, useEffect, useInsertionEffect, useState } from 'reac
 import { NavLink, useHistory } from 'react-router-dom'
 import { WebSocketContext } from '../context/WebScoketContext'
 import WorkerTabBar from '../nav/WorkerTabBar'
-import { useAppSelector } from '../store'
+import { loadChatrooms } from '../redux/chatroom/action'
+import { useAppDispatch, useAppSelector } from '../store'
 
 export default function WorkerOrderPage() {
 	const token = localStorage.getItem('token')
 	const workerId = useAppSelector((state) => state.auth.user!.id)
+	const dispatch = useAppDispatch()
 	const socket = useContext(WebSocketContext)
 	const [ordersInfo, setOrdersInfo] = useState<
 		{
@@ -200,13 +202,31 @@ export default function WorkerOrderPage() {
 												}
 											}
 										)
+								
+										const chatroom = await res.json()
+										const chatroomId = chatroom.chatroomId
+										console.log({ chatroom: chatroom })
 
+										if(chatroom.isNew){
+											const res = await fetch(
+												`${process.env.REACT_APP_BACKEND_URL}/chatroom/${orderInfo.user_id}`,
+												{
+													headers: {
+														Authorization: `Bearer ${token}`
+													}
+												}
+											)
 
-										const chatroomId = await res.json()
-										console.log({ chatroomId: chatroomId })
-										history.replace(`/chatroom/${chatroomId.chatroomId}`)
+											const chatrooms = await res.json()
 
-										// socket.emit('setChatroom', chatroomId)
+											dispatch(loadChatrooms(chatrooms))
+											// socket.emit('createChatroom')
+										}
+										
+
+										history.replace(`/chatroom/${chatroomId}`)
+
+										
 									})()
 									
 									//

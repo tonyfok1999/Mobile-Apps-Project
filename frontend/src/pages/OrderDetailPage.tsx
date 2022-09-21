@@ -117,7 +117,7 @@ export default function OrderDetailPage() {
 					<IonButton
 						size='large'
 						fill='clear'
-						routerLink='/workerOrderPage'>
+						routerLink='/tab/workerOrderPage'>
 						<IonIcon className='icon' icon={arrowBackOutline} />
 					</IonButton>
 					<div>{orderInfo?.id}</div>

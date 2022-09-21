@@ -109,7 +109,7 @@ const App: React.FC = () => {
 					/>
 					<Route
 						exact
-						path='/workerOrderPage'
+						path='/tab/workerOrderPage'
 						component={WorkerOrderPage}
 					/>
 					<Route

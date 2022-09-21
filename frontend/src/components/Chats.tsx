@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
 	IonList,
 	IonItemSliding,
@@ -15,14 +15,46 @@ import {
 
 import { trash, archive } from 'ionicons/icons'
 import { Attendee, Chatroom } from './ChatTab'
-import { useAppSelector } from '../store'
+import { useAppDispatch, useAppSelector } from '../store'
 import { WebSocketContext } from '../context/WebScoketContext'
 import { useParams } from 'react-router'
 
 export default function Chats(props: { chatroom: Chatroom }) {
 	const userId = useAppSelector((state) => state.auth.user!.id)
+	const token = localStorage.getItem('token')
 	const socket = useContext(WebSocketContext)
 	const [presentAlert] = useIonAlert();
+	const [chatroom, setChatroom] = useState(props.chatroom)
+	const dispatch = useAppDispatch()
+
+	// useEffect(() => {
+	// 	socket.on('newChatroom', (chatroom) => {
+	// 		setChatroom(chatroom)
+	// 		console.log({chatroom: chatroom})
+	// 	})
+
+	// 	socket.on('onChatroom', (chatroom) => {
+	// 		dispatch(loadChatrooms(chatroom))
+	// 	})
+
+	// 	;(async () => {
+	// 		const res = await fetch(
+	// 			`${process.env.REACT_APP_BACKEND_URL}/chatroom/${}/user/:userId`,
+	// 			{
+	// 				headers: {
+	// 					Authorization: `Bearer ${token}`
+	// 				}
+	// 			}
+	// 		)
+		
+	// 		const chatroom = res.json()
+
+	// 		setChatroom(chatroom)
+		
+	// 	})()
+
+	// 	console.log({newChatroom: chatroom})
+	// }, [])
 	
 	return (
 		<>
@@ -37,7 +69,7 @@ export default function Chats(props: { chatroom: Chatroom }) {
 						<IonLabel>
 							<h2>
 								{
-								props.chatroom.attendees.filter(
+								chatroom.attendees.filter(
 									(attendee) => attendee.user_id !== userId
 								).map((attendee) => attendee.nickname)
 								}
@@ -45,14 +77,14 @@ export default function Chats(props: { chatroom: Chatroom }) {
 							<p>{props.chatroom.text}</p>
 						</IonLabel>
 						<IonNote slot='end'>
-							{props.chatroom.lastUpdateTime}
+							{chatroom.lastUpdateTime}
 						</IonNote>
 					</IonItem>
 
 					<IonItemOptions side='start'>
 						<IonItemOption
 							color='tertiary'
-							onClick={() => console.log('share clicked')}
+							onClick={() => socket.emit('bookmarkChat', chatroom.chatroom_id)}
 							expandable>
 							<IonIcon slot='icon-only' icon={archive} />
 						</IonItemOption>
@@ -77,7 +109,7 @@ export default function Chats(props: { chatroom: Chatroom }) {
 										text: '確定',
 										role: 'confirm',
 										handler: () => {
-											socket.emit('deleteChat', props.chatroom.chatroom_id)
+											socket.emit('deleteChat', chatroom.chatroom_id)
 										},
 									  },
 									],

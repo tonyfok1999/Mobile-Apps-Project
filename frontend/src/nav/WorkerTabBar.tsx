@@ -23,7 +23,7 @@ const WorkerTabBar: React.FC = () => {
 			<IonTabButton
 				tab='workerOrderPage'
 				className='workerOrderPage-icon'
-				href='workerOrderPage'>
+				href='/tab/workerOrderPage'>
 				<IonIcon size='large' icon={newspaper} />
 			</IonTabButton>
 

@@ -47,3 +47,12 @@ SELECT * FROM workers_of_order WHERE worker_id = 2 AND order_id = 1;
 -- Insert into workers_of_order table
 
 INSERT INTO workers_of_order (user_id, worker_id, order_id, chatroom_id) VALUES (1, 2, 1, 1);
+
+
+-- Get one chatroom only with chatroom_id and user_id
+
+SELECT chatrooms.id as chatroom_id, chatroom_records.created_at as lastUpdateTime, text, sender_id, is_favourite FROM attendees
+LEFT JOIN chatrooms ON chatrooms.id = attendees.chatroom_id 
+LEFT JOIN (SELECT text, sender_id, chatroom_id, created_at FROM chatroom_records ORDER BY created_at DESC LIMIT 1) as chatroom_records
+ON chatroom_records.chatroom_id = chatrooms.id
+WHERE (chatrooms.id = 3 AND attendees.user_id = 5);

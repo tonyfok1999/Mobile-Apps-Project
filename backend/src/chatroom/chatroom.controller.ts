@@ -74,16 +74,29 @@ export class ChatroomController {
       if (result.length > 0) {
         const chatroomId = await this.chatroomService.getOneChatroombyUserIds(attendees);
         Logger.warn(`chat id ${chatroomId} has been created before`,'ChatroomController')
-        return  { chatroomId: chatroomId }
+        return  { chatroomId: chatroomId, isNew: false }
       } else {
         const chatroomId = await this.chatroomService.createChatroom(attendees, orderId);
         Logger.log(`chatroom id ${chatroomId}has been created`,'ChatroomController')
-        return { chatroomId: chatroomId };
+        return { chatroomId: chatroomId, isNew: true };
       }
     } catch {
       throw new HttpException("chatroom can't be created", HttpStatus.BAD_REQUEST);
     }
   }
+
+  // @Get('/:chatroomId')
+  // async getChatroom(@Param("chatroomId", ParseIntPipe) chatroomId: number){
+  //   const newChatroom = await this.chatroomService.getSpecificChatroombyUserId(chatroomId, this.userIdfromSocket)
+  //   Logger.debug({newChatroom: newChatroom}, 'SocketGateway')
+
+  //   const attendees = await this.chatroomService.getAllUserIdByChatroomId(chatroomId)
+  //   Logger.debug({attendees: attendees}, 'SocketGateway')
+    
+  //   newChatroom[0]['attendees']= attendees
+
+  //   Logger.debug({newChatroom: newChatroom}, 'SocketGateway')
+  // }
 
   @Get('/:chatroomId/message')
   async getMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number) {

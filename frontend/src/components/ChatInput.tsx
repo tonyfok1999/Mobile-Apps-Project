@@ -177,7 +177,6 @@ const ChatInput: React.FC = () => {
 						e.target.style.height = e.target.scrollHeight + 'px'
 
 					}}
-					contentEditable
 				/>
 			</label>
 			{/* <input type='text'		

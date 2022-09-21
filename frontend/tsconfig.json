@@ -23,5 +23,5 @@
   },
   "include": [
     "src"
-, "../testing_tony/OrderContainer.tsx"  ]
+ ]
 }

@@ -24,10 +24,14 @@ import React, { useContext, useEffect, useState } from 'react'
 import ChatTab from '../components/ChatTab'
 import ClientTabBar from '../nav/ClientTabBar'
 import { WebSocketContext } from '../context/WebScoketContext'
+import { useAppSelector } from '../store'
+import WorkerTabBar from '../nav/WorkerTabBar'
 
 
 const ChatList: React.FC = () => {
-
+	const isWorker = useAppSelector(
+		(state) => state.auth.user!.is_worker
+	)
 	return (<>
 		<IonMenu content-id='main-content'>
 			<IonHeader>
@@ -91,7 +95,7 @@ const ChatList: React.FC = () => {
 				onIonScrollEnd={() => {}}>
 				<ChatTab />
 			</IonContent>
-			<ClientTabBar />
+			{ isWorker? <WorkerTabBar/>:<ClientTabBar />}
 		</IonPage>
 	</>
 )}

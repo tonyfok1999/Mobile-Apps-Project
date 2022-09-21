@@ -9,6 +9,7 @@ export async function up(knex: Knex): Promise<void> {
       table.foreign('user_id').references('users.id');
       table.integer("chatroom_id").notNullable;
       table.foreign("chatroom_id").references("chatrooms.id");
+      table.boolean('is_favourite').defaultTo(false).notNullable;
       table.timestamps(false, true);
     });
   }
