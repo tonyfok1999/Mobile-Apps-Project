@@ -8,6 +8,7 @@ import Picker from 'emoji-picker-react'
 import { WebSocketContext } from '../context/WebScoketContext'
 import { useParams } from 'react-router'
 import { useAppSelector } from '../store'
+import { useIonAlert } from '@ionic/react'
 
 export interface Message {
 	chatroom_id?: number;
@@ -23,6 +24,7 @@ const ChatInput: React.FC = () => {
 	const chatroomId = parseInt(params.chatroomId)
 	const userId = useAppSelector((state) => state.auth.user!.id)
 	const textareaRef = React.useRef() as React.MutableRefObject<HTMLTextAreaElement>
+	const [presentAlert] = useIonAlert()
 
 	// useEffect(() => {
 
@@ -54,7 +56,7 @@ const ChatInput: React.FC = () => {
 		)
 		formData.append('blob', blob)
 
-		await fetch(`${process.env.REACT_APP_BACKEND_URL}/chatroom/${chatroomId}/message`, {
+		const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/chatroom/${chatroomId}/message`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json; charset=utf-8',
@@ -63,6 +65,14 @@ const ChatInput: React.FC = () => {
 			body: JSON.stringify({ sender_id: userId, text: message })
 		})
 		console.log('message has been sent')
+
+		if (res.status === 400){
+			presentAlert({
+				header: '訊息錯誤',
+				message: '聊天室已被刪除',
+				buttons: ['確定']
+			})
+		}
 	}
 
 	const handleFormSubmit = (event: any) => {
@@ -79,7 +89,7 @@ const ChatInput: React.FC = () => {
 				text: message
 			})
 
-			socket.emit("createChatroom", chatroomId)
+			socket.emit("setChatroom", chatroomId)
 
 			console.log(`the message ${message} has been submit`)
 			setMessage('')

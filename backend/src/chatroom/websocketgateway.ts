@@ -10,6 +10,7 @@ import { ConnectedUserService } from 'src/chatroom/socket-connected-user/connect
 import { Message } from './dto/message.dto';
 
 @WebSocketGateway({
+  // cors: false,
   cors: `${process.env.REACT_URL}`,
 })
 export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
@@ -111,10 +112,10 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
       }
     }
 
-    this.server.emit('createChatroom', message.chatroom_id);
+    this.server.emit('setChatroom', message.chatroom_id);
   }
 
-  @SubscribeMessage('createChatroom')
+  @SubscribeMessage('setChatroom')
   async onCreateRoom(socket: Socket, @MessageBody() chatroomId: number) {
     const connections = await this.mapUserIdsAndSocketInSameRoom(chatroomId);
     
@@ -143,4 +144,34 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
       }
     }
   }
+
+  @SubscribeMessage('deleteChat')
+  async onDeleteChat(socket: Socket, @MessageBody() chatroomId: number) {
+    const connections = await this.mapUserIdsAndSocketInSameRoom(chatroomId);
+
+    await this.chatroomService.deleteChat(chatroomId)
+    Logger.warn(`chatroom id ${chatroomId} is deleted`, 'SocketGateway')
+
+    for (let i = 0; i < connections.length; i++) {
+      const chatrooms = await this.chatroomService.getAllChatroomsbyUserId(connections[i].userId);
+      connections[i]['chatrooms'] = chatrooms;
+    }
+
+    for (let i = 0; i < connections.length; i++) {
+      for (let j = 0; j < connections[i].chatrooms.length; j++) {
+      Logger.debug({ chatroom_id: connections[i].chatrooms[j].chatroom_id }, 'SocketGateway');
+      const attendees = await this.chatroomService.getAllUserIdByChatroomId(connections[i].chatrooms[j].chatroom_id);
+      // attendees = [{user_id: number, nickname: string}, {user_id: number, nickname: string}]
+      connections[i]['chatrooms'][j]['attendees'] = attendees;
+      }
+    }
+    
+    // emit a new message to users in the same room
+    for (const connection of connections) {
+      if (connection.userSocket) {
+        this.server.to(connection.userSocket).emit('onChatroom', connection.chatrooms);
+      }
+    }
+  }
+
 }

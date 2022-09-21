@@ -225,28 +225,4 @@ export async function seed(knex: Knex): Promise<void> {
       },
     ])
 
-    await knex('chatrooms').insert([
-      {id: 1},
-      {id: 2},
-    ])
-
-    await knex('attendees').insert([
-      {
-        user_id: userArrayId[1].id,
-        chatroom_id: 1
-      },
-      {
-        user_id: userArrayId[2].id,
-        chatroom_id: 1
-      },
-      {
-        user_id: userArrayId[2].id,
-        chatroom_id: 2
-      },
-      {
-        user_id: userArrayId[3].id,
-        chatroom_id: 2
-      }
-    ])
-
 }

@@ -4,6 +4,7 @@ import { readFileSync } from 'fs';
 import { Knex } from 'knex';
 import { InjectKnex } from 'nestjs-knex';
 import { SpeedResult } from './dto/speakResult.dto';
+import { SubmitFrom } from './dto/subminForm.dto';
 const speech = require('@google-cloud/speech');
 const client = new speech.SpeechClient();
 ConfigModule.forRoot({
@@ -85,43 +86,48 @@ export class SpeechService {
       return speedResult;
     }
   }
+  
+  
+  async formDataToDB(data: SubmitFrom,userId:number) {
+    console.log(userId);
+    
+    let oderID = await this.knex('orders').insert({
+      user_id: userId,
+      working_address: data.district,
+      service_subtype_id: data.serviceSubTypeNumber[0],
+      budget: data.budget,
+      voice_message: data.speakFileName,
+      voice_text: data.transcription
+    }).returning('id')
+
+return {oderID:oderID};
+  }
+  
+  
+  
+    async formImageToDB(files:Express.Multer.File[],oderId:number) {
+      // files[?].filename
+      try{
+        
+        
+        for(let image of files){
+         
+          console.log(oderId);
+          console.log( image.filename);
+          
+          await this.knex('order_images').insert({
+            
+            order_id: oderId,
+            image_name: image.filename
+           
+          })
+        }
+        return {State: 'ok'}
+      }catch{
+        return {State: 'err for insert oder image'}
+      }
+    }
+
+
 }
 
-//   async getDistricts(transcription: string) {
-//     // let district:any = await this.knex
-//     // 	.select('district')
-//     // 	.from('districts_of_hk')
-//     // 	.where(transcription,'~',district')
-// let filename = 'testFilename'
-//     let district = await this.knex.raw(`SELECT district FROM districts_of_hk WHERE '${transcription}' ~ district `);
-//     //  console.log(district.rows.length);
-
-//     if (district.rows.length == 0) {
-//       district = '中西區';
-//     } else {
-//       district = district.rows[0].district;
-//     }
-//     // console.log(district);
-
-//     let serviceSubType = await this.knex.raw(`SELECT subtype FROM service_subtypes WHERE '${transcription}' ~ subtype`);
-//     // console.log(serviceSubType.rows);
-
-//     if (serviceSubType.rows.length == 0) {
-//       serviceSubType = '洗冷氣';
-//     } else {
-//       serviceSubType = serviceSubType.rows[0].subtype;
-//     }
-//     // console.log(serviceSubType);
-
-//     let serviceType = await this.knex
-//       .join('service_subtypes', 'service_types.id', '=', 'service_subtypes.service_type_id')
-//       .select('type')
-//       .from('service_types')
-//       .where('subtype', serviceSubType);
-//     // console.log(serviceType[0].type);
-
-//     let speedResult: SpeedResult = { district: district, serviceSubType: serviceSubType, serviceType: serviceType[0].type,filename: filename  };
-
-//     return speedResult;
-//   }
-// }
