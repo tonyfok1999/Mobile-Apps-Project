@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">frontend</string>
-    <string name="title_activity_main">frontend</string>
+    <string name="app_name">Repair-matching</string>
+    <string name="title_activity_main">Repair-matching</string>
     <string name="package_name">io.ionic.starter</string>
     <string name="custom_url_scheme">io.ionic.starter</string>
     <string name="server_client_id">708322933526-0359al7b0ul1qll3i971rqu49jb7d7co.apps.googleusercontent.com</string>

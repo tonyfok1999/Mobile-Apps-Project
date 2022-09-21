@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile } from '@nestjs/common';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseInterceptors, UploadedFile, UploadedFiles, Req } from '@nestjs/common';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 
 import { diskStorage } from 'multer';
 import { SpeechUpload } from './dto/speakUpload.dto';
@@ -24,18 +24,26 @@ export class SpeechController {
   // 	return this.speechService.uploadWebM(speechUpload)
   // }
 
-  @Post('/submitOderFrom')
-  async submitOderFrom(@Body() data:SubmitFrom) {
-    console.log(data);
+  @Post('/submitOderFrom') //form text
+  async submitOderFrom(@Req() req,@Body() data: SubmitFrom) {
+    let userId = req.headers.userid;
+    // console.log(userId);
+    
+    
+    return this.speechService.formDataToDB(data,userId);
+  }
 
-    // console.log(JSON.parse(data.district));
-
-    // console.log('submitOderFrom');
-    // console.log(submitFrom);
-    // console.log(submitFrom.district);
-    // console.log(JSON.parse(submitFrom.district));
-
-    return 'ok';
+  @Post('/uploadOderImage') //form image
+  @UseInterceptors(
+    FilesInterceptor('oderImage', 3, {
+      storage: diskStorage({
+        destination: process.env.SPEECH_FILE,
+      }),
+    })
+  )
+  uploadMultipleFiles(@Req() req, @UploadedFiles() files: Express.Multer.File[]) {
+    let oderId = req.headers.oderid
+    return this.speechService.formImageToDB(files,oderId);
   }
 
   @Post('/uploadWebM')
