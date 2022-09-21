@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import {
 	IonList,
 	IonItemSliding,
@@ -9,16 +9,21 @@ import {
 	IonIcon,
 	IonNote,
 	IonAvatar,
-	IonImg
+	IonImg,
+	useIonAlert
 } from '@ionic/react'
 
 import { trash, archive } from 'ionicons/icons'
 import { Attendee, Chatroom } from './ChatTab'
 import { useAppSelector } from '../store'
+import { WebSocketContext } from '../context/WebScoketContext'
+import { useParams } from 'react-router'
 
 export default function Chats(props: { chatroom: Chatroom }) {
 	const userId = useAppSelector((state) => state.auth.user!.id)
-
+	const socket = useContext(WebSocketContext)
+	const [presentAlert] = useIonAlert();
+	
 	return (
 		<>
 			<IonList>
@@ -56,7 +61,29 @@ export default function Chats(props: { chatroom: Chatroom }) {
 					<IonItemOptions side='end'>
 						<IonItemOption
 							color='danger'
-							onClick={() => console.log('share clicked')}
+							onClick={() => 
+								presentAlert({
+									header: '刪除聊天室',
+									subHeader: '在雙方手機上同時刪除聊天室',
+									buttons: [
+									  {
+										text: '取消',
+										role: 'cancel',
+										handler: () => {
+										  console.log('delete cancelled')
+										},
+									  },
+									  {
+										text: '確定',
+										role: 'confirm',
+										handler: () => {
+											socket.emit('deleteChat', props.chatroom.chatroom_id)
+										},
+									  },
+									],
+
+								  })
+								}
 							expandable>
 							<IonIcon slot='icon-only' icon={trash} />
 						</IonItemOption>

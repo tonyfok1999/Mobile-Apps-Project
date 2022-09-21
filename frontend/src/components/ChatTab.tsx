@@ -77,10 +77,7 @@ const ChatTab: React.FC = () => {
 		})()
 
 			socket.on('onChatroom', (chatrooms) => {
-				dispatch(startLoading())
-				dispatch(loadChatrooms(chatrooms))
 				setChatlist(chatrooms)
-				dispatch(finishLoading())
 			})
 
 			return () => {
