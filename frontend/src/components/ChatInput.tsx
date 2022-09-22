@@ -9,6 +9,8 @@ import { WebSocketContext } from '../context/WebScoketContext'
 import { useParams } from 'react-router'
 import { useAppSelector } from '../store'
 import { useIonAlert } from '@ionic/react'
+import { useSocket } from '../hooks/useSocket'
+import SocketContext from '../socket/SocketContext'
 
 export interface Message {
 	chatroom_id?: number;
@@ -19,12 +21,26 @@ export interface Message {
 const ChatInput: React.FC = () => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false)
 	const [message, setMessage] = useState('')
-	const socket = useContext(WebSocketContext)
+	// const socket = useContext(WebSocketContext)
 	const params = useParams<{ chatroomId: string }>()
 	const chatroomId = parseInt(params.chatroomId)
 	const userId = useAppSelector((state) => state.auth.user!.id)
 	const textareaRef = React.useRef() as React.MutableRefObject<HTMLTextAreaElement>
 	const [presentAlert] = useIonAlert()
+
+	const { socket } = useContext(SocketContext)
+
+
+	// useEffect(() => {
+	// 	const onMessage =() => {
+
+	// 	}
+	// 	socket?.on('', onMessage);
+
+	// 	return () => {
+	// 		socket?.off('', onMessage)
+	// 	}
+	// }, [socket]
 
 	// useEffect(() => {
 
@@ -83,13 +99,13 @@ const ChatInput: React.FC = () => {
 		if (message.length > 0) {
 			console.log(formData)
 			handleSendMessage(message, formData)
-			socket.emit('newMessage', {
+			socket?.emit('newMessage', {
 				chatroom_id: chatroomId,
 				sender_id: userId,
 				text: message
 			})
 
-			socket.emit("setChatroom", chatroomId)
+			socket?.emit("setChatroom", chatroomId)
 
 			console.log(`the message ${message} has been submit`)
 			setMessage('')

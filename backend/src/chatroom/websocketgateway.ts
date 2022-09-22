@@ -181,19 +181,23 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('bookmarkChat')
-  async bookmarkChat(@MessageBody() chatroomId: number) {
-    Logger.debug({userId: this.userIdfromSocket}, 'SocketGateway')
-    await this.chatroomService.bookmarkChat( chatroomId, this.userIdfromSocket )
+  async bookmarkChat(@MessageBody() obj: {chatroomId: number, userId: number}) {
+    // Logger.debug({userId: this.userIdfromSocket}, 'SocketGateway')
+    const chatroomId = obj.chatroomId
+    const userId = obj.userId
+    await this.chatroomService.bookmarkChat( chatroomId, userId )
     Logger.log(`the chatroom id ${chatroomId} has been bookmarked`, 'SocketGateway')
-    const chatrooms = await this.chatroomService.getAllChatroomsbyUserId( this.userIdfromSocket )
+    const chatrooms = await this.chatroomService.getAllChatroomsbyUserId( userId )
 
     for( let i = 0; i < chatrooms.length; i++ ) {
       const attendees = await this.chatroomService.getAllUserIdByChatroomId(chatrooms[i].chatroom_id);
       chatrooms[i]['attendees'] = attendees;
     }
 
-    Logger.debug({chatrooms: chatrooms}, 'SocketGateway')
-    this.server.to(this.socketId).emit('onChatroom', chatrooms);
+    const socketId = await this.connectedUserService.getSocketIdByUserId(userId)
+    // Logger.debug({socketId: socketId[0].socket_id}, 'SocketGateway')
+    // Logger.debug({chatrooms: chatrooms}, 'SocketGateway')
+    this.server.to(socketId[0].socket_id).emit('onChatroom', chatrooms);
   }
 
   // @SubscribeMessage('createChatroom')
@@ -211,9 +215,9 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
     // this.server.emit('setChatroom', chatroomId)
   // }
 
-  @SubscribeMessage('restartSocket')
-  restartSocket(socket: Socket){
-    socket.emit('startSocket')
-  }
+  // @SubscribeMessage('restartSocket')
+  // restartSocket(socket: Socket){
+  //   socket.emit('startSocket')
+  // }
 
 }

@@ -19,6 +19,7 @@ import { async } from 'rxjs'
 import { useAppDispatch } from '../store'
 import { useHistory } from 'react-router'
 import { loggedIn } from '../redux/auth/action'
+import { loadToken } from '../redux/token/action'
 
 const HomePage: React.FC = () => {
 	const dispatch = useAppDispatch()
@@ -42,6 +43,7 @@ const HomePage: React.FC = () => {
 				)
 				const userinfo = await resMe.json()
 				dispatch(loggedIn(userinfo[0], token))
+				dispatch(loadToken(token))
 			} else {
 				const res = await fetch(
 					`${process.env.REACT_APP_BACKEND_URL}/user/me`,
@@ -49,6 +51,7 @@ const HomePage: React.FC = () => {
 				)
 				const userinfo = await res.json()
 				dispatch(loggedIn(userinfo[0], token))
+				dispatch(loadToken(token))
 
 				if (userinfo[0].is_worker) {
 					history.replace('/tab/workerOrderPage')

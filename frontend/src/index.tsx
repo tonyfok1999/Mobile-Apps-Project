@@ -6,15 +6,16 @@ import reportWebVitals from './reportWebVitals'
 import { Provider } from 'react-redux'
 import { store } from './store'
 import { socket, WebSocketProvider } from './context/WebScoketContext'
+import SocketContextComponent from './socket/SocketContextComponent'
 
 const container = document.getElementById('root')
 const root = createRoot(container!)
 root.render(
 	// <React.StrictMode>
 	<Provider store={store}>
-		<WebSocketProvider value={socket}>
+		<SocketContextComponent>
 			<App />
-		</WebSocketProvider>
+		</SocketContextComponent>
 	</Provider>
 	// </React.StrictMode>
 )

@@ -25,6 +25,8 @@ import { useAppDispatch, useAppSelector } from '../store'
 import MessageBubble from '../components/MessageBubble'
 import { WebSocketContext } from '../context/WebScoketContext'
 import { loadChatrooms } from '../redux/chatroom/action'
+import { useSocket } from '../hooks/useSocket'
+import SocketContext from '../socket/SocketContext'
 
 export interface Message {
 	sender_id: number
@@ -46,7 +48,8 @@ const Chatroom: React.FC = () => {
 	const [messages, setMessages] = useState<Message[]>(initialState)
 	const [chats, setChats] = useState(chatrooms)
 
-	const socket = useContext(WebSocketContext)
+	// const socket = useContext(WebSocketContext)
+	const { socket } = useContext(SocketContext)
 
 	const token = localStorage.getItem('token')
 
@@ -72,7 +75,7 @@ const Chatroom: React.FC = () => {
 
 		console.log('container lifecycle starting')
 
-		socket.on('onMessage', (data) => {
+		socket?.on('onMessage', (data) => {
 			console.log('onMessage event received')
 			console.log(data)
 			setMessages((prev) => [...prev, data])
@@ -85,8 +88,7 @@ const Chatroom: React.FC = () => {
 
 		return () => {
 			console.log('Unregistering Event')
-			socket.off('connect')
-			socket.off('onMessage')
+			socket?.off('onMessage')
 		}
 	}, [token, chatroomId])
 

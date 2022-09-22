@@ -10,15 +10,18 @@ import React, {
 } from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import { WebSocketContext } from '../context/WebScoketContext'
+import { useSocket } from '../hooks/useSocket'
 import WorkerTabBar from '../nav/WorkerTabBar'
 import { loadChatrooms } from '../redux/chatroom/action'
+import SocketContext from '../socket/SocketContext'
 import { useAppDispatch, useAppSelector } from '../store'
 
 export default function WorkerOrderPage() {
 	const token = localStorage.getItem('token')
 	const workerId = useAppSelector((state) => state.auth.user!.id)
 	const dispatch = useAppDispatch()
-	const socket = useContext(WebSocketContext)
+	// const socket = useContext(WebSocketContext)
+	const { socket } = useContext(SocketContext)
 	const [ordersInfo, setOrdersInfo] = useState<
 		{
 			id: number

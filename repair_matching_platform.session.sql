@@ -64,4 +64,4 @@ WHERE (chatrooms.id = 3 AND attendees.user_id = 5);
 
 -- Toggle the boolean status of attendees is_favourite
 
-UPDATE attendees SET is_favourite = NOT is_favourite WHERE chatroom_id = 4 AND user_id = 1;
+UPDATE attendees SET is_favourite = NOT is_favourite WHERE (chatroom_id = 1 AND user_id = 1);

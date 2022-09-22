@@ -9,6 +9,7 @@ import { IonIcon, useIonAlert } from '@ionic/react'
 import { useAppDispatch } from '../store'
 import { loggedIn } from '../redux/auth/action'
 import { eyeOffOutline, eyeOutline } from 'ionicons/icons'
+import { loadToken } from '../redux/token/action'
 
 export default function LoginBox() {
 	const {
@@ -42,7 +43,7 @@ export default function LoginBox() {
 				padding: 0.5rem;
 
 				input {
-					width: 18rem;
+					width: 19rem;
 				}
 
 				.line {
@@ -124,6 +125,7 @@ export default function LoginBox() {
 						const token = fetchData.access_token
 						localStorage.setItem('token', token)
 						dispatch(loggedIn(fetchData.user, token))
+						dispatch(loadToken(token))
 						history.replace('/tab/workerOrderPage')
 					} else {
 						presentAlert({
@@ -161,7 +163,6 @@ export default function LoginBox() {
 					/>
 				</div>
 				<div className='line'></div>
-				<NavLink to='#'>忘記密碼?</NavLink>
 				<input type='submit' value='登入' />
 			</form>
 			<div>

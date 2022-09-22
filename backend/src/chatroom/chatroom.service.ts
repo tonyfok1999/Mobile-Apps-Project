@@ -110,7 +110,7 @@ export class ChatroomService {
   }
 
   async bookmarkChat(chatroomId: number, userId: number){
-    await this.knex.raw('UPDATE attendees SET is_favourite = NOT is_favourite WHERE chatroom_id = ? AND user_id = ?', [chatroomId, userId])
+    await this.knex.raw('UPDATE attendees SET is_favourite = NOT is_favourite WHERE (chatroom_id = ? AND user_id = ?)', [chatroomId, userId])
     Logger.debug('bookmarked', 'ChatroomService')
   }
 

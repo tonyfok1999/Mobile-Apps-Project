@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react"
+import { createContext, useEffect, useRef } from "react"
 import { io, Socket } from "socket.io-client"
 
 export const useSocket = (): Socket => {
@@ -10,7 +10,8 @@ export const useSocket = (): Socket => {
             if(socket)
             socket.close()
         }
-    }, [token, socket])
+    }, [socket])
 
     return socket
 }
+
