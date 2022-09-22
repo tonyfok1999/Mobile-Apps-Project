@@ -6,4 +6,5 @@ export interface SpeakData {
     imageFileName:string[] |null
     speakFileName:string 
     transcription:string 
+    speakURL:string
 }

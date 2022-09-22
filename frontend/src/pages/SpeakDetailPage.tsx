@@ -78,6 +78,10 @@ export default function SpeakDetailPage() {
 	const transcription = useSelector(
 		(state: RootState) => state.speak.transcription
 	)
+	const speakUrl = useSelector(
+		(state: RootState) => state.speak.speakURL
+	)
+
 	const user = useAppSelector((state) => state.auth.user!.id)
 	const modal = useRef<HTMLIonModalElement>(null)
 	const input = useRef<HTMLIonInputElement>(null)
@@ -303,6 +307,19 @@ export default function SpeakDetailPage() {
 				.imageInfoText {
 					font-size: 3vh;
 				}
+				.audioBox{
+					padding: ;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+				}
+				.audioInfo{
+
+					font-size: 3vh;
+				}
+				.playaudio{
+					padding: 2 0 2 0;
+				}
 			`}>
 			<IonContent>
 				<IonGrid>
@@ -517,29 +534,31 @@ export default function SpeakDetailPage() {
 							<IonRow className='imageText'>
 								{images.length > 0 &&
 									images.map((image) => (
-										<IonCol key={images.indexOf(image)+100} size='4'>
-											<button onClick={()=>{
-												let delNumber = images.indexOf(image)
-												console.log(delNumber);
-												
-												// images.filter(image => images.indexOf(image))
-								
-												
-												setimages(images=>{
-													let array = [...images]
-													array.splice(delNumber, 1)
-													 return array
-													} )
-												console.log(images);
-												
-												
-												
-												}}>
+										<IonCol
+											key={images.indexOf(image) + 100}
+											size='4'>
+											<button
+												onClick={() => {
+													let delNumber =
+														images.indexOf(image)
+													console.log(delNumber)
 
-											<img
-												className='inputImage'
-												src={image.webPath}></img>
-												</button>
+													// images.filter(image => images.indexOf(image))
+
+													setimages((images) => {
+														let array = [...images]
+														array.splice(
+															delNumber,
+															1
+														)
+														return array
+													})
+													console.log(images)
+												}}>
+												<img
+													className='inputImage'
+													src={image.webPath}></img>
+											</button>
 										</IonCol>
 									))}
 							</IonRow>
@@ -608,10 +627,11 @@ export default function SpeakDetailPage() {
 																format: 'jpeg'
 															}
 														console.log(photo)
-														setimages(images=>[...images,photo])
+														setimages((images) => [
+															...images,
+															photo
+														])
 													}
-
-
 												}
 
 												modal.current?.dismiss()
@@ -632,7 +652,12 @@ export default function SpeakDetailPage() {
 													})
 												console.log(image)
 												// console.log(image.photos.length );
-												if (image.photos.length > 3 || images.length+image.photos.length>3) {
+												if (
+													image.photos.length > 3 ||
+													images.length +
+														image.photos.length >
+														3
+												) {
 													// image = { photos: [] }
 													// setimages(image.photos)
 													presentAlert({
@@ -645,11 +670,14 @@ export default function SpeakDetailPage() {
 												} else {
 													// setimages(image.photos)
 
-													setimages(images=>{
+													setimages((images) => {
 														let array = [...images]
-														let Array2 = array.concat(image.photos)
+														let Array2 =
+															array.concat(
+																image.photos
+															)
 														return Array2
-														} )
+													})
 												}
 
 												modal.current?.dismiss()
@@ -661,72 +689,26 @@ export default function SpeakDetailPage() {
 								</IonContent>
 							</IonModal>
 
-							{/* <IonButton
-								size='large'
-								fill='clear'
-								onClick={() => {
-									const takePicture = async () => {
-										// const image = await Camera.getPhoto({
-										//   quality: 90,
-										//   allowEditing: true,
-										//   resultType: CameraResultType.Uri
-										// });
-
-										let getPhoto = await Camera.getPhoto({
-											resultType: CameraResultType.Uri,
-											source: CameraSource.Camera,
-											quality: 90
-										  });
-										console.log(getPhoto);
-
-										let image = await Camera.pickImages({
-											quality: 90,
-											limit: 3
-										})
-										console.log(image)
-										// console.log(image.photos.length );
-										if (image.photos.length > 3) {
-											image = { photos: [] }
-											setimages(image.photos)
-											presentAlert({
-												header: 'Alert',
-												subHeader: '只限上傳3張相片',
-												message: '請重新選擇!',
-												buttons: ['OK']
-											})
-										} else {
-											setimages(image.photos)
-										}
-										// image.webPath will contain a path that can be set as an image src.
-										// You can access the original file using image.path, which can be
-										// passed to the Filesystem API to read the raw data of the image,
-										// if desired (or pass resultType: CameraResultType.Base64 to getPhoto)
-
-										//   setimages(image.webPath)
-										// Can be set to the src of an image now
-										// imageElement.src = imageUrl;
-									}
-
-									takePicture()
-								}}>
-								<IonIcon
-									className='icon'
-									icon={chevronForwardOutline}
-								/>
-							</IonButton> */}
+					
 						</IonCol>
 					</IonRow>
 					<IonRow className='transcriptionBar'>
 						<IonCol>
-							<IonRow>
+							<IonRow className='audioInfo'>
 								<IonIcon
 									className='locationIcon'
 									icon={micOutline}
 								/>
 								上傳語音識別結果
 							</IonRow>
-							<IonRow className=''>
-								<span>{transcription}</span>
+							<IonRow className='audioBox'>
+								<audio
+									controls
+									className='playaudio'
+									controlsList="nodownload"
+									preload ='metadata'
+									src ={speakUrl}>
+								</audio>
 							</IonRow>
 						</IonCol>
 					</IonRow>

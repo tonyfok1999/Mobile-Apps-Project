@@ -7,7 +7,8 @@ const defaultState = {
 	budget: 0,
 	imageFileName: [],
 	speakFileName: ' ',
-	transcription: '沒有語音識別結果'
+	transcription: '沒有語音識別結果',
+	speakURL:''
 }
 
 export function speakReducer(
@@ -49,6 +50,11 @@ export function speakReducer(
 		return {
 			...state,
 			serviceType:action.serviceType
+		}
+		case'@@speak/CHANGE_SPEAKURL':
+		return {
+			...state,
+			speakURL:action.speakURL
 		}
 
 
