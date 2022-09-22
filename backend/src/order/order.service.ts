@@ -17,9 +17,9 @@ export class OrderService {
   }
 
   async getOrderById(id: number) {
-    let result = await this.knex.select('*').from('orders').where('id', id);
-
-    return result;
+    const result = await this.knex.select('*').from('orders').where('id', id);
+    const result2 = await this.knex.select('image_name').from('order_images').where('order_id', id);
+    return { orderInfo: result[0], orderImagesName: result2 };
   }
 
   update(id: number, updateOrderDto: UpdateOrderDto) {

@@ -1,34 +1,55 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { IonButton, IonContent, IonIcon, IonPage } from '@ionic/react'
+import { OverlayEventDetail } from '@ionic/core'
+import {
+	IonButton,
+	IonButtons,
+	IonContent,
+	IonHeader,
+	IonIcon,
+	IonModal,
+	IonPage,
+	IonTitle,
+	IonToolbar
+} from '@ionic/react'
 import {
 	arrowBackOutline,
 	cameraOutline,
 	cashOutline,
+	chevronForwardOutline,
 	locationSharp,
 	micOutline
 } from 'ionicons/icons'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Navigation, EffectFade } from 'swiper'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 export default function OrderDetailPage() {
 	const params = useParams<{ id: string }>()
 
 	const [orderInfo, setOrderInfo] = useState<{
-		id: number
-		user_id: number
-		worker_id: number
-		state_id: number
-		service_subtype_id: number
-		working_address: string
-		working_date: string
-		budget: number
-		voice_message: string
-		voice_text: string
-		score_by_user: number
-		score_by_worker: number
-		created_at: number
-		updated_at: number
+		orderInfo: {
+			id: number
+			user_id: number
+			worker_id: number
+			state_id: number
+			service_subtype_id: number
+			working_address: string
+			working_date: string
+			budget: number
+			voice_message: string
+			voice_text: string
+			score_by_user: number
+			score_by_worker: number
+			created_at: number
+			updated_at: number
+		}
+
+		orderImagesName: { image_name: string }[]
 	}>()
 
 	const [referenceTable, setReferenceTable] = useState<
@@ -53,13 +74,16 @@ export default function OrderDetailPage() {
 				}
 			)
 			const data = await res.json()
-			setOrderInfo(data[0])
+			setOrderInfo(data)
 		}
 
 		const fetchReferenceTable = async () => {
-			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/referencesTable`, {
-				headers: { Authorization: `whatever` }
-			})
+			const res = await fetch(
+				`${process.env.REACT_APP_BACKEND_URL}/referencesTable`,
+				{
+					headers: { Authorization: `whatever` }
+				}
+			)
 			const data = await res.json()
 			setReferenceTable(data)
 		}
@@ -68,13 +92,23 @@ export default function OrderDetailPage() {
 		fetchReferenceTable()
 	}, [])
 
+	const modal = useRef<HTMLIonModalElement>(null)
+	const input = useRef<HTMLIonInputElement>(null)
+	function confirm() {
+		modal.current?.dismiss(input.current?.value, 'confirm')
+	}
+	function onWillDismiss(e: CustomEvent<OverlayEventDetail>) {
+		if (e.detail.role === 'confirm') {
+		}
+	}
+
 	return (
 		<IonPage>
 			<IonContent
 				css={css`
 					.line {
 						width: 90%;
-						border-bottom: solid #dfe0e5;
+						border-bottom: solid #dfe0e5 1px;
 						margin-top: 0.5rem;
 						margin-bottom: 0.8rem;
 					}
@@ -112,6 +146,13 @@ export default function OrderDetailPage() {
 						border-radius: 1rem;
 						min-width: 3rem;
 					}
+					img {
+						margin-left: 1rem;
+						min-height: 5rem;
+						max-height: 5rem;
+						min-width: 5rem;
+						max-width: 5rem;
+					}
 				`}>
 				<div className='id'>
 					<IonButton
@@ -120,14 +161,14 @@ export default function OrderDetailPage() {
 						routerLink='/tab/workerOrderPage'>
 						<IonIcon className='icon' icon={arrowBackOutline} />
 					</IonButton>
-					<div>{orderInfo?.id}</div>
+					<div>{orderInfo?.orderInfo.id}</div>
 				</div>
 				<h1>資料</h1>
 				<div className='address'>
 					<IonIcon className='icon' icon={locationSharp} />
 					<div>
 						<div>地區</div>
-						<div>{orderInfo?.working_address}</div>
+						<div>{orderInfo?.orderInfo.working_address}</div>
 					</div>
 				</div>
 				<div className='line'></div>
@@ -140,7 +181,7 @@ export default function OrderDetailPage() {
 								referenceTable[2].filter(
 									(subType) =>
 										subType.id ==
-										orderInfo?.service_subtype_id
+										orderInfo?.orderInfo.service_subtype_id
 								)[0].service_type_id
 						)[0].type}
 				</div>
@@ -150,19 +191,86 @@ export default function OrderDetailPage() {
 					{referenceTable &&
 						referenceTable[2].filter(
 							(subType) =>
-								subType.id == orderInfo?.service_subtype_id
+								subType.id ==
+								orderInfo?.orderInfo.service_subtype_id
 						)[0].subtype}
 				</div>
 				<div className='line'></div>
 				<div>
 					<IonIcon className='icon' icon={cashOutline} /> 預算
-					<div>$ {orderInfo?.budget}</div>
+					<div>$ {orderInfo?.orderInfo.budget}</div>
 				</div>
 				<div className='line'></div>
 				<div>
 					<IonIcon className='icon' icon={cameraOutline} />
 					相片
-					<div>相片</div>
+					<div>
+						{orderInfo?.orderImagesName.map((item) => (
+							<img
+								src={
+									process.env.REACT_APP_BACKEND_URL +
+									'/' +
+									item.image_name
+								}
+							/>
+						))}
+						<IonButton id='open-modal' size='small' fill='clear'>
+							<IonIcon
+								className='icon'
+								icon={chevronForwardOutline}
+							/>
+						</IonButton>
+					</div>
+					<IonModal
+						ref={modal}
+						trigger='open-modal'
+						onWillDismiss={(e) => onWillDismiss(e)}>
+						<IonHeader>
+							<IonToolbar>
+								<IonButtons slot='start'>
+									<IonButton
+										onClick={() =>
+											modal.current?.dismiss()
+										}>
+										返回
+									</IonButton>
+								</IonButtons>
+								<IonTitle>相片</IonTitle>
+							</IonToolbar>
+						</IonHeader>
+						<IonContent>
+							<Swiper
+								modules={[Navigation]}
+								navigation
+								slidesPerView={1}
+								css={css`
+									height: 100%;
+									display: flex;
+									justify-content: center;
+									align-items: center;
+								`}>
+								{orderInfo?.orderImagesName.map((item) => (
+									<SwiperSlide>
+										<img
+											css={css`
+												display: block;
+												margin-left: auto;
+												margin-right: auto;
+												margin-top: 20%;
+												min-width: 95%;
+											`}
+											src={
+												process.env
+													.REACT_APP_BACKEND_URL +
+												'/' +
+												item.image_name
+											}
+										/>
+									</SwiperSlide>
+								))}
+							</Swiper>
+						</IonContent>
+					</IonModal>
 				</div>
 				<div className='line'></div>
 				<div>
