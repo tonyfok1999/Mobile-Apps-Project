@@ -10,8 +10,8 @@ import { ConnectedUserService } from 'src/chatroom/socket-connected-user/connect
 import { Message } from './dto/message.dto';
 
 @WebSocketGateway({
-  cors: false,
-  // cors: `${process.env.REACT_URL}`,
+  // cors: false,
+  cors: `${process.env.REACT_URL}`,
 })
 export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
@@ -38,12 +38,12 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
     try {
 
       const token = socket.handshake.headers.authorization;
-      console.log({ token });
+      Logger.debug(token, 'SocketGateway');
 
       if (token !== 'newUser') {
         const decodedToken = await this.authService.verifyJwt(token);
 
-        console.log({ decodedToken });
+        console.log(decodedToken)
 
         const user: CreateUserDto[] = await this.userService.getUserById(decodedToken.id);
         const userId = user[0].id;
@@ -59,8 +59,6 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
 
         // store current user into the socket data
         socket.data.user = user[0];
-        this.userIdfromSocket = socket.data.user.id
-        this.socketId = socket.id
 
         // store the socketid corresponding userid
         await this.connectedUserService.createUser({ socketId: socket.id, userId: userId });
