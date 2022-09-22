@@ -79,13 +79,13 @@ export default function Chats(props: { chatroom: Chatroom }) {
 							<p>{props.chatroom.text}</p>
 						</IonLabel>
 						<IonNote slot='end'>
-							{chatroom.lastUpdateTime}
+							{/* {chatroom.lastUpdateTime} */}
 						</IonNote>
 					</IonItem>
 
 					<IonItemOptions side='start'>
 						{
-							props.chatroom.is_favourite?
+						props.chatroom.is_favourite?
 							
 						<IonItemOption
 							color='success'
