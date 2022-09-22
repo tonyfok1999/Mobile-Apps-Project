@@ -182,7 +182,7 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('bookmarkChat')
   async bookmarkChat(@MessageBody() obj: {chatroomId: number, userId: number}) {
-    Logger.debug({userId: this.userIdfromSocket}, 'SocketGateway')
+    // Logger.debug({userId: this.userIdfromSocket}, 'SocketGateway')
     const chatroomId = obj.chatroomId
     const userId = obj.userId
     await this.chatroomService.bookmarkChat( chatroomId, userId )
@@ -195,9 +195,9 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     const socketId = await this.connectedUserService.getSocketIdByUserId(userId)
-
-    Logger.debug({chatrooms: chatrooms}, 'SocketGateway')
-    this.server.to(socketId).emit('onChatroom', chatrooms);
+    // Logger.debug({socketId: socketId[0].socket_id}, 'SocketGateway')
+    // Logger.debug({chatrooms: chatrooms}, 'SocketGateway')
+    this.server.to(socketId[0].socket_id).emit('onChatroom', chatrooms);
   }
 
   // @SubscribeMessage('createChatroom')
@@ -215,9 +215,9 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
     // this.server.emit('setChatroom', chatroomId)
   // }
 
-  @SubscribeMessage('restartSocket')
-  restartSocket(socket: Socket){
-    socket.emit('startSocket')
-  }
+  // @SubscribeMessage('restartSocket')
+  // restartSocket(socket: Socket){
+  //   socket.emit('startSocket')
+  // }
 
 }
