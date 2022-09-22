@@ -161,7 +161,6 @@ export default function LoginBox() {
 					/>
 				</div>
 				<div className='line'></div>
-				<NavLink to='#'>忘記密碼?</NavLink>
 				<input type='submit' value='登入' />
 			</form>
 			<div>
