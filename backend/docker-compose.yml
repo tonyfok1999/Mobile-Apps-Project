@@ -21,10 +21,8 @@ services:
       POSTGRES_HOST: postgres
 
       REACT_URL : http://localhost:3000
-      NEST_URL : http://localhost:8000
-      JWT_SECRET : hard_to_guess_token_123
-      JWT_SECRET : tryMe
-
+      GOOGLE_APPLICATION_CREDENTIALS : "./google_api_key/eastern-thinker-361503-923321a085d0.json"
+      SPEECH_FILE : "./record/"
       NODE_ENV: test
       PORT: 8000
     depends_on:
