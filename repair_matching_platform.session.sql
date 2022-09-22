@@ -56,3 +56,7 @@ LEFT JOIN chatrooms ON chatrooms.id = attendees.chatroom_id
 LEFT JOIN (SELECT text, sender_id, chatroom_id, created_at FROM chatroom_records ORDER BY created_at DESC LIMIT 1) as chatroom_records
 ON chatroom_records.chatroom_id = chatrooms.id
 WHERE (chatrooms.id = 3 AND attendees.user_id = 5);
+
+-- Toggle the boolean status of attendees is_favourite
+
+UPDATE attendees SET is_favourite = NOT is_favourite WHERE chatroom_id = 4 AND user_id = 1;
