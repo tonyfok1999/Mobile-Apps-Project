@@ -43,12 +43,17 @@ export default function WorkerRegisterPage() {
 					.line {
 						border-bottom: solid 1px #cccddd;
 						width: 100%;
-						margin-bottom: 1rem;
+						margin-bottom: 0.5rem;
 					}
 					ion-button {
 						width: 5rem;
 						display: block;
 					}
+
+					input {
+						width: 19rem;
+					}
+
 					h1 {
 						display: flex;
 						color: #fa7268;
@@ -75,12 +80,10 @@ export default function WorkerRegisterPage() {
 							margin-top: 1.5rem;
 						}
 						input[type='submit'] {
-							position: absolute;
+							display: block;
 							padding: 0;
 							width: 3rem;
-							bottom: 3rem;
-							left: 0;
-							right: 0;
+							margin-top: 3rem;
 							margin-left: auto;
 							margin-right: auto;
 							border-bottom: none;
@@ -101,6 +104,11 @@ export default function WorkerRegisterPage() {
 						position: absolute;
 						top: 2rem;
 						right: 0;
+					}
+					.error {
+						margin-left: 1rem;
+						font-size: 0.7rem;
+						color: red;
 					}
 				`}>
 				<IonButton
@@ -143,7 +151,8 @@ export default function WorkerRegisterPage() {
 									{
 										method: 'POST',
 										headers: {
-											'Content-Type': 'application/json'
+											'Content-Type': 'application/json',
+											Authorization: `whatever`
 										},
 										body: JSON.stringify({
 											email: watch('email')
@@ -159,7 +168,7 @@ export default function WorkerRegisterPage() {
 					/>
 					<div className='line'></div>
 					{isDuplicateEmail && (
-						<div className='error'> this email is duplicated</div>
+						<div className='error'> This email is duplicated</div>
 					)}
 					<div className='passwordContainer'>
 						<input
@@ -213,7 +222,7 @@ export default function WorkerRegisterPage() {
 					<div className='line'></div>
 					{!isSamePassword && (
 						<div className='error'>
-							the password is not the same of above
+							This is not the same of above
 						</div>
 					)}
 					<input

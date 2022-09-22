@@ -45,11 +45,9 @@ export default function WorkerLoginPage() {
 						}
 					}
 					> span {
-						position: absolute;
+						display: block;
 						width: 10.5rem;
-						bottom: 1rem;
-						left: 0;
-						right: 0;
+						margin-top: 2.3rem;
 						margin-left: auto;
 						margin-right: auto;
 						a {
