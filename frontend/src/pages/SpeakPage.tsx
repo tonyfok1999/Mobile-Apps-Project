@@ -21,6 +21,7 @@ import {
 	changeDistrict,
 	changeServiceSubType,
 	changeSpeakFileName,
+	changeSpeakURL,
 	changeTranscription
 } from '../redux/speak/action'
 import { useSelector } from 'react-redux'
@@ -68,7 +69,7 @@ export default function SpeakPage() {
 				const blob = new Blob(chunks, {
 					type: 'audio/WebM; codecs=opus'
 				})
-				let speakUrl = window.URL.createObjectURL(blob)
+				let speakUrl = URL.createObjectURL(blob)
 				console.log(speakUrl)
 
 				// console.log(blob)
@@ -89,6 +90,7 @@ export default function SpeakPage() {
 				dispatch(changeServiceSubType(datas.serviceSubType))
 				dispatch(changeSpeakFileName(datas.speakFileName))
 				dispatch(changeTranscription(datas.transcription))
+				dispatch(changeSpeakURL(speakUrl))
 				chunks = []
 				history.push('/Speak/SpeakDetailPage')
 			}
