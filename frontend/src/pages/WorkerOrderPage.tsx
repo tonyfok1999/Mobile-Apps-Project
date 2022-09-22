@@ -2,7 +2,12 @@
 import { css } from '@emotion/react'
 import { IonButton, IonContent, IonPage, useIonAlert } from '@ionic/react'
 import { construct } from 'ionicons/icons'
-import React, { useContext, useEffect, useInsertionEffect, useState } from 'react'
+import React, {
+	useContext,
+	useEffect,
+	useInsertionEffect,
+	useState
+} from 'react'
 import { NavLink, useHistory } from 'react-router-dom'
 import { WebSocketContext } from '../context/WebScoketContext'
 import WorkerTabBar from '../nav/WorkerTabBar'
@@ -48,17 +53,23 @@ export default function WorkerOrderPage() {
 
 	useEffect(() => {
 		const fetchOrdersData = async () => {
-			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/orders`, {
-				headers: { Authorization: `whatever` }
-			})
+			const res = await fetch(
+				`${process.env.REACT_APP_BACKEND_URL}/orders`,
+				{
+					headers: { Authorization: `whatever` }
+				}
+			)
 			const data = await res.json()
 			setOrdersInfo(data)
 		}
 
 		const fetchReferenceTable = async () => {
-			const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/referencesTable`, {
-				headers: { Authorization: `whatever` }
-			})
+			const res = await fetch(
+				`${process.env.REACT_APP_BACKEND_URL}/referencesTable`,
+				{
+					headers: { Authorization: `whatever` }
+				}
+			)
 			const data = await res.json()
 			setReferenceTable(data)
 		}
@@ -141,6 +152,9 @@ export default function WorkerOrderPage() {
 						color: white;
 						padding: 0.7rem;
 						border-radius: 3rem;
+						display: block;
+						margin-left: auto;
+						margin-right: auto;
 					}
 				`}>
 				{ordersInfo &&
@@ -185,54 +199,59 @@ export default function WorkerOrderPage() {
 									<div className='budget'>
 										預算<span>${orderInfo.budget}</span>
 									</div>
+									<button
+										onClick={() => {
+											// pass in the id of user (not worker) who submit the order
+
+											;(async () => {
+												const res = await fetch(
+													`${process.env.REACT_APP_BACKEND_URL}/chatroom/orderChatroom?orderId=${orderInfo.id}&userId=${orderInfo.user_id}&workerId=${workerId}`,
+													{
+														method: 'POST',
+														headers: {
+															Authorization: `Bearer ${token}`
+														}
+													}
+												)
+
+												const chatroom =
+													await res.json()
+												const chatroomId =
+													chatroom.chatroomId
+												console.log({
+													chatroom: chatroom
+												})
+
+												if (chatroom.isNew) {
+													const res = await fetch(
+														`${process.env.REACT_APP_BACKEND_URL}/chatroom/${orderInfo.user_id}`,
+														{
+															headers: {
+																Authorization: `Bearer ${token}`
+															}
+														}
+													)
+
+													const chatrooms =
+														await res.json()
+
+													dispatch(
+														loadChatrooms(chatrooms)
+													)
+													// socket.emit('createChatroom')
+												}
+
+												history.replace(
+													`/chatroom/${chatroomId}`
+												)
+											})()
+
+											//
+										}}>
+										聯絡客戶
+									</button>
 								</div>
 							</NavLink>
-
-							<button
-								onClick={() => {
-									// pass in the id of user (not worker) who submit the order
-
-									;(async () => {
-										const res = await fetch(
-											`${process.env.REACT_APP_BACKEND_URL}/chatroom/orderChatroom?orderId=${orderInfo.id}&userId=${orderInfo.user_id}&workerId=${workerId}`,
-											{
-												method: 'POST',
-												headers: {
-													Authorization: `Bearer ${token}`
-												}
-											}
-										)
-								
-										const chatroom = await res.json()
-										const chatroomId = chatroom.chatroomId
-										console.log({ chatroom: chatroom })
-
-										if(chatroom.isNew){
-											const res = await fetch(
-												`${process.env.REACT_APP_BACKEND_URL}/chatroom/${orderInfo.user_id}`,
-												{
-													headers: {
-														Authorization: `Bearer ${token}`
-													}
-												}
-											)
-
-											const chatrooms = await res.json()
-
-											dispatch(loadChatrooms(chatrooms))
-											// socket.emit('createChatroom')
-										}
-										
-
-										history.replace(`/chatroom/${chatroomId}`)
-
-										
-									})()
-									
-									//
-								}}>
-								聯絡客戶
-							</button>
 						</div>
 					))}
 			</IonContent>
