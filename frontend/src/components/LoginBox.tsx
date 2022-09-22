@@ -42,7 +42,7 @@ export default function LoginBox() {
 				padding: 0.5rem;
 
 				input {
-					width: 18rem;
+					width: 19rem;
 				}
 
 				.line {
