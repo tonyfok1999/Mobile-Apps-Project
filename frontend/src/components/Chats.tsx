@@ -20,11 +20,13 @@ import { Attendee, Chatroom } from './ChatTab'
 import { useAppDispatch, useAppSelector } from '../store'
 import { WebSocketContext } from '../context/WebScoketContext'
 import { useParams } from 'react-router'
+import SocketContext from '../socket/SocketContext';
 
 export default function Chats(props: { chatroom: Chatroom }) {
 	const userId = useAppSelector((state) => state.auth.user!.id)
 	const token = localStorage.getItem('token')
-	const socket = useContext(WebSocketContext)
+	// const socket = useContext(WebSocketContext)
+	const { socket } = useContext(SocketContext)
 	const [presentAlert] = useIonAlert();
 	const [chatroom, setChatroom] = useState(props.chatroom)
 	const dispatch = useAppDispatch()
@@ -89,14 +91,14 @@ export default function Chats(props: { chatroom: Chatroom }) {
 							
 						<IonItemOption
 							color='success'
-							onClick={() => socket.emit('bookmarkChat', {chatroomId: chatroom.chatroom_id, userId: userId})}
+							onClick={() => socket?.emit('bookmarkChat', {chatroomId: chatroom.chatroom_id, userId: userId})}
 							expandable>
 							<IonIcon slot='icon-only' icon={arrowUndo} />
 						</IonItemOption>
 						:
 						<IonItemOption
 							color='tertiary'
-							onClick={() => socket.emit('bookmarkChat', {chatroomId: chatroom.chatroom_id, userId: userId})}
+							onClick={() => socket?.emit('bookmarkChat', {chatroomId: chatroom.chatroom_id, userId: userId})}
 							expandable>
 							<IonIcon slot='icon-only' icon={archive} />
 						</IonItemOption>
@@ -123,7 +125,7 @@ export default function Chats(props: { chatroom: Chatroom }) {
 										text: '確定',
 										role: 'confirm',
 										handler: () => {
-											socket.emit('deleteChat', chatroom.chatroom_id)
+											socket?.emit('deleteChat', chatroom.chatroom_id)
 										},
 									  },
 									],

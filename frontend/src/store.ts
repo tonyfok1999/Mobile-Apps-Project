@@ -7,6 +7,7 @@ import { chatroomReducer } from './redux/chatroom/reducer'
 import { districtReducer } from './redux/districts/reducer'
 import { registerReducer } from './redux/register/reducer'
 import { speakReducer } from './redux/speak/reducer'
+import { tokenReducer } from './redux/token/reducer'
 
 
 const reducers = combineReducers({
@@ -14,7 +15,8 @@ const reducers = combineReducers({
 	districts: districtReducer,
 	register: registerReducer,
 	speak: speakReducer,
-	chatroom: chatroomReducer
+	chatroom: chatroomReducer,
+	token: tokenReducer
 })
 
 export type RootState = ReturnType<typeof reducers>

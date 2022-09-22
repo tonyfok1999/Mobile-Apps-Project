@@ -19,6 +19,8 @@ import {
 	loadChatrooms,
 	finishLoading
 } from '../redux/chatroom/action'
+import { useSocket } from '../hooks/useSocket'
+import SocketContext from '../socket/SocketContext'
 
 // export default function ChatTab() {
 //   return (
@@ -41,7 +43,8 @@ export interface Attendee {
 
 const ChatTab: React.FC = () => {
 	const [key, setKey] = useState('allChats')
-	const socket = useContext(WebSocketContext)
+	// const socket = useContext(WebSocketContext)
+	const { socket } = useContext(SocketContext)
 	const token = localStorage.getItem('token')
 	const userId = useAppSelector((state) => state.auth.user!.id)
 	const dispatch = useAppDispatch()
@@ -75,14 +78,14 @@ const ChatTab: React.FC = () => {
 			dispatch(finishLoading())
 		})()
 
-		socket.on('onChatroom', (chatrooms) => {
+		socket?.on('onChatroom', (chatrooms) => {
 			setChatlist(chatrooms)
 			dispatch(loadChatrooms(chatrooms))
 		})
 
 		return () => {
 			console.log('Unregistering Event')
-			socket.off('chatrooms')
+			socket?.off('onChatroom')
 		}
 	}, [token])
 

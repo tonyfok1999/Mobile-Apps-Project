@@ -22,6 +22,8 @@ import { useVirtualizer } from '@tanstack/react-virtual'
 import Chats from '../components/Chats'
 import MessageBubble from '../components/MessageBubble'
 import { WebSocketContext } from '../context/WebScoketContext'
+import { useSocket } from '../hooks/useSocket'
+import SocketContext from '../socket/SocketContext'
 
 const VirtualScroll = require('react-dynamic-virtual-scroll')
 
@@ -39,8 +41,8 @@ const ChatContainer: React.FC = () => {
 
 	const [messages, setMessages] = useState<Message[]>([initialState])
 
-	const socket = useContext(WebSocketContext)
-
+	// const socket = useContext(WebSocketContext)
+	const { socket } = useContext(SocketContext)
 	useEffect(() => {
 		const getMessages = async () => {
 			const res = await fetch(
@@ -61,7 +63,7 @@ const ChatContainer: React.FC = () => {
 		// 	getMessages()
 		// })
 
-		socket.on('onMessage', (data)=>{
+		socket?.on('onMessage', (data)=>{
 			console.log('onMessage event received')
 			console.log(data)
 			setMessages((prev) => [...prev, data])
@@ -69,8 +71,7 @@ const ChatContainer: React.FC = () => {
 
 		return () => {
 			console.log('Unregistering Event')
-			socket.off('connect')
-			socket.off('onMessage')
+			socket?.off('onMessage')
 		}
 
 	}, [])
