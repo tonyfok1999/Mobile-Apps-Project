@@ -12,6 +12,7 @@ import {
 	IonContent,
 	useIonRouter
 } from '@ionic/react'
+import { Preferences } from '@capacitor/preferences';
 import ClientTabBar from '../nav/ClientTabBar'
 import { useEffect } from 'react'
 import { async } from 'rxjs'
@@ -27,7 +28,7 @@ const HomePage: React.FC = () => {
 	useEffect(() => {
 		;(async () => {
 			const token = localStorage.getItem('token')
-
+			// const ret = await Preferences.get({ key: 'user' });
 			if (token == null) {
 				const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}`)
 				const token = (await res.json()).Authorization

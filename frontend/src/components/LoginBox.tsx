@@ -43,7 +43,7 @@ export default function LoginBox() {
 				padding: 0.5rem;
 
 				input {
-					width: 18rem;
+					width: 19rem;
 				}
 
 				.line {
@@ -163,7 +163,6 @@ export default function LoginBox() {
 					/>
 				</div>
 				<div className='line'></div>
-				<NavLink to='#'>忘記密碼?</NavLink>
 				<input type='submit' value='登入' />
 			</form>
 			<div>
