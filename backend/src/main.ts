@@ -18,9 +18,11 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
 
-  app.enableCors({
-    origin: [process.env.REACT_URL],
-  });
+  app.enableCors(
+  //   {
+  //   origin: [process.env.REACT_URL],
+  // }
+  );
 
   app.use((req, res, next) => {
     console.log(req.url);

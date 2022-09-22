@@ -10,8 +10,8 @@ import { ConnectedUserService } from 'src/chatroom/socket-connected-user/connect
 import { Message } from './dto/message.dto';
 
 @WebSocketGateway({
-  // cors: false,
-  cors: `${process.env.REACT_URL}`,
+  cors: false,
+  // cors: `${process.env.REACT_URL}`,
 })
 export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()

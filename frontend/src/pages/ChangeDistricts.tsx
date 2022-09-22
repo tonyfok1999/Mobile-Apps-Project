@@ -64,14 +64,19 @@ export default function ChangeDistricts() {
 					margin: 0;
 				}
                 .districtsbutton{
-                    font-size: 3.5vh;
+					/* overflow: hidden; */
+                    /* font-size: 3.5vh; */
                     height: 6vh;
+					min-width:6rem;
+					max-width:6rem;
+					padding: 6px
                 }
                 .districtsBox{
-                    height: 70vh;
+                    /* height: 70vh; */
 
                 }
                 .districtsButtonCol{
+					padding: 5 2 5 2;
                     display: flex;
                     justify-content: center;
                     align-items: center;
@@ -92,6 +97,7 @@ export default function ChangeDistricts() {
                     
                 }
                 .backText{
+					display: block;
                     font-size: bold;
 					background: linear-gradient(
 						45deg,
@@ -113,10 +119,11 @@ export default function ChangeDistricts() {
 					<IonRow>
 						<IonCol size='12' className='Info'>地區</IonCol>
 					</IonRow>
+						<IonRow><IonCol size='12'>-----香港-----</IonCol></IonRow>
 					<IonRow className='districtsBox'>
 						{referenceTable &&
 							referenceTable[0].map((districts) => {
-								if (districts.id == districtNumber) {
+								if (districts.id == districtNumber && districts.region_id == 1) {
 									return (
 										<IonCol key={districts.id} size='4' className='districtsButtonCol'>
 											<input
@@ -137,7 +144,109 @@ export default function ChangeDistricts() {
 											</label>
 										</IonCol>
 									)
-								} else {
+								} else if(districts.region_id == 1){
+									return (
+										<IonCol key={districts.id} size='4' className='districtsButtonCol'>
+											<input
+												type='radio'
+												className='districtsbutton btn-check'
+												name='districts'
+												id={districts.district }
+												value={districts.district }
+												
+											/>
+											<label
+												className='districtsbutton btn btn-outline-danger '
+												htmlFor={districts.district}
+												onClick={() => {
+													dispatch(changeDistrict(districts.id))
+                                                    
+                                                    
+												}}>
+												{districts.district}
+											</label>
+										</IonCol>
+									)
+								}
+							})}
+					</IonRow>
+					<IonRow><h2>九龍</h2></IonRow>
+					<IonRow className='districtsBox'>
+						{referenceTable &&
+							referenceTable[0].map((districts) => {
+								if (districts.id == districtNumber && districts.region_id == 2) {
+									return (
+										<IonCol key={districts.id} size='4' className='districtsButtonCol'>
+											<input
+												type='radio'
+												className='districtsbutton btn-check'
+												name='districts'
+												id={districts.district }
+												value={districts.district }
+												defaultChecked
+											/>
+											<label
+												className='districtsbutton btn btn-outline-danger '
+												htmlFor={districts.district}
+												onClick={() => {
+													dispatch(changeDistrict(districts.id))
+												}}>
+												{districts.district}
+											</label>
+										</IonCol>
+									)
+								} else if(districts.region_id == 2){
+									return (
+										<IonCol key={districts.id} size='4' className='districtsButtonCol'>
+											<input
+												type='radio'
+												className='districtsbutton btn-check'
+												name='districts'
+												id={districts.district }
+												value={districts.district }
+												
+											/>
+											<label
+												className='districtsbutton btn btn-outline-danger '
+												htmlFor={districts.district}
+												onClick={() => {
+													dispatch(changeDistrict(districts.id))
+                                                    
+                                                    
+												}}>
+												{districts.district}
+											</label>
+										</IonCol>
+									)
+								}
+							})}
+					</IonRow>
+					<IonRow><h2>新界</h2></IonRow>
+					<IonRow className='districtsBox'>
+						{referenceTable &&
+							referenceTable[0].map((districts) => {
+								if (districts.id == districtNumber && districts.region_id == 3) {
+									return (
+										<IonCol key={districts.id} size='4' className='districtsButtonCol'>
+											<input
+												type='radio'
+												className='districtsbutton btn-check'
+												name='districts'
+												id={districts.district }
+												value={districts.district }
+												defaultChecked
+											/>
+											<label
+												className='districtsbutton btn btn-outline-danger '
+												htmlFor={districts.district}
+												onClick={() => {
+													dispatch(changeDistrict(districts.id))
+												}}>
+												{districts.district}
+											</label>
+										</IonCol>
+									)
+								} else if(districts.region_id == 3){
 									return (
 										<IonCol key={districts.id} size='4' className='districtsButtonCol'>
 											<input
