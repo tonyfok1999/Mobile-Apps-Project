@@ -23,13 +23,18 @@ WHERE user_id = 3 GROUP BY chatrooms.id;
 
 -- Get all the chatroom and their latest records of a target user (new version)
 
-SELECT chatrooms.id as chatroomId, chatroom_records.created_at as lastUpdateTime, text, sender_id FROM attendees
-LEFT JOIN chatrooms ON chatrooms.id = attendees.chatroom_id 
-LEFT JOIN (SELECT text, sender_id, chatroom_id, created_at FROM chatroom_records ORDER BY created_at DESC LIMIT 1) as chatroom_records
-ON chatroom_records.chatroom_id = chatrooms.id
-WHERE attendees.user_id = 2;
+    SELECT chatrooms.id as chatroom_id, chatroom_records.created_at as lastUpdateTime, text, sender_id, is_favourite FROM attendees
+    LEFT JOIN chatrooms ON chatrooms.id = attendees.chatroom_id 
+    LEFT JOIN (SELECT text, sender_id, chatroom_id, created_at FROM chatroom_records ORDER BY created_at DESC LIMIT 1) as chatroom_records
+    ON chatroom_records.chatroom_id = chatrooms.id
+    WHERE user_id = 1;
 
-select * from chatroom_records;
+SELECT text, sender_id, chatroom_id, created_at FROM chatroom_records GROUP BY chatroom_id ORDER BY created_at DESC LIMIT 1 ;
+    
+SELECT chatrooms.id as chatroom_id, array_agg(chatroom_records.created_at) as lastUpdateTime, array_agg(text) as text, array_agg(sender_id) as sender_id, array_agg(is_favourite) as is_favourite FROM attendees
+LEFT JOIN chatrooms ON chatrooms.id = attendees.chatroom_id 
+LEFT JOIN chatroom_records ON chatroom_records.chatroom_id = chatrooms.id 
+WHERE user_id = 1 GROUP BY chatrooms.id ORDER BY array_agg(chatroom_records.created_at) DESC ;
 
 -- Search user with nickname
 
@@ -56,3 +61,7 @@ LEFT JOIN chatrooms ON chatrooms.id = attendees.chatroom_id
 LEFT JOIN (SELECT text, sender_id, chatroom_id, created_at FROM chatroom_records ORDER BY created_at DESC LIMIT 1) as chatroom_records
 ON chatroom_records.chatroom_id = chatrooms.id
 WHERE (chatrooms.id = 3 AND attendees.user_id = 5);
+
+-- Toggle the boolean status of attendees is_favourite
+
+UPDATE attendees SET is_favourite = NOT is_favourite WHERE chatroom_id = 4 AND user_id = 1;

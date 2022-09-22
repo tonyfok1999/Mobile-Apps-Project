@@ -13,7 +13,9 @@ import {
 	useIonAlert
 } from '@ionic/react'
 
-import { trash, archive } from 'ionicons/icons'
+
+import { trash, archive, arrowUndo} from 'ionicons/icons'
+import { IoArrowUndo } from "react-icons/io5";
 import { Attendee, Chatroom } from './ChatTab'
 import { useAppDispatch, useAppSelector } from '../store'
 import { WebSocketContext } from '../context/WebScoketContext'
@@ -77,17 +79,29 @@ export default function Chats(props: { chatroom: Chatroom }) {
 							<p>{props.chatroom.text}</p>
 						</IonLabel>
 						<IonNote slot='end'>
-							{chatroom.lastUpdateTime}
+							{/* {chatroom.lastUpdateTime} */}
 						</IonNote>
 					</IonItem>
 
 					<IonItemOptions side='start'>
+						{
+						props.chatroom.is_favourite?
+							
+						<IonItemOption
+							color='success'
+							onClick={() => socket.emit('bookmarkChat', chatroom.chatroom_id)}
+							expandable>
+							<IonIcon slot='icon-only' icon={arrowUndo} />
+						</IonItemOption>
+						:
 						<IonItemOption
 							color='tertiary'
 							onClick={() => socket.emit('bookmarkChat', chatroom.chatroom_id)}
 							expandable>
 							<IonIcon slot='icon-only' icon={archive} />
 						</IonItemOption>
+
+						}
 					</IonItemOptions>
 
 					<IonItemOptions side='end'>

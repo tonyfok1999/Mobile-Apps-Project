@@ -41,6 +41,10 @@ export default function LoginBox() {
 				border-radius: 1rem;
 				padding: 0.5rem;
 
+				input {
+					width: 18rem;
+				}
+
 				.line {
 					border-bottom: solid 1px #cccddd;
 					width: 100%;

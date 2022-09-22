@@ -47,15 +47,36 @@ export class ChatroomService {
 
   async getAllChatroomsbyUserId(userId: number) {
     
-    const chatrooms = await this.knex.raw(`
-    SELECT chatrooms.id as chatroom_id, chatroom_records.created_at as lastUpdateTime, text, sender_id, is_favourite FROM attendees
+    const result = await this.knex.raw(`
+    SELECT chatrooms.id as chatroom_id, array_agg(chatroom_records.created_at) as lastUpdateTime, array_agg(text) as text, array_agg(sender_id) as sender_id, array_agg(is_favourite) as is_favourite FROM attendees
     LEFT JOIN chatrooms ON chatrooms.id = attendees.chatroom_id 
-    LEFT JOIN (SELECT text, sender_id, chatroom_id, created_at FROM chatroom_records ORDER BY created_at DESC LIMIT 1) as chatroom_records
-    ON chatroom_records.chatroom_id = chatrooms.id
-    WHERE user_id = ?;
+    LEFT JOIN chatroom_records ON chatroom_records.chatroom_id = chatrooms.id 
+    WHERE user_id = ? GROUP BY chatrooms.id ORDER BY array_agg(chatroom_records.created_at) DESC ;
     `, userId)
+
+    const chatrooms = result.rows
+
+    console.log({resultrowsCount: result.rowCount}, {chatrooms: JSON.stringify(chatrooms)})
+
+    let i = 0
+
+    const newChatrooms: any = []
     
-    return chatrooms.rows
+    while (i < chatrooms.length) {
+        const chatroom = {chatroom_id:1, lastUpdateTime: "", text: "", sender_id: 0, is_favourite: false}
+        chatroom['chatroom_id'] = chatrooms[i].chatroom_id
+        chatroom['lastUpdateTime'] = chatrooms[i].lastupdatetime[0]
+        chatroom['text'] = chatrooms[i].text[0]
+        chatroom['sender_id']  = chatrooms[i].sender_id[0]
+        chatroom['is_favourite']  = chatrooms[i].is_favourite[0]
+        console.log({chatroom: chatroom})
+        newChatrooms.push(chatroom)
+        i++
+      }
+
+    Logger.debug(`Chatrooms: ${JSON.stringify(newChatrooms)}`, 'ChatroomService')
+    
+    return newChatrooms
   }
 
   async getOneChatroombyUserIds(attendees: Attendees){
@@ -89,7 +110,7 @@ export class ChatroomService {
   }
 
   async bookmarkChat(chatroomId: number, userId: number){
-    await this.knex.raw('UPDATE attendees SET is_favourite = !is_favourite WHERE chatroom_id = ? AND user_id = ?', [chatroomId, userId])
+    await this.knex.raw('UPDATE attendees SET is_favourite = NOT is_favourite WHERE chatroom_id = ? AND user_id = ?', [chatroomId, userId])
     Logger.debug('bookmarked', 'ChatroomService')
   }
 
