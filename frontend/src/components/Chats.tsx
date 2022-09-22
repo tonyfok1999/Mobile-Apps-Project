@@ -89,14 +89,14 @@ export default function Chats(props: { chatroom: Chatroom }) {
 							
 						<IonItemOption
 							color='success'
-							onClick={() => socket.emit('bookmarkChat', chatroom.chatroom_id)}
+							onClick={() => socket.emit('bookmarkChat', {chatroomId: chatroom.chatroom_id, userId: userId})}
 							expandable>
 							<IonIcon slot='icon-only' icon={arrowUndo} />
 						</IonItemOption>
 						:
 						<IonItemOption
 							color='tertiary'
-							onClick={() => socket.emit('bookmarkChat', chatroom.chatroom_id)}
+							onClick={() => socket.emit('bookmarkChat', {chatroomId: chatroom.chatroom_id, userId: userId})}
 							expandable>
 							<IonIcon slot='icon-only' icon={archive} />
 						</IonItemOption>

@@ -181,19 +181,23 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('bookmarkChat')
-  async bookmarkChat(@MessageBody() chatroomId: number) {
+  async bookmarkChat(@MessageBody() obj: {chatroomId: number, userId: number}) {
     Logger.debug({userId: this.userIdfromSocket}, 'SocketGateway')
-    await this.chatroomService.bookmarkChat( chatroomId, this.userIdfromSocket )
+    const chatroomId = obj.chatroomId
+    const userId = obj.userId
+    await this.chatroomService.bookmarkChat( chatroomId, userId )
     Logger.log(`the chatroom id ${chatroomId} has been bookmarked`, 'SocketGateway')
-    const chatrooms = await this.chatroomService.getAllChatroomsbyUserId( this.userIdfromSocket )
+    const chatrooms = await this.chatroomService.getAllChatroomsbyUserId( userId )
 
     for( let i = 0; i < chatrooms.length; i++ ) {
       const attendees = await this.chatroomService.getAllUserIdByChatroomId(chatrooms[i].chatroom_id);
       chatrooms[i]['attendees'] = attendees;
     }
 
+    const socketId = await this.connectedUserService.getSocketIdByUserId(userId)
+
     Logger.debug({chatrooms: chatrooms}, 'SocketGateway')
-    this.server.to(this.socketId).emit('onChatroom', chatrooms);
+    this.server.to(socketId).emit('onChatroom', chatrooms);
   }
 
   // @SubscribeMessage('createChatroom')
