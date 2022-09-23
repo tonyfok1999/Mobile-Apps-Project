@@ -14,7 +14,7 @@ import { Message } from './dto/message.dto';
     origin:"*",
     methods: ["GET", "POST"]
     
-  // },
+  },
 
   // cors: `${process.env.REACT_URL}`,
 })
