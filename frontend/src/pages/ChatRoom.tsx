@@ -55,9 +55,9 @@ const Chatroom: React.FC = () => {
 
 	const scrollRef = React.useRef() as React.MutableRefObject<HTMLDivElement>
 
-	// useEffect(() => {
-	// 	scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
-	// }, [messages])
+	useEffect(() => {
+		scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
+	}, [messages])
 
 	useEffect(() => {
 		const getMessages = async () => {
