@@ -58,7 +58,6 @@ export default function OrderDetailPage() {
 			{ id: number; type: string }[], // service types
 			{
 				id: number
-				type: string
 				service_type_id: number
 				subtype: string
 			}[] // service subtypes
@@ -274,10 +273,26 @@ export default function OrderDetailPage() {
 				</div>
 				<div className='line'></div>
 				<div>
-					<IonIcon className='icon' icon={micOutline} /> 語音
-					<div>語音</div>
+					<IonIcon className='icon' icon={micOutline} /> 錄音
+					<div>
+						{orderInfo?.orderInfo.voice_message != null ? (
+							<audio
+								controls
+								className='playaudio'
+								controlsList='nodownload'
+								preload='metadata'
+								src={
+									process.env.REACT_APP_BACKEND_URL +
+									'/' +
+									orderInfo?.orderInfo.voice_message
+								}
+							/>
+						) : (
+							'沒有錄音'
+						)}
+					</div>
 				</div>
-				<div>語音文字</div>
+				<div>{orderInfo?.orderInfo.voice_text}</div>
 			</IonContent>
 		</IonPage>
 	)
