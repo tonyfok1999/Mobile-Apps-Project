@@ -322,6 +322,9 @@ export default function SpeakDetailPage() {
 				.playaudio{
 					padding: 2 0 2 0;
 				}
+				.audioBox{
+					height: 9vh;
+				}
 			`}>
 			<IonContent>
 				<IonGrid>
@@ -717,6 +720,7 @@ export default function SpeakDetailPage() {
 
 					<IonRow className='submitBar'>
 						<button
+						className='submitBar'
 							onClick={() => {
 								sendOder()
 							}}>
