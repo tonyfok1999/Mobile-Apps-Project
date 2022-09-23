@@ -23,6 +23,7 @@ export class ConnectedUserService {
   async deleteByUserId(userId: number) {
     try{
       await this.knex('connected_users').where('user_id', userId).del();
+      Logger.warn(`userId ${userId} is delete from table`, 'ConnectedUser');
     } catch{
       Logger.error('the disconnected user cannot be deleted from connected table')
     }

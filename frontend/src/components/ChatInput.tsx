@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { VscSmiley } from 'react-icons/vsc'
-import Button from 'react-bootstrap/Button'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Picker from 'emoji-picker-react'
 
@@ -11,6 +10,8 @@ import { useAppSelector } from '../store'
 import { useIonAlert } from '@ionic/react'
 import { useSocket } from '../hooks/useSocket'
 import SocketContext from '../socket/SocketContext'
+import Button from 'react-bootstrap/Button';
+import { IoMdSend } from "react-icons/io";
 
 export interface Message {
 	chatroom_id?: number;
@@ -26,6 +27,7 @@ const ChatInput: React.FC = () => {
 	const chatroomId = parseInt(params.chatroomId)
 	const userId = useAppSelector((state) => state.auth.user!.id)
 	const textareaRef = React.useRef() as React.MutableRefObject<HTMLTextAreaElement>
+	const pickerRef = React.useRef() as React.MutableRefObject<HTMLDivElement>
 	const [presentAlert] = useIonAlert()
 
 	const { socket } = useContext(SocketContext)
@@ -55,8 +57,13 @@ const ChatInput: React.FC = () => {
 	// 	}
 	// }, [])
 
-	const handleEmojiPickerHideShow = () => {
+	const handleEmojiPickerHideShow = (e:any) => {
 		setShowEmojiPicker(!showEmojiPicker)
+		if(!pickerRef.current!.contains(e.target)) {
+			pickerRef.current.blur()
+		}else{
+			pickerRef.current.focus()
+		}
 	}
 
 	const handleEmojiClick = (event: any, emojiObject: { emoji: string }) => {
@@ -199,6 +206,7 @@ const ChatInput: React.FC = () => {
 			placeholder='Type something here...' value={message} 
 			onChange={(e)=>setMessage(e.target.value)} /> */}
 			<div
+			
 				className='emojiButton'
 				css={css`
 					background: transparent;
@@ -208,20 +216,37 @@ const ChatInput: React.FC = () => {
 					--bs-btn-padding-y: 0.25rem;
 				`}>
 				<VscSmiley
-					onClick={handleEmojiPickerHideShow}
+			
+					onClick={(e)=>handleEmojiPickerHideShow(e)}
 					css={css`
 						color: grey;
 						font-size: 1.5rem;
+						margin-right: 0.5rem;
+						:active{
+							color: #3b1599;
+							outline: none;
+						}
 					`}
 				/>
 				{showEmojiPicker && (
 					<Picker
 						onEmojiClick={handleEmojiClick}
 						disableSearchBar={true}
+				
+						
 					/>
 				)}
 			</div>
-			<button className='submit'> send </button>
+			{/*<Button type='submit'>*/}
+			<button type='submit'>
+			<IoMdSend size={'1.5rem'} css={css`
+			color: grey;
+			:active{
+				color: #3b1599
+			}
+			;`}/>
+			</button>
+			{/*</Button>*/}
 		</form>
 	)
 }
