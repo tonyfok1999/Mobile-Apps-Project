@@ -310,7 +310,7 @@ export default function SpeakDetailPage() {
 					font-size: 3vh;
 				}
 				.audioBox{
-					/* padding: ; */
+					height:6vh;
 					display: flex;
 					align-items: center;
 					justify-content: center;
