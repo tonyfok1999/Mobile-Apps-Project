@@ -310,7 +310,7 @@ export default function SpeakDetailPage() {
 					font-size: 3vh;
 				}
 				.audioBox{
-					/* padding: ; */
+					height:6vh;
 					display: flex;
 					align-items: center;
 					justify-content: center;
@@ -321,6 +321,9 @@ export default function SpeakDetailPage() {
 				}
 				.playaudio{
 					padding: 2 0 2 0;
+				}
+				.audioBox{
+					height: 9vh;
 				}
 			`}>
 			<IonContent>
@@ -717,6 +720,7 @@ export default function SpeakDetailPage() {
 
 					<IonRow className='submitBar'>
 						<button
+						className='submitBar'
 							onClick={() => {
 								sendOder()
 							}}>

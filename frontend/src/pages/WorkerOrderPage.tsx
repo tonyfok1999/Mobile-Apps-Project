@@ -47,7 +47,6 @@ export default function WorkerOrderPage() {
 			{ id: number; type: string }[], // service types
 			{
 				id: number
-				type: string
 				service_type_id: number
 				subtype: string
 			}[] // service subtypes
