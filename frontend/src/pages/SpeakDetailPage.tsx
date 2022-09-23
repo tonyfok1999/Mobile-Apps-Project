@@ -28,7 +28,7 @@ import {
 } from 'ionicons/icons'
 import React, { SetStateAction, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import BackIcon from '../components/BackIcon'
 import RightButton from '../components/RightButton'
 import { changeBudget, changeServiceType } from '../redux/speak/action'
@@ -43,6 +43,7 @@ import {
 import { stringify, v4 as uuidv4 } from 'uuid'
 import { OverlayEventDetail } from '@ionic/core'
 export default function SpeakDetailPage() {
+	const history = useHistory()
 	const [presentAlert] = useIonAlert()
 	const dispatch = useDispatch()
 	const [referenceTable, setReferenceTable] = useState<
@@ -157,8 +158,6 @@ export default function SpeakDetailPage() {
 				formData.append('oderImage', blob, `${uuidv4()}.png`)
 			}
 			console.log(formData.getAll('oderImage'))
-			console.log(oderId.oderID[0].id)
-
 			let uploadOderImage = await fetch(
 				`${process.env.REACT_APP_BACKEND_URL}/speech/uploadOderImage`,
 				{
@@ -170,6 +169,9 @@ export default function SpeakDetailPage() {
 					body: formData
 				}
 			)
+			console.log(oderId.oderID[0].id)
+
+			history.push('/')
 			console.log(await uploadOderImage.json())
 			setimages([])
 		}
@@ -308,7 +310,7 @@ export default function SpeakDetailPage() {
 					font-size: 3vh;
 				}
 				.audioBox{
-					padding: ;
+					/* padding: ; */
 					display: flex;
 					align-items: center;
 					justify-content: center;

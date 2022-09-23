@@ -41,7 +41,7 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
   async handleConnection(socket: Socket) {
     try {
 Logger.log('handleConnection is run')
-      const token = socket.handshake.headers.authorization;
+      const token = socket.handshake.auth.authorization;
       Logger.debug(token, 'SocketGateway');
 
       if (token !== 'newUser') {
