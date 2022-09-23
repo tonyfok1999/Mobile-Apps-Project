@@ -92,14 +92,6 @@ export default function OrderDetailPage() {
 	}, [params.id])
 
 	const modal = useRef<HTMLIonModalElement>(null)
-	const input = useRef<HTMLIonInputElement>(null)
-	function confirm() {
-		modal.current?.dismiss(input.current?.value, 'confirm')
-	}
-	function onWillDismiss(e: CustomEvent<OverlayEventDetail>) {
-		if (e.detail.role === 'confirm') {
-		}
-	}
 
 	return (
 		<IonPage>
@@ -206,15 +198,18 @@ export default function OrderDetailPage() {
 					<IonIcon className='icon' icon={cameraOutline} />
 					相片
 					<div>
-						{orderInfo?.orderImagesName.map((item) => (
-							<img
-								src={
-									process.env.REACT_APP_BACKEND_URL +
-									'/' +
-									item.image_name
-								}
-							/>
-						))}
+						{orderInfo && orderInfo.orderImagesName.length == 0
+							? '沒有相片'
+							: orderInfo?.orderImagesName.map((item) => (
+									<img
+										src={
+											process.env.REACT_APP_BACKEND_URL +
+											'/' +
+											item.image_name
+										}
+									/>
+							  ))}
+
 						<IonButton id='open-modal' size='small' fill='clear'>
 							<IonIcon
 								className='icon'
@@ -222,10 +217,7 @@ export default function OrderDetailPage() {
 							/>
 						</IonButton>
 					</div>
-					<IonModal
-						ref={modal}
-						trigger='open-modal'
-						onWillDismiss={(e) => onWillDismiss(e)}>
+					<IonModal ref={modal} trigger='open-modal'>
 						<IonHeader>
 							<IonToolbar>
 								<IonButtons slot='start'>
