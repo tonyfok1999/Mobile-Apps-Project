@@ -87,9 +87,9 @@ export default function OrderDetailPage() {
 			setReferenceTable(data)
 		}
 
-		fetchOrderData()
 		fetchReferenceTable()
-	}, [])
+		fetchOrderData()
+	}, [params.id])
 
 	const modal = useRef<HTMLIonModalElement>(null)
 	const input = useRef<HTMLIonInputElement>(null)
@@ -174,6 +174,7 @@ export default function OrderDetailPage() {
 				<h4>服務範圍</h4>
 				<div className='service btn btn-outline-danger'>
 					{referenceTable &&
+						orderInfo &&
 						referenceTable[1].filter(
 							(type) =>
 								type.id ==
@@ -182,17 +183,18 @@ export default function OrderDetailPage() {
 										subType.id ==
 										orderInfo?.orderInfo.service_subtype_id
 								)[0].service_type_id
-						)[0].type}
+						)[0]?.type}
 				</div>
 				<div className='line'></div>
 				<h4>維修類別</h4>
 				<div className='service btn btn-outline-danger'>
 					{referenceTable &&
+						orderInfo &&
 						referenceTable[2].filter(
 							(subType) =>
 								subType.id ==
 								orderInfo?.orderInfo.service_subtype_id
-						)[0].subtype}
+						)[0]?.subtype}
 				</div>
 				<div className='line'></div>
 				<div>
@@ -248,25 +250,28 @@ export default function OrderDetailPage() {
 									justify-content: center;
 									align-items: center;
 								`}>
-								{orderInfo?.orderImagesName.map((item) => (
-									<SwiperSlide>
-										<img
-											css={css`
-												display: block;
-												margin-left: auto;
-												margin-right: auto;
-												margin-top: 20%;
-												min-width: 95%;
-											`}
-											src={
-												process.env
-													.REACT_APP_BACKEND_URL +
-												'/' +
-												item.image_name
-											}
-										/>
-									</SwiperSlide>
-								))}
+								<SwiperSlide>
+									{orderInfo &&
+										orderInfo.orderImagesName.map(
+											(item) => (
+												<img
+													css={css`
+														display: block;
+														margin-left: auto;
+														margin-right: auto;
+														margin-top: 20%;
+														min-width: 95%;
+													`}
+													src={
+														process.env
+															.REACT_APP_BACKEND_URL +
+														'/' +
+														item.image_name
+													}
+												/>
+											)
+										)}
+								</SwiperSlide>
 							</Swiper>
 						</IonContent>
 					</IonModal>
@@ -275,7 +280,8 @@ export default function OrderDetailPage() {
 				<div>
 					<IonIcon className='icon' icon={micOutline} /> 錄音
 					<div>
-						{orderInfo?.orderInfo.voice_message != null ? (
+						{orderInfo &&
+						orderInfo.orderInfo.voice_message != null ? (
 							<audio
 								controls
 								className='playaudio'
