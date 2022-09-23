@@ -10,13 +10,17 @@ import { ConnectedUserService } from 'src/chatroom/socket-connected-user/connect
 import { Message } from './dto/message.dto';
 
 @WebSocketGateway({
-  cors: false,
+  cors: {
+    origin:"*",
+    methods: ["GET", "POST"]
+    
+  },
+
   // cors: `${process.env.REACT_URL}`,
 })
 export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer()
   server: Server;
-
   userIdfromSocket:number
   socketId: string
 
@@ -36,7 +40,7 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleConnection(socket: Socket) {
     try {
-
+Logger.log('handleConnection is run')
       const token = socket.handshake.headers.authorization;
       console.log({ token });
 

@@ -30,6 +30,6 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile
-    image: 'matching-platform:latest'
+    image: 'lokyin2004/matching-platform:V5'
     ports:
       - '8000:8000'
