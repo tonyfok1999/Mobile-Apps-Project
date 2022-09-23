@@ -20,12 +20,12 @@ export class ChatroomService {
     
     // create a new chatroom
     await this.knex('attendees').insert([{ user_id: workerId, chatroom_id: chatroomId},{ user_id: userId, chatroom_id: chatroomId}])
-    Logger.log(`A new chatroom ${chatroomId} with worker id ${workerId} and user id ${userId} has been created`, 'ChatroomService')
+    Logger.log(`A new chatroom ${chatroomId} with worker id ${workerId} and user id ${userId} has been created`, 'ChatroomService//createChatroom')
     
     // update the workers_of_order table for further handling
     // await this.knex('workers_of_order').insert({ user_id: userId, worker_id: workerId, order_id: orderId, chatroom_id: chatroomId})
     await this.knex.raw('INSERT INTO workers_of_order (user_id, worker_id, order_id, chatroom_id) VALUES (?, ?, ?, ?)', [userId, workerId, orderId, chatroomId])
-    Logger.log(`A new worker ${workerId} has taken the order id ${orderId} of user id ${userId}`, 'ChatroomService')
+    Logger.log(`A new worker ${workerId} has taken the order id ${orderId} of user id ${userId}`, 'ChatroomService//createChatroom')
 
     return chatroomId
     }catch{
@@ -46,7 +46,7 @@ export class ChatroomService {
   }
 
   async getAllChatroomsbyUserId(userId: number) {
-    
+    Logger.debug(`use ID ${userId} getting all chatrooms`, 'ChatroomService//getAllChatroomsbyUserId')
     const result = await this.knex.raw(`
     SELECT chatrooms.id as chatroom_id, array_agg(chatroom_records.created_at) as lastUpdateTime, array_agg(text) as text, array_agg(sender_id) as sender_id, array_agg(is_favourite) as is_favourite FROM attendees
     LEFT JOIN chatrooms ON chatrooms.id = attendees.chatroom_id 
@@ -74,7 +74,7 @@ export class ChatroomService {
         i++
       }
 
-    Logger.debug(`Chatrooms: ${JSON.stringify(newChatrooms)}`, 'ChatroomService')
+    Logger.debug(`Chatrooms: ${JSON.stringify(newChatrooms)}`, 'ChatroomService//getAllChatroomsbyUserId')
     
     return newChatrooms
   }
@@ -87,18 +87,18 @@ export class ChatroomService {
 
   async getAllUserIdByChatroomId(chatroomId: number){
     try{
-      Logger.debug(chatroomId, 'ChatroomService')
+      Logger.debug(chatroomId, 'ChatroomService//getAllUserIdByChatroomId')
       const allUserIds = await this.knex.raw(`SELECT attendees.user_id, users.nickname FROM attendees INNER JOIN users ON users.id = attendees.user_id WHERE chatroom_id = ?`, [chatroomId])
       return allUserIds.rows
     }catch{
-      Logger.error("the user id cannot be searched", 'ChatroomService')
+      Logger.error("the user id cannot be searched", 'ChatroomService//getAllUserIdByChatroomId')
       return []
     }
   }
 
   async checkWorkersOfOrder(workerId: number, orderId: number){
     const result = await this.knex.raw('SELECT * FROM workers_of_order WHERE worker_id = ? AND order_id = ?', [workerId, orderId])
-    Logger.debug({result: result}, 'ChatroomService')
+    Logger.debug({result: result}, 'ChatroomService//checkWorkersOfOrder')
     return result.rows
   }
 
@@ -111,7 +111,7 @@ export class ChatroomService {
 
   async bookmarkChat(chatroomId: number, userId: number){
     await this.knex.raw('UPDATE attendees SET is_favourite = NOT is_favourite WHERE (chatroom_id = ? AND user_id = ?)', [chatroomId, userId])
-    Logger.debug('bookmarked', 'ChatroomService')
+    Logger.debug('bookmarked', 'ChatroomService//bookmarkChat')
   }
 
   async getMessage(chatroomId: number) {

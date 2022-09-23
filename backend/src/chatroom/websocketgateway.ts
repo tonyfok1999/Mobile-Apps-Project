@@ -14,7 +14,7 @@ import { Message } from './dto/message.dto';
     origin:"*",
     methods: ["GET", "POST"]
     
-  },
+  // },
 
   // cors: `${process.env.REACT_URL}`,
 })
@@ -40,9 +40,9 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleConnection(socket: Socket) {
     try {
-Logger.log('handleConnection is run')
+      Logger.log('handleConnection is run')
       const token = socket.handshake.auth.authorization;
-      Logger.debug(token, 'SocketGateway');
+      Logger.debug(`user with token ${token} coming in`, 'SocketGateway//handleConnection');
 
       if (token !== 'newUser') {
         const decodedToken = await this.authService.verifyJwt(token);
@@ -52,14 +52,14 @@ Logger.log('handleConnection is run')
         const user: CreateUserDto[] = await this.userService.getUserById(decodedToken.id);
         const userId = user[0].id;
 
-        Logger.debug('user' + userId, 'SocketGateway');
+        Logger.debug(`user Id ${userId} is logged in`, 'SocketGateway//handleConnection');
 
         if (!user[0]) {
-          Logger.error(`fail to connect websocket gateway due to invalid user`, 'SocketGateway');
+          Logger.error(`fail to connect websocket gateway due to invalid user`, 'SocketGateway//handleConnection');
           return this.disconnect(socket);
         }
 
-        Logger.log(`userId ${userId} connected websocket gateway - socketid: ${socket.id}`, 'SocketGateway');
+        Logger.log(`userId ${userId} connected websocket gateway - socketid: ${socket.id}`, 'SocketGateway//handleConnection');
 
         // store current user into the socket data
         socket.data.user = user[0];
@@ -67,7 +67,7 @@ Logger.log('handleConnection is run')
         // store the socketid corresponding userid
         await this.connectedUserService.createUser({ socketId: socket.id, userId: userId });
       }else{
-        Logger.warn(`user fail to connect from websocket gateway since he is the new user `, 'SocketGateway')
+        Logger.warn(`user fail to connect from websocket gateway since he is the new user `, 'SocketGateway//handleConnection')
         // this.disconnect(socket)
       }
     
@@ -80,7 +80,7 @@ Logger.log('handleConnection is run')
   async handleDisconnect(socket: Socket) {
     if (socket.data.user) {
       await this.connectedUserService.deleteByUserId(socket.data.user.id);
-      Logger.warn(`userId ${socket.data.user.id} disconnected websocket gateway - socketid: ${socket.id}`, 'SocketGateway');
+      Logger.warn(`userId ${socket.data.user.id} disconnected websocket gateway - socketid: ${socket.id}`, 'SocketGateway//handleDisconnect');
     }
   }
 
@@ -99,7 +99,7 @@ Logger.log('handleConnection is run')
         connections.push({ userId: attendee.user_id, userSocket: attendeeSocket[0].socket_id });
       }
     }
-
+    console.log({connections})
     return connections;
   }
 
@@ -127,18 +127,20 @@ Logger.log('handleConnection is run')
   async onCreateRoom(@MessageBody() chatroomId: number) {
     const connections = await this.mapUserIdsAndSocketInSameRoom(chatroomId);
 
-    Logger.debug({ connections: connections }, 'SocketGateway');
+    Logger.debug({ connections: connections }, 'SocketGateway//onCreateRoom');
 
     for (let i = 0; i < connections.length; i++) {
+      if (connections[i] === 0){ continue }
       const chatrooms = await this.chatroomService.getAllChatroomsbyUserId(connections[i].userId);
       connections[i]['chatrooms'] = chatrooms;
     }
 
-    Logger.debug({ connections: connections }, 'SocketGateway');
+    Logger.debug({ connections: connections }, 'SocketGateway//onCreateRoom');
 
     for (let i = 0; i < connections.length; i++) {
+      if (connections[i] === 0){ continue }
       for (let j = 0; j < connections[i].chatrooms.length; j++) {
-        Logger.debug({ chatroom_id: connections[i].chatrooms[j].chatroom_id }, 'SocketGateway');
+        Logger.debug({ chatroom_id: connections[i].chatrooms[j].chatroom_id }, 'SocketGateway//onCreateRoom');
         const attendees = await this.chatroomService.getAllUserIdByChatroomId(connections[i].chatrooms[j].chatroom_id);
         // attendees = [{user_id: number, nickname: string}, {user_id: number, nickname: string}]
         connections[i]['chatrooms'][j]['attendees'] = attendees;
@@ -149,6 +151,7 @@ Logger.log('handleConnection is run')
     for (const connection of connections) {
       if (connection.userSocket) {
         this.server.to(connection.userSocket).emit('onChatroom', connection.chatrooms);
+        Logger.log('chatroom: ' + JSON.stringify(connection.chatrooms) + ' has been sent to ' + connection.userId, 'SocketGateway//onCreateRoom')
       }
     }
   }
@@ -158,16 +161,21 @@ Logger.log('handleConnection is run')
     const connections = await this.mapUserIdsAndSocketInSameRoom(chatroomId);
 
     await this.chatroomService.deleteChat(chatroomId);
-    Logger.warn(`chatroom id ${chatroomId} is deleted`, 'SocketGateway');
+    Logger.warn(`chatroom id ${chatroomId} is deleted`, 'SocketGateway//onDeleteChat');
 
     for (let i = 0; i < connections.length; i++) {
+      Logger.debug(`use ID ${connections[i]} of chat room`, 'SocketGateway//onDeleteChat')
+      if (connections[i] === 0){ continue }
       const chatrooms = await this.chatroomService.getAllChatroomsbyUserId(connections[i].userId);
       connections[i]['chatrooms'] = chatrooms;
     }
 
+    Logger.debug({connections}, 'SocketGateway//onDeleteChat');
+
     for (let i = 0; i < connections.length; i++) {
+      if (connections[i] === 0){ continue }
       for (let j = 0; j < connections[i].chatrooms.length; j++) {
-        Logger.debug({ chatroom_id: connections[i].chatrooms[j].chatroom_id }, 'SocketGateway');
+        Logger.debug({ chatroom_id: connections[i].chatrooms[j].chatroom_id }, 'SocketGateway//onDeleteChat');
         const attendees = await this.chatroomService.getAllUserIdByChatroomId(connections[i].chatrooms[j].chatroom_id);
         // attendees = [{user_id: number, nickname: string}, {user_id: number, nickname: string}]
         connections[i]['chatrooms'][j]['attendees'] = attendees;
@@ -188,7 +196,7 @@ Logger.log('handleConnection is run')
     const chatroomId = obj.chatroomId
     const userId = obj.userId
     await this.chatroomService.bookmarkChat( chatroomId, userId )
-    Logger.log(`the chatroom id ${chatroomId} has been bookmarked`, 'SocketGateway')
+    Logger.log(`the chatroom id ${chatroomId} has been bookmarked`, 'SocketGateway//bookmarkChat')
     const chatrooms = await this.chatroomService.getAllChatroomsbyUserId( userId )
 
     for( let i = 0; i < chatrooms.length; i++ ) {

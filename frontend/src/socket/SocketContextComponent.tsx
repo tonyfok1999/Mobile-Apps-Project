@@ -12,9 +12,9 @@ const SocketContextComponent: React.FunctionComponent<ISocketContextComponentPro
 
     useEffect(() => {
 
-      
+      // const socket = io(`${process.env.REACT_APP_BACKEND_URL}`, {extraHeaders:{Authorization: token!}});
       const socket = io(`https://matching.c21-yin.me`,  {auth: {authorization: window.localStorage.token}});
-      
+      // const socket = io(`${process.env.REACT_APP_BACKEND_URL}`,  {auth: {authorization: window.localStorage.token}});
       
       socket.connect();
       setSocket(socket)
