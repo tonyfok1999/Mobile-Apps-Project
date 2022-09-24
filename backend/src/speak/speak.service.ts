@@ -27,7 +27,7 @@ export class SpeechService {
     // The audio file's encoding, sample rate in hertz, and BCP-47 language code
     try {
       const audio = {
-        content: readFileSync(process.env.SPEECH_FILE + filename).toString('base64'),
+        content: readFileSync('../../uploads/' + filename).toString('base64'),
       };
       const config = {
         encoding: 'WEBM_OPUS',
@@ -111,6 +111,7 @@ return {oderID:oderID};
         
         
         for(let image of files){
+         console.log(files);
          
           console.log(oderId);
           console.log( image.filename);

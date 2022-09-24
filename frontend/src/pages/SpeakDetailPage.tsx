@@ -87,6 +87,8 @@ export default function SpeakDetailPage() {
 	const modal = useRef<HTMLIonModalElement>(null)
 	const input = useRef<HTMLIonInputElement>(null)
 	useEffect(() => {
+		console.log("start of detailPage");
+		
 		const fetchReferenceTable = async () => {
 			const res = await fetch(
 				`${process.env.REACT_APP_BACKEND_URL}/referencesTable`,
@@ -96,6 +98,8 @@ export default function SpeakDetailPage() {
 				}
 			)
 			const data = await res.json()
+			console.log(data);
+			
 			setReferenceTable(data)
 		}
 		if (!referenceTable) {
@@ -171,9 +175,10 @@ export default function SpeakDetailPage() {
 			)
 			console.log(oderId.oderID[0].id)
 
-			history.push('/')
 			console.log(await uploadOderImage.json())
 			setimages([])
+			setDistricts('')
+			history.push('/')
 		}
 	}
 	function confirm() {

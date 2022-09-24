@@ -92,6 +92,8 @@ export default function SpeakPage() {
 				dispatch(changeTranscription(datas.transcription))
 				dispatch(changeSpeakURL(speakUrl))
 				chunks = []
+				console.log("end of SpeakPage");
+				
 				history.push('/Speak/SpeakDetailPage')
 			}
 			mediaRecorder.stop()

@@ -22,7 +22,7 @@ services:
 
       REACT_URL : http://localhost:8100
       GOOGLE_APPLICATION_CREDENTIALS : "./google_api_key/eastern-thinker-361503-923321a085d0.json"
-      SPEECH_FILE : "./record/"
+      
       NODE_ENV: test
       PORT: 8000
     depends_on:
@@ -30,6 +30,6 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile
-    image: 'lokyin2004/matching-platform:V6'
+    image: 'lokyin2004/matching-platform:V9'
     ports:
       - '8000:8000'
