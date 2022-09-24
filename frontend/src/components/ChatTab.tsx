@@ -87,7 +87,7 @@ const ChatTab: React.FC = () => {
 			console.log('Unregistering Event')
 			socket?.off('onChatroom')
 		}
-	}, [token])
+	}, [token,setChatlist])
 
 	// TODO: create room with user 1983 whenever a new user come in
 	// socket.emit('createRoom', {workerId: 1983, userId: 'current userId'} )
