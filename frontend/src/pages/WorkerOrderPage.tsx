@@ -161,10 +161,8 @@ export default function WorkerOrderPage() {
 				`}>
 				{ordersInfo &&
 					ordersInfo.map((orderInfo) => (
-						<div>
-							<NavLink
-								key={orderInfo.id}
-								to={`/orderDetailPage/${orderInfo.id}`}>
+						<div key={orderInfo.id}>
+							<NavLink to={`/orderDetailPage/${orderInfo.id}`}>
 								<div className='order'>
 									<div className='address'>
 										{orderInfo.working_address}
