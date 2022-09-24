@@ -59,6 +59,7 @@ export default function SpeakDetailPage() {
 	>()
 	const [images, setimages] = useState<GalleryPhoto[]>([])
 	const [districts, setDistricts] = useState<string>('')
+	const [count,setCount] = useState<Number>(0)
 
 	const districtNumber = useSelector(
 		(state: RootState) => state.speak.district
@@ -123,6 +124,20 @@ export default function SpeakDetailPage() {
 		budget,
 		images
 	])
+	useEffect(() => {
+		if (referenceTable && count == 0) {
+			dispatch(
+				changeServiceType(
+					referenceTable[2][
+						referenceTable[0].map((e) => e.id).indexOf(serviceSubTypeNumber[0])
+					].service_type_id
+				)
+			)
+			console.log(typeNumber);
+				
+			setCount(1)
+		}
+	},[referenceTable])
 
 	async function sendOder() {
 		let datas: {
@@ -197,17 +212,17 @@ export default function SpeakDetailPage() {
 					margin: 0;
 				}
 				.topBar {
-					height: 4vh;
+					/* height: 4vh; */
 					justify-content: flex-start;
 				}
 				.infoBar {
 					justify-content: flex-start;
 					align-items: center;
-					height: 8vh;
+					/* height: 8vh; */
 					padding-left: 5px;
 				}
 				.districtBar {
-					height: 10vh;
+					/* height: 10vh; */
 					border-bottom-style: groove;
 				}
 				.district {
@@ -236,10 +251,10 @@ export default function SpeakDetailPage() {
 					border-bottom-style: groove;
 				}
 				.serviceTypeRow {
-					height: 5vh;
+					/* height: 5vh; */
 				}
 				.serviceSubTypeRow {
-					height: 6vh;
+					/* height: 6vh; */
 				}
 				.serviceTypeInfo {
 					font-size: 3vh;
@@ -251,11 +266,11 @@ export default function SpeakDetailPage() {
 					height: 1vh;
 				}
 				.serviceSubTypeBar {
-					height: 14vh;
+					/* height: 14vh; */
 					border-bottom-style: groove;
 				}
 				.budgetBar {
-					height: 16vh;
+					/* height: 16vh; */
 					border-bottom-style: groove;
 				}
 				/* .typebuttonText {
@@ -281,11 +296,11 @@ export default function SpeakDetailPage() {
 					padding-top: 1vh;
 				}
 				.imageBar {
-					height: 13vh;
+					/* height: 13vh; */
 					border-bottom-style: groove;
 				}
 				.transcriptionBar {
-					height: 12vh;
+					/* height: 12vh; */
 					border-bottom-style: groove;
 				}
 				button {
@@ -305,7 +320,7 @@ export default function SpeakDetailPage() {
 					font-size: 2.8vh;
 				}
 				.imageText {
-					height: 6vh;
+					/* height: 6vh; */
 
 					/* max-height:9vh ; */
 				}
@@ -316,7 +331,7 @@ export default function SpeakDetailPage() {
 					font-size: 3vh;
 				}
 				.audioBox{
-					height:6vh;
+					/* height:6vh; */
 					display: flex;
 					align-items: center;
 					justify-content: center;
@@ -712,6 +727,7 @@ export default function SpeakDetailPage() {
 								/>
 								上傳語音識別結果
 							</IonRow>
+							<IonRow><span>文字結果 : {transcription}</span></IonRow>
 							<IonRow className='audioBox'>
 								<audio
 									controls
