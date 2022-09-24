@@ -89,6 +89,7 @@ export default function SpeakDetailPage() {
 	useEffect(() => {
 		console.log("start of detailPage");
 		
+		
 		const fetchReferenceTable = async () => {
 			const res = await fetch(
 				`${process.env.REACT_APP_BACKEND_URL}/referencesTable`,
@@ -159,7 +160,7 @@ export default function SpeakDetailPage() {
 			for (let img of images) {
 				let blob = await fetch(img.webPath).then((r) => r.blob())
 				// console.log(blob)
-				formData.append('oderImage', blob, `${uuidv4()}.png`)
+				formData.append('oderImage', blob, )
 			}
 			console.log(formData.getAll('oderImage'))
 			let uploadOderImage = await fetch(

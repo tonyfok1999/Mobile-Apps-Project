@@ -37,7 +37,8 @@ export class SpeechController {
   @UseInterceptors(
     FilesInterceptor('oderImage', 3, {
       storage: diskStorage({
-        destination: '../../uploads/',
+        destination: './uploads/',
+      
       }),
     })
   )
@@ -50,7 +51,7 @@ export class SpeechController {
   @UseInterceptors(
     FileInterceptor('record', {
       storage: diskStorage({
-        destination: '../../uploads/',
+        destination: './uploads/',
       }),
     })
   )
