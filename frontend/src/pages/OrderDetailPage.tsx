@@ -27,6 +27,7 @@ import { Navigation, EffectFade } from 'swiper'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
+import 'swiper/css/scrollbar'
 
 export default function OrderDetailPage() {
 	const params = useParams<{ id: string }>()
@@ -50,7 +51,7 @@ export default function OrderDetailPage() {
 		}
 
 		orderImagesName: { image_name: string }[]
-	}>()
+	} | null>()
 
 	const [referenceTable, setReferenceTable] = useState<
 		[
@@ -89,6 +90,10 @@ export default function OrderDetailPage() {
 
 		fetchReferenceTable()
 		fetchOrderData()
+
+		return () => {
+			setOrderInfo(null)
+		}
 	}, [params.id])
 
 	const modal = useRef<HTMLIonModalElement>(null)
@@ -200,8 +205,9 @@ export default function OrderDetailPage() {
 					<div>
 						{orderInfo && orderInfo.orderImagesName.length == 0
 							? '沒有相片'
-							: orderInfo?.orderImagesName.map((item) => (
+							: orderInfo?.orderImagesName.map((item, i) => (
 									<img
+										key={i}
 										src={
 											process.env.REACT_APP_BACKEND_URL +
 											'/' +
@@ -242,28 +248,29 @@ export default function OrderDetailPage() {
 									justify-content: center;
 									align-items: center;
 								`}>
-								<SwiperSlide>
-									{orderInfo &&
-										orderInfo.orderImagesName.map(
-											(item) => (
-												<img
-													css={css`
-														display: block;
-														margin-left: auto;
-														margin-right: auto;
-														margin-top: 20%;
-														min-width: 95%;
-													`}
-													src={
-														process.env
-															.REACT_APP_BACKEND_URL +
-														'/' +
-														item.image_name
-													}
-												/>
-											)
-										)}
-								</SwiperSlide>
+								{orderInfo &&
+									orderInfo.orderImagesName.map((item, i) => (
+										<SwiperSlide key={i}>
+											<img
+												css={css`
+													display: block;
+													margin-left: auto;
+													margin-right: auto;
+													margin-top: 5%;
+													min-width: 95%;
+													max-width: 95%;
+													min-height: 90%;
+													max-height: 90%;
+												`}
+												src={
+													process.env
+														.REACT_APP_BACKEND_URL +
+													'/' +
+													item.image_name
+												}
+											/>
+										</SwiperSlide>
+									))}
 							</Swiper>
 						</IonContent>
 					</IonModal>

@@ -50,6 +50,7 @@ const HomePage: React.FC = () => {
 					{ headers: { Authorization: `Bearer ${token}` } }
 				)
 				const userinfo = await res.json()
+				console.log(userinfo);
 				dispatch(loggedIn(userinfo[0], token))
 				dispatch(loadToken(token))
 

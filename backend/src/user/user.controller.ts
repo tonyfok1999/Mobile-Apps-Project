@@ -19,6 +19,8 @@ export class UserController {
   @Get('me')
   findUserById(@Req() req: Request) {
     const id = req.user['id'];
+    console.log(id);
+    
     return this.userService.findUserById(id);
   }
 
