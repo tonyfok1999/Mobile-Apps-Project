@@ -41,9 +41,7 @@ const Chatroom: React.FC = () => {
 	const chatroomId = parseInt(params.chatroomId)
 	const dispatch = useAppDispatch()
 
-	const initialState: Message[] = [
-		{ sender_id: 1, text: 'Hello', created_at: new Date() }
-	]
+	const initialState: Message[] | null = []
 
 	const [messages, setMessages] = useState<Message[]>(initialState)
 	const [chats, setChats] = useState(chatrooms)

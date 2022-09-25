@@ -48,10 +48,10 @@ export class ChatroomService {
   async getAllChatroomsbyUserId(userId: number) {
     Logger.debug(`use ID ${userId} getting all chatrooms`, 'ChatroomService//getAllChatroomsbyUserId')
     const result = await this.knex.raw(`
-    SELECT chatrooms.id as chatroom_id, array_agg(chatroom_records.created_at) as lastUpdateTime, array_agg(text) as text, array_agg(sender_id) as sender_id, array_agg(is_favourite) as is_favourite FROM attendees
+    SELECT chatrooms.id as chatroom_id, array_agg(chatroom_records.created_at ORDER BY chatroom_records.created_at DESC) as lastUpdateTime, array_agg(text ORDER BY chatroom_records.created_at DESC) as text, array_agg(sender_id ORDER BY chatroom_records.created_at DESC) as sender_id, array_agg(is_favourite ORDER BY chatroom_records.created_at DESC) as is_favourite FROM attendees
     LEFT JOIN chatrooms ON chatrooms.id = attendees.chatroom_id 
     LEFT JOIN chatroom_records ON chatroom_records.chatroom_id = chatrooms.id 
-    WHERE user_id = ? GROUP BY chatrooms.id ORDER BY array_agg(chatroom_records.created_at) DESC ;
+    WHERE user_id = ? GROUP BY chatrooms.id ORDER BY lastUpdateTime DESC;
     `, userId)
 
     const chatrooms = result.rows
@@ -63,15 +63,20 @@ export class ChatroomService {
     const newChatrooms: any = []
     
     while (i < chatrooms.length) {
-        const chatroom = {chatroom_id:1, lastUpdateTime: "", text: "", sender_id: 0, is_favourite: false}
-        chatroom['chatroom_id'] = chatrooms[i].chatroom_id
-        chatroom['lastUpdateTime'] = chatrooms[i].lastupdatetime[0]
-        chatroom['text'] = chatrooms[i].text[0]
-        chatroom['sender_id']  = chatrooms[i].sender_id[0]
-        chatroom['is_favourite']  = chatrooms[i].is_favourite[0]
-        console.log({chatroom: chatroom})
-        newChatrooms.push(chatroom)
-        i++
+      
+      // Get the latest msg of each room
+      const chatroom = {chatroom_id:1, lastUpdateTime: "", text: "", sender_id: 0, is_favourite: false}
+      chatroom['chatroom_id'] = chatrooms[i].chatroom_id
+      chatroom['lastUpdateTime'] = chatrooms[i].lastupdatetime[0]
+      chatroom['text'] = chatrooms[i].text[0]
+      chatroom['sender_id']  = chatrooms[i].sender_id[0]
+      chatroom['is_favourite']  = chatrooms[i].is_favourite[0]
+      console.log({chatroom: chatroom})
+      newChatrooms.push(chatroom)
+
+
+      // rearrange the order of the chatrooms by timestamps
+      i++
       }
 
     Logger.debug(`Chatrooms: ${JSON.stringify(newChatrooms)}`, 'ChatroomService//getAllChatroomsbyUserId')
