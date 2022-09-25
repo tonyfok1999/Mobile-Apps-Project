@@ -10,14 +10,14 @@ import { useAppSelector } from '../store'
 import { useIonAlert } from '@ionic/react'
 import { useSocket } from '../hooks/useSocket'
 import SocketContext from '../socket/SocketContext'
-import Button from 'react-bootstrap/Button';
-import { IoMdSend } from "react-icons/io";
+import Button from 'react-bootstrap/Button'
+import { IoMdSend } from 'react-icons/io'
 
 export interface Message {
-	chatroom_id?: number;
-	sender_id: number;
-	text?: string;
-  }
+	chatroom_id?: number
+	sender_id: number
+	text?: string
+}
 
 const ChatInput: React.FC = () => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false)
@@ -26,12 +26,26 @@ const ChatInput: React.FC = () => {
 	const params = useParams<{ chatroomId: string }>()
 	const chatroomId = parseInt(params.chatroomId)
 	const userId = useAppSelector((state) => state.auth.user!.id)
-	const textareaRef = React.useRef() as React.MutableRefObject<HTMLTextAreaElement>
+	const textareaRef =
+		React.useRef() as React.MutableRefObject<HTMLTextAreaElement>
 	const pickerRef = React.useRef() as React.MutableRefObject<HTMLDivElement>
 	const [presentAlert] = useIonAlert()
-
 	const { socket } = useContext(SocketContext)
 
+	useEffect(() => {
+		const closePicker = (e: any) => {
+			console.log(e)
+			if (!pickerRef.current.contains(e.target)) {
+				setShowEmojiPicker(()=>false)
+				console.log('clicked inside')
+			}
+			console.log('clicked outside')
+		}
+
+		document.body.addEventListener('mousedown', closePicker)
+
+		return () => document.body.removeEventListener('mousedown', closePicker)
+	}, [setShowEmojiPicker])
 
 	// useEffect(() => {
 	// 	const onMessage =() => {
@@ -57,13 +71,8 @@ const ChatInput: React.FC = () => {
 	// 	}
 	// }, [])
 
-	const handleEmojiPickerHideShow = (e:any) => {
-		setShowEmojiPicker(!showEmojiPicker)
-		if(!pickerRef.current!.contains(e.target)) {
-			pickerRef.current.blur()
-		}else{
-			pickerRef.current.focus()
-		}
+	const handleEmojiPickerHideShow = (e: any) => {
+		setShowEmojiPicker(() => !showEmojiPicker)
 	}
 
 	const handleEmojiClick = (event: any, emojiObject: { emoji: string }) => {
@@ -79,17 +88,20 @@ const ChatInput: React.FC = () => {
 		)
 		formData.append('blob', blob)
 
-		const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/chatroom/${chatroomId}/message`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json; charset=utf-8',
-				Authorization: `Bearer ${token}`
-			},
-			body: JSON.stringify({ sender_id: userId, text: message })
-		})
+		const res = await fetch(
+			`${process.env.REACT_APP_BACKEND_URL}/chatroom/${chatroomId}/message`,
+			{
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json; charset=utf-8',
+					Authorization: `Bearer ${token}`
+				},
+				body: JSON.stringify({ sender_id: userId, text: message })
+			}
+		)
 		console.log('message has been sent')
 
-		if (res.status === 400){
+		if (res.status === 400) {
 			presentAlert({
 				header: '訊息錯誤',
 				message: '聊天室已被刪除',
@@ -112,7 +124,7 @@ const ChatInput: React.FC = () => {
 				text: message
 			})
 
-			socket?.emit("setChatroom", chatroomId)
+			socket?.emit('setChatroom', chatroomId)
 
 			console.log(`the message ${message} has been submit`)
 			setMessage('')
@@ -120,15 +132,13 @@ const ChatInput: React.FC = () => {
 		}
 	}
 
-
-
 	return (
 		<form
 			key='input-container'
 			css={css`
 				width: 100%;
 				display: flex;
-				align-items: center;
+				align-items: flex-end;
 				background: white;
 
 				button {
@@ -170,16 +180,16 @@ const ChatInput: React.FC = () => {
 					width: 100%;
 				}
 			`}
-			onSubmit={(e)=> handleFormSubmit(e)}>
+			onSubmit={(e) => handleFormSubmit(e)}>
 			<label
 				className='text-input'
 				css={css`
 					width: 100%;
 				`}>
 				<textarea
-				rows={1}
-				ref={textareaRef}	
-				css={css`
+					rows={1}
+					ref={textareaRef}
+					css={css`
 						width: 100%;
 						border: none;
 						resize: none;
@@ -193,12 +203,10 @@ const ChatInput: React.FC = () => {
 					placeholder='Type something here...'
 					form='input-container'
 					value={message}
-					
 					onChange={(e) => {
 						e.target.style.height = 'auto'
 						setMessage(e.target.value)
 						e.target.style.height = e.target.scrollHeight + 'px'
-
 					}}
 				/>
 			</label>
@@ -206,8 +214,9 @@ const ChatInput: React.FC = () => {
 			placeholder='Type something here...' value={message} 
 			onChange={(e)=>setMessage(e.target.value)} /> */}
 			<div
-			
 				className='emojiButton'
+				ref={pickerRef}
+				onClick={(e) => handleEmojiPickerHideShow(e)}
 				css={css`
 					background: transparent;
 					border: none;
@@ -216,13 +225,11 @@ const ChatInput: React.FC = () => {
 					--bs-btn-padding-y: 0.25rem;
 				`}>
 				<VscSmiley
-			
-					onClick={(e)=>handleEmojiPickerHideShow(e)}
 					css={css`
 						color: grey;
 						font-size: 1.5rem;
 						margin-right: 0.5rem;
-						:active{
+						:active {
 							color: #3b1599;
 							outline: none;
 						}
@@ -232,19 +239,20 @@ const ChatInput: React.FC = () => {
 					<Picker
 						onEmojiClick={handleEmojiClick}
 						disableSearchBar={true}
-				
-						
 					/>
 				)}
 			</div>
 			{/*<Button type='submit'>*/}
 			<button type='submit'>
-			<IoMdSend size={'1.5rem'} css={css`
-			color: grey;
-			:active{
-				color: #3b1599
-			}
-			;`}/>
+				<IoMdSend
+					size={'1.5rem'}
+					css={css`
+						color: grey;
+						:active {
+							color: #3b1599;
+						}
+					`}
+				/>
 			</button>
 			{/*</Button>*/}
 		</form>
