@@ -123,8 +123,8 @@ export class ChatroomService {
     return await this.knex.raw(`SELECT sender_id, text FROM chatroom_records WHERE chatroom_id = ? ORDER BY created_at ASC`, chatroomId)
   }
 
-  async postMessage(chatroomId: number, message: Message, file?: Express.Multer.File) {
-    await this.knex('chatroom_records').insert({ chatroom_id: chatroomId, sender_id: message.sender_id, text: message.text, image: file?.filename });
+  async postMessage(message: Message) {
+    await this.knex('chatroom_records').insert({ chatroom_id: message.chatroom_id, sender_id: message.sender_id, text: message.text});
   }
 
   findAll() {

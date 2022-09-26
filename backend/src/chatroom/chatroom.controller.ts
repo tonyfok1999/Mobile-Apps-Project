@@ -113,26 +113,26 @@ export class ChatroomController {
     }
   }
 
-  @Post('/:chatroomId/message')
-  @UseInterceptors(
-    FileInterceptor('file', {
-      dest: './uploads',
-    })
-  )
-  async postMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number, @Body() message: Message, @UploadedFile() file?: Express.Multer.File) {
-    if (chatroomId === undefined || message.sender_id === undefined) {
-      throw new HttpException('sender_id and chatroom_id are required', HttpStatus.NOT_FOUND);
-    } else if (message.text === undefined || (message.text === '' && file === undefined)) {
-      throw new HttpException('both message and file are missing', HttpStatus.NOT_FOUND);
-    }
+  // @Post('/:chatroomId/message')
+  // @UseInterceptors(
+  //   FileInterceptor('file', {
+  //     dest: './uploads',
+  //   })
+  // )
+  // async postMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number, @Body() message: Message, @UploadedFile() file?: Express.Multer.File) {
+  //   if (chatroomId === undefined || message.sender_id === undefined) {
+  //     throw new HttpException('sender_id and chatroom_id are required', HttpStatus.NOT_FOUND);
+  //   } else if (message.text === undefined || (message.text === '' && file === undefined)) {
+  //     throw new HttpException('both message and file are missing', HttpStatus.NOT_FOUND);
+  //   }
 
-    try {
-      await this.chatroomService.postMessage(chatroomId, message, file);
-      return { message: 'message is posted' };
-    } catch {
-      throw new HttpException('message cannot be posted', HttpStatus.BAD_REQUEST);
-    }
-  }
+  //   try {
+  //     await this.chatroomService.postMessage(chatroomId, message);
+  //     return { message: 'message is posted' };
+  //   } catch {
+  //     throw new HttpException('message cannot be posted', HttpStatus.BAD_REQUEST);
+  //   }
+  // }
 
   @Get('/find-by-nickname')
   async findAllByNickname(@Query() query: { nickname: string }) {

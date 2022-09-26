@@ -110,6 +110,8 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
 
     const connections = await this.mapUserIdsAndSocketInSameRoom(message.chatroom_id);
 
+    await this.chatroomService.postMessage(message)
+
     // emit a new message to users in the same room
     for (const connection of connections) {
       if (connection.userSocket) {
