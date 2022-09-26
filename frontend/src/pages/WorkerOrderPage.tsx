@@ -1,13 +1,19 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { IonButton, IonContent, IonPage, useIonAlert } from '@ionic/react'
-import { construct } from 'ionicons/icons'
+import {
+	IonContent,
+	IonPage,
+	IonRefresher,
+	IonRefresherContent
+} from '@ionic/react'
+import { construct, chevronDownCircleOutline } from 'ionicons/icons'
 import React, {
 	useContext,
 	useEffect,
 	useInsertionEffect,
 	useState
 } from 'react'
+import { RefresherEventDetail } from '@ionic/core'
 import { NavLink, useHistory } from 'react-router-dom'
 import { WebSocketContext } from '../context/WebScoketContext'
 import { useSocket } from '../hooks/useSocket'
@@ -159,6 +165,25 @@ export default function WorkerOrderPage() {
 						margin-right: auto;
 					}
 				`}>
+				<IonRefresher
+					slot='fixed'
+					onIonRefresh={async (
+						event: CustomEvent<RefresherEventDetail>
+					) => {
+						const res = await fetch(
+							`${process.env.REACT_APP_BACKEND_URL}/orders`,
+							{
+								headers: { Authorization: `whatever` }
+							}
+						)
+						const data = await res.json()
+						setOrdersInfo(data)
+						setTimeout(() => {
+							event.detail.complete()
+						}, 1500)
+					}}>
+					<IonRefresherContent></IonRefresherContent>
+				</IonRefresher>
 				{ordersInfo &&
 					ordersInfo.map((orderInfo) => (
 						<div key={orderInfo.id}>
