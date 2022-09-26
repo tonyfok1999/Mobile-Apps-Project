@@ -68,16 +68,16 @@ export class ChatroomController {
     }
 
     try {
-      const result = await this.chatroomService.checkWorkersOfOrder(workerId, orderId); 
-      Logger.debug({result: result}, 'ChatroomController')
+      const result = await this.chatroomService.checkWorkersOfOrder(workerId, userId); 
+      Logger.debug({result: result}, 'ChatroomController//createChatroom')
       const attendees: Attendees = { workerId: workerId, userId: userId };
       if (result.length > 0) {
         const chatroomId = await this.chatroomService.getOneChatroombyUserIds(attendees);
-        Logger.warn(`chat id ${chatroomId} has been created before`,'ChatroomController')
+        Logger.warn(`chat id ${chatroomId} has been created before`,'ChatroomController//createChatroom')
         return  { chatroomId: chatroomId, isNew: false }
       } else {
         const chatroomId = await this.chatroomService.createChatroom(attendees, orderId);
-        Logger.log(`chatroom id ${chatroomId}has been created`,'ChatroomController')
+        Logger.log(`chatroom id ${chatroomId}has been created`,'ChatroomController//createChatroom')
         return { chatroomId: chatroomId, isNew: true };
       }
     } catch {

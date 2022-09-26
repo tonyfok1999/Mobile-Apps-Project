@@ -65,3 +65,13 @@ WHERE (chatrooms.id = 3 AND attendees.user_id = 5);
 -- Toggle the boolean status of attendees is_favourite
 
 UPDATE attendees SET is_favourite = NOT is_favourite WHERE (chatroom_id = 1 AND user_id = 1);
+
+ SELECT chatrooms.id as chatroom_id, array_agg(chatroom_records.created_at) as lastUpdateTime, array_agg(text) as text, array_agg(sender_id) as sender_id, array_agg(is_favourite) as is_favourite FROM attendees
+    LEFT JOIN chatrooms ON chatrooms.id = attendees.chatroom_id 
+    LEFT JOIN chatroom_records ON chatroom_records.chatroom_id = chatrooms.id 
+    WHERE user_id = 5 GROUP BY chatrooms.id ORDER BY array_agg(chatroom_records.created_at) ASC 
+
+SELECT chatrooms.id as chatroom_id, array_agg(chatroom_records.created_at ORDER BY chatroom_records.created_at DESC) as lastUpdateTime, array_agg(text ORDER BY chatroom_records.created_at DESC) as text, array_agg(sender_id ORDER BY chatroom_records.created_at DESC) as sender_id, array_agg(is_favourite ORDER BY chatroom_records.created_at DESC) as is_favourite FROM attendees
+    LEFT JOIN chatrooms ON chatrooms.id = attendees.chatroom_id 
+    LEFT JOIN chatroom_records ON chatroom_records.chatroom_id = chatrooms.id 
+    WHERE user_id = 5 GROUP BY chatrooms.id ORDER BY lastUpdateTime DESC

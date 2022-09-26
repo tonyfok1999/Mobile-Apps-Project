@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import {
 	IonList,
 	IonItemSliding,
@@ -10,7 +10,9 @@ import {
 	IonNote,
 	IonAvatar,
 	IonImg,
-	useIonAlert
+	useIonAlert,
+	CreateAnimation,
+	Animation
 } from '@ionic/react'
 
 import { trash, archive, arrowUndo } from 'ionicons/icons'
@@ -28,32 +30,9 @@ export default function Chats(props: { chatroom: Chatroom }) {
 	const [presentAlert] = useIonAlert()
 	const [chatroom, setChatroom] = useState(props.chatroom)
 	const dispatch = useAppDispatch()
+	const archiveRef = React.useRef() as React.MutableRefObject<HTMLIonItemSlidingElement>
 
 	useEffect(() => {
-		// 	socket.on('newChatroom', (chatroom) => {
-		// 		setChatroom(chatroom)
-		// 		console.log({chatroom: chatroom})
-		// 	})
-
-		// 	socket.on('onChatroom', (chatroom) => {
-		// 		dispatch(loadChatrooms(chatroom))
-		// 	})
-
-		// 	;(async () => {
-		// 		const res = await fetch(
-		// 			`${process.env.REACT_APP_BACKEND_URL}/chatroom/${}/user/:userId`,
-		// 			{
-		// 				headers: {
-		// 					Authorization: `Bearer ${token}`
-		// 				}
-		// 			}
-		// 		)
-
-		// 		const chatroom = res.json()
-
-		// 		setChatroom(chatroom)
-
-		// 	})()
 
 		setChatroom(props.chatroom)
 
@@ -68,7 +47,7 @@ export default function Chats(props: { chatroom: Chatroom }) {
 		<>
 			<IonList>
 				{/* Multi-line sliding item with icon options on both sides */}
-				<IonItemSliding id='item100'>
+				<IonItemSliding id='item100' ref={archiveRef}>
 					<IonItem
 						routerLink={`/chatroom/${props.chatroom.chatroom_id}`}>
 						<IonAvatar slot='start'>
@@ -91,15 +70,18 @@ export default function Chats(props: { chatroom: Chatroom }) {
 					</IonItem>
 
 					{props.chatroom.is_favourite ? (
-						<IonItemOptions side='start'>
+						<IonItemOptions side='start' >
 							<IonItemOption
 								key={props.chatroom.chatroom_id}
 								color='success'
-								onClick={() =>
+								onClick={() =>{
 									socket?.emit('bookmarkChat', {
 										chatroomId: props.chatroom.chatroom_id,
 										userId: userId
 									})
+
+									archiveRef.current.close()
+								}
 								}
 								expandable>
 								<IonIcon slot='icon-only' icon={arrowUndo} />
@@ -110,12 +92,13 @@ export default function Chats(props: { chatroom: Chatroom }) {
 							<IonItemOption
 								key={chatroom.chatroom_id}
 								color='tertiary'
-								onClick={() =>
+								onClick={() =>{
 									socket?.emit('bookmarkChat', {
 										chatroomId: props.chatroom.chatroom_id,
 										userId: userId
 									})
-								}
+									archiveRef.current.close()
+								}}
 								expandable>
 								<IonIcon slot='icon-only' icon={archive} />
 							</IonItemOption>
@@ -125,7 +108,8 @@ export default function Chats(props: { chatroom: Chatroom }) {
 					<IonItemOptions side='end'>
 						<IonItemOption
 							color='danger'
-							onClick={() =>
+							onClick={() =>{
+
 								presentAlert({
 									header: '刪除聊天室',
 									subHeader: '在雙方手機上同時刪除聊天室',
@@ -145,11 +129,12 @@ export default function Chats(props: { chatroom: Chatroom }) {
 													'deleteChat',
 													props.chatroom.chatroom_id
 												)
+												archiveRef.current.close()
 											}
 										}
 									]
 								})
-							}
+							}}
 							expandable>
 							<IonIcon slot='icon-only' icon={trash} />
 						</IonItemOption>
