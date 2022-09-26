@@ -114,11 +114,6 @@ export class ChatroomController {
   }
 
   // @Post('/:chatroomId/message')
-  // @UseInterceptors(
-  //   FileInterceptor('file', {
-  //     dest: './uploads',
-  //   })
-  // )
   // async postMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number, @Body() message: Message, @UploadedFile() file?: Express.Multer.File) {
   //   if (chatroomId === undefined || message.sender_id === undefined) {
   //     throw new HttpException('sender_id and chatroom_id are required', HttpStatus.NOT_FOUND);
@@ -127,8 +122,8 @@ export class ChatroomController {
   //   }
 
   //   try {
-  //     await this.chatroomService.postMessage(chatroomId, message);
-  //     return { message: 'message is posted' };
+  //     await this.chatroomService.postMessageByAPI(message);
+  //     Logger.log(`messsage is posted`,'ChatroomController//postMessage')
   //   } catch {
   //     throw new HttpException('message cannot be posted', HttpStatus.BAD_REQUEST);
   //   }

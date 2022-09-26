@@ -82,32 +82,32 @@ const ChatInput: React.FC = () => {
 	const token = localStorage.getItem('token')
 
 	const handleSendMessage = async (message: string, formData: FormData) => {
-		const blob = new Blob(
-			[JSON.stringify({ sender_id: 1, text: message })],
-			{ type: 'application/json' }
-		)
-		formData.append('blob', blob)
+		// const blob = new Blob(
+		// 	[JSON.stringify({ sender_id: 1, text: message })],
+		// 	{ type: 'application/json' }
+		// )
+		// formData.append('blob', blob)
 
-		const res = await fetch(
-			`${process.env.REACT_APP_BACKEND_URL}/chatroom/${chatroomId}/message`,
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json; charset=utf-8',
-					Authorization: `Bearer ${token}`
-				},
-				body: JSON.stringify({ sender_id: userId, text: message })
-			}
-		)
+		// const res = await fetch(
+		// 	`${process.env.REACT_APP_BACKEND_URL}/chatroom/${chatroomId}/message`,
+		// 	{
+		// 		method: 'POST',
+		// 		headers: {
+		// 			'Content-Type': 'application/json; charset=utf-8',
+		// 			Authorization: `Bearer ${token}`
+		// 		},
+		// 		body: JSON.stringify({ sender_id: userId, text: message })
+		// 	}
+		// )
 		console.log('message has been sent')
 
-		if (res.status === 400) {
-			presentAlert({
-				header: '訊息錯誤',
-				message: '聊天室已被刪除',
-				buttons: ['確定']
-			})
-		}
+		// if (res.status === 400) {
+		// 	presentAlert({
+		// 		header: '訊息錯誤',
+		// 		message: '聊天室已被刪除',
+		// 		buttons: ['確定']
+		// 	})
+		// }
 	}
 
 	const handleFormSubmit = (event: any) => {
