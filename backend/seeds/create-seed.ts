@@ -255,6 +255,7 @@ export async function seed(knex: Knex): Promise<void> {
         nickname: 'admin1',
         phone: 90000001,
         gender_id: genderArrayId[0].id,
+        is_worker:true,
       },
       {
         email: 'admin2@gmail.com',
@@ -262,37 +263,10 @@ export async function seed(knex: Knex): Promise<void> {
         nickname: 'admin2',
         phone: 90000001,
         gender_id: genderArrayId[0].id,
+        is_worker:false,
       },
-      {
-        email: 'admin3@gmail.com',
-        password: '$2b$04$gtksDXsUtFbk1JqOP0kkH.isc3Aa5lDp3H2Xg5iU8KJTYS4rvl8yC',
-        nickname: 'admin3',
-        phone: 90000003,
-        gender_id: genderArrayId[1].id,
-      },
-      {
-        email: 'admin4@gmail.com',
-        password: '$2b$04$bqHTIC7ceRinZD4FLuFUy.REUQM9oajwPwPnDyRTEvtFZnIfYhGoG',
-        nickname: 'admin4',
-        phone: 90000004,
-        gender_id: genderArrayId[1].id,
-      },
-      {
-        email: 'worker1@gmail.com',
-        password: '$2b$04$55phserGrX0zCJQTk4f6gOKRbzRRCCbV.U/pEInJDhBHVnoj3l9Nu',
-        nickname: 'worker1',
-        phone: 90000005,
-        gender_id: genderArrayId[0].id,
-        is_worker:true,
-      },
-      {
-        email: 'worker2@gmail.com',
-        password: '$2b$04$ShMZgtT0swlUdfA6m9Zm9OP8XLe.ZdaKDJTxAd6qR0zvsFdQ0kRu6',
-        nickname: 'worker2',
-        phone: 90000006,
-        gender_id: genderArrayId[1].id,
-        is_worker:true,
-      },
+      
+ 
     ])
     .into('users')
     .returning('id');
@@ -322,43 +296,6 @@ export async function seed(knex: Knex): Promise<void> {
       
     ])
 
-    let orderArrayId: Array<{ id: number }> = await knex
-    .insert([
-      {
-        user_id: userArrayId[0].id,  
-        state_id: orderStateArrayId[0].id,
-        service_subtype_id: subtypeArrayId[16].id,
-        working_address: 'hk',
-        working_date: '2022-10-15',
-        budget: 300,
-      },
-      {
-        user_id: userArrayId[1].id,
-        state_id: orderStateArrayId[0].id,
-        service_subtype_id: subtypeArrayId[15].id,
-        working_address: 'ST',
-        working_date: '2022-11-05',
-        budget: 500,
-      },
-    ]).into('orders')
-    .returning('id');
-    
-
-    await knex('quotes').insert([
-      {
-        order_id: orderArrayId[0].id,  
-        worker_id: userArrayId[4].id,
-        price: 250,
-        working_period:1,
-        
-      },
-      {
-        order_id: userArrayId[1].id,
-        worker_id: userArrayId[5].id,
-        price: 300,
-        working_period:2,
-        
-      },
-    ])
+  
 
 }
