@@ -274,24 +274,16 @@ export async function seed(knex: Knex): Promise<void> {
 
     await knex('worker_service_subtypes').insert([
       {
-        worker_id: userArrayId[5].id,
+        worker_id: userArrayId[0].id,
         subtype_id: subtypeArrayId[5].id,
       },
       {
-        worker_id: userArrayId[5].id,
+        worker_id: userArrayId[0].id,
         subtype_id:subtypeArrayId[6].id,
       },
       {
-        worker_id: userArrayId[5].id,
+        worker_id: userArrayId[0].id,
         subtype_id:subtypeArrayId[7].id,
-      },
-      {
-        worker_id: userArrayId[4].id,
-        subtype_id:subtypeArrayId[15].id,
-      },
-      {
-        worker_id: userArrayId[4].id,
-        subtype_id: subtypeArrayId[16].id,
       },
       
     ])
