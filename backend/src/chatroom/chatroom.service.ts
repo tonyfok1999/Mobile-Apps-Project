@@ -120,7 +120,7 @@ export class ChatroomService {
   }
 
   async getMessage(chatroomId: number) {
-    return await this.knex.raw(`SELECT sender_id, text FROM chatroom_records WHERE chatroom_id = ?`, chatroomId)
+    return await this.knex.raw(`SELECT sender_id, text FROM chatroom_records WHERE chatroom_id = ? ORDER BY created_at ASC`, chatroomId)
   }
 
   async postMessage(chatroomId: number, message: Message, file?: Express.Multer.File) {
