@@ -22,6 +22,7 @@ import { useAppDispatch, useAppSelector } from '../store'
 import { WebSocketContext } from '../context/WebScoketContext'
 import { useParams } from 'react-router'
 import SocketContext from '../socket/SocketContext'
+import profilepic from '../srcImage/blank-profile-picture.png'
 
 export default function Chats(props: { chatroom: Chatroom }) {
 	const userId = useAppSelector((state) => state.auth.user!.id)
@@ -51,7 +52,7 @@ export default function Chats(props: { chatroom: Chatroom }) {
 					<IonItem
 						routerLink={`/chatroom/${props.chatroom.chatroom_id}`}>
 						<IonAvatar slot='start'>
-							<IonImg src='https://picsum.photos/id/237/64/64'></IonImg>
+							<IonImg src={profilepic}></IonImg>
 						</IonAvatar>
 						<IonLabel>
 							<h2>

@@ -27,6 +27,7 @@ import { WebSocketContext } from '../context/WebScoketContext'
 import { loadChatrooms } from '../redux/chatroom/action'
 import { useSocket } from '../hooks/useSocket'
 import SocketContext from '../socket/SocketContext'
+import profilepic from '../srcImage/blank-profile-picture.png'
 
 export interface Message {
 	sender_id: number
@@ -144,7 +145,7 @@ const Chatroom: React.FC = () => {
 						</IonAvatar> */}
 
 						<div className='avatar'>
-							<img src='https://picsum.photos/id/237/64/64'></img>
+							<img src={profilepic}></img>
 							<div className='username'>
 								{
 									chats.filter(
