@@ -35,18 +35,30 @@ const ChatInput: React.FC = () => {
 
 	useEffect(() => {
 		const closePicker = (e: any) => {
-			console.log(e)
-			if (!pickerRef.current.contains(e.target)) {
-				setShowEmojiPicker(()=>false)
+			console.log(e.path[0].tagName)
+			console.dir(pickerRef.current, {depth: 3})
+			// if (!pickerRef.current.contains(e.target.path[0].tagName)) {
+			if(e.path[0].tagName === 'UL' || e.path[0].tagName === 'BUTTON' || e.path[0].tagName ==='IMG' ){
+				setShowEmojiPicker(()=>true)
+				console.log(showEmojiPicker)
 				console.log('clicked inside')
+				return
 			}
+		// 	else if (e.path[0].tagName !== 'svg.css-1f1bq7v-ChatInput'){
+			setShowEmojiPicker(()=>false)
+			console.log(showEmojiPicker)
 			console.log('clicked outside')
-		}
+		// }
+	}
+
+		// pickerRef.current?.addEventListener('mousedown', (event) => { event.stopPropagation(); });
 
 		document.body.addEventListener('mousedown', closePicker)
 
-		return () => document.body.removeEventListener('mousedown', closePicker)
-	}, [setShowEmojiPicker])
+		return () => {
+			document.body.removeEventListener('mousedown', closePicker)
+		}
+	}, [])
 
 	// useEffect(() => {
 	// 	const onMessage =() => {
@@ -73,7 +85,8 @@ const ChatInput: React.FC = () => {
 	// }, [])
 
 	const handleEmojiPickerHideShow = (e: any) => {
-		setShowEmojiPicker(() => !showEmojiPicker)
+		setShowEmojiPicker(() => true)
+		console.log('handleEmojiPickerHideShow ' + showEmojiPicker)
 	}
 
 	const handleEmojiClick = (event: any, emojiObject: { emoji: string }) => {
