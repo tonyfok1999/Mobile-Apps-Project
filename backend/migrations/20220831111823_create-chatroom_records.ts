@@ -7,7 +7,7 @@ export async function up(knex: Knex): Promise<void> {
       table.increments();
       table.integer('chatroom_id').notNullable;
       table.integer('sender_id').notNullable;
-      table.string('text');
+      table.text('text');
       table.string('image');
       
       table.foreign('sender_id').references('users.id');
