@@ -79,6 +79,7 @@ const ChatTab: React.FC = () => {
 		})()
 
 		socket?.on('onChatroom', (chatrooms) => {
+			console.log('onchatroom' + JSON.stringify(chatrooms))
 			setChatlist(chatrooms)
 			dispatch(loadChatrooms(chatrooms))
 		})
@@ -92,7 +93,7 @@ const ChatTab: React.FC = () => {
 	// TODO: create room with user 1983 whenever a new user come in
 	// socket.emit('createRoom', {workerId: 1983, userId: 'current userId'} )
 
-	console.log('The Chatrooms are: ' + JSON.stringify(chatlist))
+	console.log('The Chatrooms in useState ' + JSON.stringify(chatlist))
 
 	return (
 		<>

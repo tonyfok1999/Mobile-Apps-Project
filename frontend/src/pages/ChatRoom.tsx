@@ -28,7 +28,8 @@ import { loadChatrooms } from '../redux/chatroom/action'
 import { useSocket } from '../hooks/useSocket'
 import SocketContext from '../socket/SocketContext'
 import profilepic from '../srcImage/blank-profile-picture.png'
-
+import { useIonAlert } from '@ionic/react'
+import BackIcon from '../components/BackIcon'
 export interface Message {
 	sender_id: number
 	text?: string
@@ -51,12 +52,14 @@ const Chatroom: React.FC = () => {
 	const { socket } = useContext(SocketContext)
 
 	const token = localStorage.getItem('token')
+	
+	const [presentAlert] = useIonAlert()
 
 	const scrollRef = React.useRef() as React.MutableRefObject<HTMLDivElement>
 
-	// useEffect(() => {
-	// 	scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
-	// }, [messages, setMessages])
+	useEffect(() => {
+		scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
+	}, [messages, setMessages])
 
 	useEffect(() => {
 		const getMessages = async () => {
@@ -75,6 +78,15 @@ const Chatroom: React.FC = () => {
 		console.log('container lifecycle starting')
 
 		socket?.on('onMessage', (data) => {
+			console.log(data)
+			if (data.status === '400') {
+			presentAlert({
+				header: '訊息錯誤',
+				message: '聊天室已被刪除',
+				buttons: ['確定']
+			})
+			return
+		}
 			console.log('onMessage event received')
 			console.log(data)
 			setMessages((prev) => [...prev, data])
@@ -135,9 +147,7 @@ const Chatroom: React.FC = () => {
 							--border-style: none;
 						`}>
 						<IonButtons slot='start'>
-							<IonBackButton text='' defaultHref='/tabs/chatlist'>
-								<IoArrowBackSharp size='1.5rem' />
-							</IonBackButton>
+							<BackIcon thisPath={'/tabs/chatlist'}/>
 						</IonButtons>
 						{/* <IonAvatar>
 							<IonImg src='https://picsum.photos/id/237/64/64'></IonImg>

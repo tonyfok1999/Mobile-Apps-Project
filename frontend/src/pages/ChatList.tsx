@@ -30,29 +30,9 @@ import WorkerTabBar from '../nav/WorkerTabBar'
 
 const ChatList: React.FC = () => {
 	const isWorker = useAppSelector(
-		(state) => state.auth.user!.is_worker
-	)
+		(state) => state.auth.user?.is_worker
+	) ?? false
 	return (<>
-		<IonMenu content-id='main-content'>
-			<IonHeader>
-				<IonToolbar>
-					<IonTitle>Menu</IonTitle>
-				</IonToolbar>
-			</IonHeader>
-
-			<IonContent>
-				<IonList>
-					<IonListHeader>Navigate</IonListHeader>
-					<IonMenuToggle auto-hide='false'>
-						<IonItem button>
-							<IonIcon slot='start' name='home'></IonIcon>
-							<IonLabel>Home</IonLabel>
-						</IonItem>
-					</IonMenuToggle>
-				</IonList>
-			</IonContent>
-		</IonMenu>
-
 		<IonPage id='main-content' 
 		css={css`
 		

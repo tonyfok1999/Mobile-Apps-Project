@@ -120,12 +120,18 @@ export class ChatroomService {
   }
 
   async getMessage(chatroomId: number) {
-    return await this.knex.raw(`SELECT sender_id, text FROM chatroom_records WHERE chatroom_id = ?`, chatroomId)
+    return await this.knex.raw(`SELECT sender_id, text FROM chatroom_records WHERE chatroom_id = ? ORDER BY created_at ASC`, chatroomId)
   }
 
-  async postMessage(chatroomId: number, message: Message, file?: Express.Multer.File) {
-    await this.knex('chatroom_records').insert({ chatroom_id: chatroomId, sender_id: message.sender_id, text: message.text, image: file?.filename });
+  async postMessage(message: Message) {
+    await this.knex('chatroom_records').insert({ chatroom_id: message.chatroom_id, sender_id: message.sender_id, text: message.text});
   }
+
+  // async postMessageByAPI(message: Message) {
+  //   const result:{id:number}[] = await this.knex('chatroom_records').returning('id').insert({ chatroom_id: message.chatroom_id, sender_id: message.sender_id, text: message.text});
+  //   Logger.debug({result}, 'ChatroomService//postMessageByAPI')
+  //   await this.knex.raw('DELETE FROM chatroom_records WHERE id = ?', result[0].id)
+  // }
 
   findAll() {
     return `This action returns all chatroom`;

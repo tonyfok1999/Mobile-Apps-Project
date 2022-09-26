@@ -22,6 +22,7 @@ export interface Message {
 const ChatInput: React.FC = () => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false)
 	const [message, setMessage] = useState('')
+
 	// const socket = useContext(WebSocketContext)
 	const params = useParams<{ chatroomId: string }>()
 	const chatroomId = parseInt(params.chatroomId)
@@ -34,18 +35,30 @@ const ChatInput: React.FC = () => {
 
 	useEffect(() => {
 		const closePicker = (e: any) => {
-			console.log(e)
-			if (!pickerRef.current.contains(e.target)) {
-				setShowEmojiPicker(()=>false)
+			console.log(e.path[0].tagName)
+			console.dir(pickerRef.current, {depth: 3})
+			// if (!pickerRef.current.contains(e.target.path[0].tagName)) {
+			if(e.path[0].tagName === 'UL' || e.path[0].tagName === 'BUTTON' || e.path[0].tagName ==='IMG' ){
+				setShowEmojiPicker(()=>true)
+				console.log(showEmojiPicker)
 				console.log('clicked inside')
+				return
 			}
+		// 	else if (e.path[0].tagName !== 'svg.css-1f1bq7v-ChatInput'){
+			setShowEmojiPicker(()=>false)
+			console.log(showEmojiPicker)
 			console.log('clicked outside')
-		}
+		// }
+	}
+
+		// pickerRef.current?.addEventListener('mousedown', (event) => { event.stopPropagation(); });
 
 		document.body.addEventListener('mousedown', closePicker)
 
-		return () => document.body.removeEventListener('mousedown', closePicker)
-	}, [setShowEmojiPicker])
+		return () => {
+			document.body.removeEventListener('mousedown', closePicker)
+		}
+	}, [])
 
 	// useEffect(() => {
 	// 	const onMessage =() => {
@@ -72,7 +85,8 @@ const ChatInput: React.FC = () => {
 	// }, [])
 
 	const handleEmojiPickerHideShow = (e: any) => {
-		setShowEmojiPicker(() => !showEmojiPicker)
+		setShowEmojiPicker(() => true)
+		console.log('handleEmojiPickerHideShow ' + showEmojiPicker)
 	}
 
 	const handleEmojiClick = (event: any, emojiObject: { emoji: string }) => {
@@ -82,32 +96,32 @@ const ChatInput: React.FC = () => {
 	const token = localStorage.getItem('token')
 
 	const handleSendMessage = async (message: string, formData: FormData) => {
-		const blob = new Blob(
-			[JSON.stringify({ sender_id: 1, text: message })],
-			{ type: 'application/json' }
-		)
-		formData.append('blob', blob)
+		// const blob = new Blob(
+		// 	[JSON.stringify({ sender_id: 1, text: message })],
+		// 	{ type: 'application/json' }
+		// )
+		// formData.append('blob', blob)
 
-		const res = await fetch(
-			`${process.env.REACT_APP_BACKEND_URL}/chatroom/${chatroomId}/message`,
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json; charset=utf-8',
-					Authorization: `Bearer ${token}`
-				},
-				body: JSON.stringify({ sender_id: userId, text: message })
-			}
-		)
+		// const res = await fetch(
+		// 	`${process.env.REACT_APP_BACKEND_URL}/chatroom/${chatroomId}/message`,
+		// 	{
+		// 		method: 'POST',
+		// 		headers: {
+		// 			'Content-Type': 'application/json; charset=utf-8',
+		// 			Authorization: `Bearer ${token}`
+		// 		},
+		// 		body: JSON.stringify({ sender_id: userId, text: message })
+		// 	}
+		// )
 		console.log('message has been sent')
 
-		if (res.status === 400) {
-			presentAlert({
-				header: '訊息錯誤',
-				message: '聊天室已被刪除',
-				buttons: ['確定']
-			})
-		}
+		// if (res.status === 400) {
+		// 	presentAlert({
+		// 		header: '訊息錯誤',
+		// 		message: '聊天室已被刪除',
+		// 		buttons: ['確定']
+		// 	})
+		// }
 	}
 
 	const handleFormSubmit = (event: any) => {
