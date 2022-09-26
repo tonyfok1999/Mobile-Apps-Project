@@ -22,6 +22,7 @@ import {
 	cameraOutline,
 	cashOutline,
 	chevronForwardOutline,
+	closeCircleOutline,
 	locationOutline,
 	locationSharp,
 	micOutline
@@ -59,7 +60,7 @@ export default function SpeakDetailPage() {
 	>()
 	const [images, setimages] = useState<GalleryPhoto[]>([])
 	const [districts, setDistricts] = useState<string>('')
-	const [count,setCount] = useState<Number>(0)
+	const [count, setCount] = useState<Number>(0)
 
 	const districtNumber = useSelector(
 		(state: RootState) => state.speak.district
@@ -80,17 +81,14 @@ export default function SpeakDetailPage() {
 	const transcription = useSelector(
 		(state: RootState) => state.speak.transcription
 	)
-	const speakUrl = useSelector(
-		(state: RootState) => state.speak.speakURL
-	)
+	const speakUrl = useSelector((state: RootState) => state.speak.speakURL)
 
 	const user = useAppSelector((state) => state.auth.user!.id)
 	const modal = useRef<HTMLIonModalElement>(null)
 	const input = useRef<HTMLIonInputElement>(null)
 	useEffect(() => {
-		console.log("start of detailPage");
-		
-		
+		console.log('start of detailPage')
+
 		const fetchReferenceTable = async () => {
 			const res = await fetch(
 				`${process.env.REACT_APP_BACKEND_URL}/referencesTable`,
@@ -100,8 +98,8 @@ export default function SpeakDetailPage() {
 				}
 			)
 			const data = await res.json()
-			console.log(data);
-			
+			console.log(data)
+
 			setReferenceTable(data)
 		}
 		if (!referenceTable) {
@@ -129,15 +127,17 @@ export default function SpeakDetailPage() {
 			dispatch(
 				changeServiceType(
 					referenceTable[2][
-						referenceTable[0].map((e) => e.id).indexOf(serviceSubTypeNumber[0])
+						referenceTable[0]
+							.map((e) => e.id)
+							.indexOf(serviceSubTypeNumber[0])
 					].service_type_id
 				)
 			)
-			console.log(typeNumber);
-				
+			console.log(typeNumber)
+
 			setCount(1)
 		}
-	},[referenceTable])
+	}, [referenceTable])
 
 	async function sendOder() {
 		let datas: {
@@ -175,7 +175,7 @@ export default function SpeakDetailPage() {
 			for (let img of images) {
 				let blob = await fetch(img.webPath).then((r) => r.blob())
 				// console.log(blob)
-				formData.append('oderImage', blob, )
+				formData.append('oderImage', blob)
 			}
 			console.log(formData.getAll('oderImage'))
 			let uploadOderImage = await fetch(
@@ -194,7 +194,16 @@ export default function SpeakDetailPage() {
 			console.log(await uploadOderImage.json())
 			setimages([])
 			setDistricts('')
+			presentAlert({
+				
+				header: '通知：',
+				subHeader:
+					'資料上傳成功',
+				message: '現返回首頁!',
+				buttons: ['OK']
+			})
 			history.push('/')
+			
 		}
 	}
 	function confirm() {
@@ -330,20 +339,19 @@ export default function SpeakDetailPage() {
 				.imageInfoText {
 					font-size: 3vh;
 				}
-				.audioBox{
+				.audioBox {
 					/* height:6vh; */
 					display: flex;
 					align-items: center;
 					justify-content: center;
 				}
-				.audioInfo{
-
+				.audioInfo {
 					font-size: 3vh;
 				}
-				.playaudio{
+				.playaudio {
 					padding: 2 0 2 0;
 				}
-				.audioBox{
+				.audioBox {
 					height: 9vh;
 				}
 			`}>
@@ -563,7 +571,13 @@ export default function SpeakDetailPage() {
 										<IonCol
 											key={images.indexOf(image) + 100}
 											size='4'>
-											<button
+												<img
+													className='inputImage'
+													src={image.webPath}></img>
+											<IonIcon
+											size="large"
+											className='closeCircleOutline'
+											icon={closeCircleOutline}
 												onClick={() => {
 													let delNumber =
 														images.indexOf(image)
@@ -580,11 +594,7 @@ export default function SpeakDetailPage() {
 														return array
 													})
 													console.log(images)
-												}}>
-												<img
-													className='inputImage'
-													src={image.webPath}></img>
-											</button>
+												}}/>
 										</IonCol>
 									))}
 							</IonRow>
@@ -714,8 +724,6 @@ export default function SpeakDetailPage() {
 									</IonItem>
 								</IonContent>
 							</IonModal>
-
-					
 						</IonCol>
 					</IonRow>
 					<IonRow className='transcriptionBar'>
@@ -727,22 +735,23 @@ export default function SpeakDetailPage() {
 								/>
 								上傳語音識別結果
 							</IonRow>
-							<IonRow><span>文字結果 : {transcription}</span></IonRow>
+							<IonRow>
+								<span>文字結果 : {transcription}</span>
+							</IonRow>
 							<IonRow className='audioBox'>
 								<audio
 									controls
 									className='playaudio'
-									controlsList="nodownload"
-									preload ='metadata'
-									src ={speakUrl}>
-								</audio>
+									controlsList='nodownload'
+									preload='metadata'
+									src={speakUrl}></audio>
 							</IonRow>
 						</IonCol>
 					</IonRow>
 
 					<IonRow className='submitBar'>
 						<button
-						className='submitBar'
+							className='submitBar'
 							onClick={() => {
 								sendOder()
 							}}>
