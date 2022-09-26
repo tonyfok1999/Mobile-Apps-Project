@@ -22,6 +22,7 @@ export interface Message {
 const ChatInput: React.FC = () => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false)
 	const [message, setMessage] = useState('')
+
 	// const socket = useContext(WebSocketContext)
 	const params = useParams<{ chatroomId: string }>()
 	const chatroomId = parseInt(params.chatroomId)

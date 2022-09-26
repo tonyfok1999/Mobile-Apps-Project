@@ -29,6 +29,7 @@ import { useSocket } from '../hooks/useSocket'
 import SocketContext from '../socket/SocketContext'
 import profilepic from '../srcImage/blank-profile-picture.png'
 import { useIonAlert } from '@ionic/react'
+import BackIcon from '../components/BackIcon'
 export interface Message {
 	sender_id: number
 	text?: string
@@ -56,9 +57,9 @@ const Chatroom: React.FC = () => {
 
 	const scrollRef = React.useRef() as React.MutableRefObject<HTMLDivElement>
 
-	// useEffect(() => {
-	// 	scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
-	// }, [messages, setMessages])
+	useEffect(() => {
+		scrollRef.current?.scrollIntoView({ behavior: 'smooth' })
+	}, [messages, setMessages])
 
 	useEffect(() => {
 		const getMessages = async () => {
@@ -146,9 +147,7 @@ const Chatroom: React.FC = () => {
 							--border-style: none;
 						`}>
 						<IonButtons slot='start'>
-							<IonBackButton text='' defaultHref='/tabs/chatlist'>
-								<IoArrowBackSharp size='1.5rem' />
-							</IonBackButton>
+							<BackIcon thisPath={'/tabs/chatlist'}/>
 						</IonButtons>
 						{/* <IonAvatar>
 							<IonImg src='https://picsum.photos/id/237/64/64'></IonImg>
