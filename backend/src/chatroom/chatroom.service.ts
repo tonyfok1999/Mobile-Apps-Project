@@ -12,7 +12,7 @@ export class ChatroomService {
 
   async createChatroom(attendees: Attendees, orderId: number){
     try{
-      const workerId = attendees.workerId;
+    const workerId = attendees.workerId;
     const userId = attendees.userId;
     
     const result = await this.knex.raw(`INSERT INTO chatrooms VALUES (default) RETURNING id;`)
@@ -29,7 +29,7 @@ export class ChatroomService {
 
     return chatroomId
     }catch{
-      Logger.error("chatroom can't be created", 'ChatroomService')
+      Logger.error("chatroom can't be created", 'ChatroomService//createChatroom')
     }
   }
 
@@ -101,8 +101,8 @@ export class ChatroomService {
     }
   }
 
-  async checkWorkersOfOrder(workerId: number, orderId: number){
-    const result = await this.knex.raw('SELECT * FROM workers_of_order WHERE worker_id = ? AND order_id = ?', [workerId, orderId])
+  async checkWorkersOfOrder(workerId: number, userId: number){
+    const result = await this.knex.raw('SELECT * FROM workers_of_order WHERE worker_id = ? AND user_id = ?', [workerId, userId])
     Logger.debug({result: result}, 'ChatroomService//checkWorkersOfOrder')
     return result.rows
   }
