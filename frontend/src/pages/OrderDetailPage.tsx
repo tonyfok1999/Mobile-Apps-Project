@@ -216,14 +216,14 @@ export default function OrderDetailPage() {
 									/>
 							  ))}
 
-						<IonButton id='open-modal' size='small' fill='clear'>
+						<IonButton id='open-modal2' size='small' fill='clear'>
 							<IonIcon
 								className='icon'
 								icon={chevronForwardOutline}
 							/>
 						</IonButton>
 					</div>
-					<IonModal ref={modal} trigger='open-modal'>
+					<IonModal ref={modal} trigger='open-modal2'>
 						<IonHeader>
 							<IonToolbar>
 								<IonButtons slot='start'>
