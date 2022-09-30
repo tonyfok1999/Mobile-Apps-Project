@@ -137,7 +137,7 @@ export default function SpeakDetailPage() {
 
 			setCount(1)
 		}
-	}, [referenceTable])
+	}, [referenceTable, count])
 
 	async function sendOder() {
 		let datas: {
@@ -393,56 +393,30 @@ export default function SpeakDetailPage() {
 							<IonRow className='serviceTypeButton'>
 								{referenceTable &&
 									referenceTable[1].map((types) => {
-										if (typeNumber == types.id) {
-											return (
-												<IonCol key={types.id}>
-													<input
-														type='radio'
-														className='typebutton btn-check'
-														name='serviceTypes'
-														id={types.type}
-														value={types.type}
-														defaultChecked
-													/>
-													<label
-														className='typebutton btn btn-outline-danger '
-														htmlFor={types.type}
-														onClick={() => {
-															dispatch(
-																changeServiceType(
-																	types.id
-																)
+										return (
+											<IonCol key={types.id}>
+												<input
+													type='radio'
+													className='typebutton btn-check'
+													name='serviceTypes'
+													id={types.type}
+													value={types.type}
+													defaultChecked={typeNumber == types.id}
+												/>
+												<label
+													className='typebutton btn btn-outline-danger '
+													htmlFor={types.type}
+													onClick={() => {
+														dispatch(
+															changeServiceType(
+																types.id
 															)
-														}}>
-														{types.type}
-													</label>
-												</IonCol>
-											)
-										} else {
-											return (
-												<IonCol key={types.id}>
-													<input
-														type='radio'
-														className='typebutton btn-check'
-														name='serviceTypes'
-														id={types.type}
-														value={types.type}
-													/>
-													<label
-														className='typebutton btn btn-outline-danger '
-														htmlFor={types.type}
-														onClick={() => {
-															dispatch(
-																changeServiceType(
-																	types.id
-																)
-															)
-														}}>
-														{types.type}
-													</label>
-												</IonCol>
-											)
-										}
+														)
+													}}>
+													{types.type}
+												</label>
+											</IonCol>
+										)
 									})}
 							</IonRow>
 						</IonCol>
@@ -707,12 +681,9 @@ export default function SpeakDetailPage() {
 													// setimages(image.photos)
 
 													setimages((images) => {
-														let array = [...images]
-														let Array2 =
-															array.concat(
-																image.photos
-															)
-														return Array2
+														return images.concat(
+															image.photos
+														)
 													})
 												}
 

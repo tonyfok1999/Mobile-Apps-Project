@@ -1,32 +1,16 @@
-/** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react'
-
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
-
 import './ChatTab.css'
-
 import React, { useContext, useEffect, useState } from 'react'
 import Chats from './Chats'
-
-import { WebSocketContext } from '../context/WebScoketContext'
-import { Timestamp } from 'rxjs'
-
-import { useSelector } from 'react-redux'
 import { useAppDispatch, useAppSelector } from '../store'
 import {
 	startLoading,
 	loadChatrooms,
 	finishLoading
 } from '../redux/chatroom/action'
-import { useSocket } from '../hooks/useSocket'
 import SocketContext from '../socket/SocketContext'
 
-// export default function ChatTab() {
-//   return (
-//     <div>ChatTab</div>
-//   )
-// }
 export interface Chatroom {
 	chatroom_id: number
 	sender_id: number
@@ -43,23 +27,12 @@ export interface Attendee {
 
 const ChatTab: React.FC = () => {
 	const [key, setKey] = useState('allChats')
-	// const socket = useContext(WebSocketContext)
 	const { socket } = useContext(SocketContext)
 	const token = localStorage.getItem('token')
 	const userId = useAppSelector((state) => state.auth.user!.id)
 	const dispatch = useAppDispatch()
 	console.log('userid' + userId)
 	const [chatlist, setChatlist] = useState<Chatroom[]>([])
-
-	// const chatListInitialState: Chatroom[] = [
-	// 	{
-	// 		chatroom_id: 0,
-	// 		sender_id: 0,
-	// 		text: 'Loading',
-	// 		lastUpdateTime: '2022-09-09 11:11:49.936 +0800'
-	// 	}
-	// ]
-	// const [chatrooms, setChatrooms] = useState(chatListInitialState)
 
 	useEffect(() => {
 		;(async () => {
@@ -78,20 +51,19 @@ const ChatTab: React.FC = () => {
 			dispatch(finishLoading())
 		})()
 
-		socket?.on('onChatroom', (chatrooms) => {
-			console.log('onchatroom' + JSON.stringify(chatrooms))
-			setChatlist(chatrooms)
-			dispatch(loadChatrooms(chatrooms))
-		})
+		const onChatroom = (chatrooms: Chatroom[]) => {
+				console.log('onchatroom' + JSON.stringify(chatrooms))
+				setChatlist(chatrooms)
+				dispatch(loadChatrooms(chatrooms))
+			}
+
+		socket?.on('onChatroom', onChatroom)
 
 		return () => {
 			console.log('Unregistering Event')
-			socket?.off('onChatroom')
+			socket?.off('onChatroom', onChatroom)
 		}
 	}, [token,setChatlist])
-
-	// TODO: create room with user 1983 whenever a new user come in
-	// socket.emit('createRoom', {workerId: 1983, userId: 'current userId'} )
 
 	console.log('The Chatrooms in useState ' + JSON.stringify(chatlist))
 

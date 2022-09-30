@@ -1,17 +1,10 @@
-import { Redirect, Route, useHistory } from 'react-router-dom'
+import { Route } from 'react-router-dom'
 import {
 	IonApp,
-	IonIcon,
-	IonLabel,
 	IonRouterOutlet,
-	IonTabBar,
-	IonTabButton,
-	IonTabs,
 	setupIonicReact,
-	useIonRouter
 } from '@ionic/react'
 import { IonReactRouter } from '@ionic/react-router'
-import { ellipse, square, triangle } from 'ionicons/icons'
 
 /* Import Bootstrap */
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -35,15 +28,12 @@ import '@ionic/react/css/display.css'
 /* Theme variables */
 import './theme/variables.css'
 
-/* import components */
-import InfiniteScrollExample from './components/InfiniteScrollExample'
-
 /* import page */
 import WorkerLoginPage from './pages/WorkerLoginPage'
 import WorkerRegisterPage from './pages/WorkerRegisterPage'
-import ClientTabBar from './nav/ClientTabBar'
 import WorkerRegisterPageForTypeOfService from './pages/WorkerRegisterPageForTypeOfService'
 import SpeakPage from './pages/SpeakPage'
+
 // import SpeakTest from './pages/SpeakRecord'
 import HomePage from './pages/HomePage'
 import ChatList from './pages/ChatList'
@@ -54,9 +44,6 @@ import RegisterSuccess from './pages/RegisterSuccess'
 import SpeakDetailPage from './pages/SpeakDetailPage'
 import ChangeDistricts from './pages/ChangeDistricts'
 import ChangeSubType from './pages/ChangeSubType'
-import { useEffect, useState } from 'react'
-import { loggedIn, logOut } from './redux/auth/action'
-import { useAppDispatch } from './store'
 
 setupIonicReact()
 
@@ -122,11 +109,6 @@ const App: React.FC = () => {
 						path='/registerSuccess'
 						component={RegisterSuccess}
 					/>
-					<Route
-						exact
-						path='/test'
-						component={InfiniteScrollExample}
-					/>
 				</IonRouterOutlet>
 			</IonReactRouter>
 		</IonApp>
@@ -134,45 +116,3 @@ const App: React.FC = () => {
 }
 
 export default App
-// {
-/* <IonReactRouter>
-      <IonTabs>
-        <IonRouterOutlet>
-          <Route exact path="/tab1">
-            <Tab1 />
-          </Route>
-          <Route exact path="/speakPage1">
-            <SpeakPage1 />
-          </Route>
-          <Route path="/tab3">
-            <Tab3 />
-          </Route>
-          <Route exact path="/">
-            <Redirect to="/tab1" />
-          </Route>
-        </IonRouterOutlet>
-		
-        <IonTabBar slot="bottom">
-          <IonTabButton tab="tab1" href="/tab1">
-            <IonIcon icon={triangle} />
-            <IonLabel>Tab 1</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="speakPage1" href="/speakPage1">
-            <IonIcon icon={ellipse} />
-            <IonLabel>SpeakPage1</IonLabel>
-          </IonTabButton>
-          <IonTabButton tab="tab3" href="/tab3">
-            <IonIcon icon={square} />
-            <IonLabel>Tab 3</IonLabel>
-          </IonTabButton>
-        </IonTabBar>
-      </IonTabs>
-
-    </IonReactRouter> */
-
-// 	;<IonTabs>
-// 		<IonTabBar slot='bottom'>
-// 			<IonTabButton tab='tab1' href='/tab1'></IonTabButton>
-// 		</IonTabBar>
-// 	</IonTabs>
-// }

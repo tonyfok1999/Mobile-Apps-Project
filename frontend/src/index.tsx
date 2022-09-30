@@ -5,7 +5,6 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration'
 import reportWebVitals from './reportWebVitals'
 import { Provider } from 'react-redux'
 import { store } from './store'
-import { socket, WebSocketProvider } from './context/WebScoketContext'
 import SocketContextComponent from './socket/SocketContextComponent'
 
 const container = document.getElementById('root')

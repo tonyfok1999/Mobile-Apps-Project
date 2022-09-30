@@ -1,8 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import './MessageBubble.css'
-import { EmotionJSX } from '@emotion/react/types/jsx-namespace'
-import React from 'react'
 import { Message } from './ChatInput'
 import { useAppSelector } from '../store'
 

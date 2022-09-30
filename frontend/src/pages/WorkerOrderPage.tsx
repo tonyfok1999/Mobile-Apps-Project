@@ -15,8 +15,6 @@ import React, {
 } from 'react'
 import { RefresherEventDetail } from '@ionic/core'
 import { NavLink, useHistory } from 'react-router-dom'
-import { WebSocketContext } from '../context/WebScoketContext'
-import { useSocket } from '../hooks/useSocket'
 import WorkerTabBar from '../nav/WorkerTabBar'
 import { loadChatrooms } from '../redux/chatroom/action'
 import SocketContext from '../socket/SocketContext'

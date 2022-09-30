@@ -46,7 +46,7 @@ export class SpeechService {
       // let result = this.getDistricts(transcription);
       // console.log(result[0]);
 
-      let district = await this.knex.raw(`SELECT id FROM districts_of_hk WHERE '${transcription}' ~ district `);
+      let district = await this.knex.raw(`SELECT id FROM districts_of_hk WHERE ? ~ district `, [transcription]);
       //  console.log(district.rows.length);
 
       if (district.rows.length == 0) {

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
 	IonList,
 	IonItemSliding,
@@ -11,26 +11,19 @@ import {
 	IonAvatar,
 	IonImg,
 	useIonAlert,
-	CreateAnimation,
-	Animation
 } from '@ionic/react'
 
 import { trash, archive, arrowUndo } from 'ionicons/icons'
-import { IoArrowUndo } from 'react-icons/io5'
-import { Attendee, Chatroom } from './ChatTab'
-import { useAppDispatch, useAppSelector } from '../store'
-import { WebSocketContext } from '../context/WebScoketContext'
-import { useParams } from 'react-router'
+import { Chatroom } from './ChatTab'
+import { useAppSelector } from '../store'
 import SocketContext from '../socket/SocketContext'
 import profilepic from '../srcImage/blank-profile-picture.png'
 
 export default function Chats(props: { chatroom: Chatroom }) {
 	const userId = useAppSelector((state) => state.auth.user!.id)
-	const token = localStorage.getItem('token')
 	const { socket } = useContext(SocketContext)
 	const [presentAlert] = useIonAlert()
 	const [chatroom, setChatroom] = useState(props.chatroom)
-	const dispatch = useAppDispatch()
 	const archiveRef = React.useRef() as React.MutableRefObject<HTMLIonItemSlidingElement>
 
 	useEffect(() => {
@@ -47,7 +40,6 @@ export default function Chats(props: { chatroom: Chatroom }) {
 	return (
 		<>
 			<IonList>
-				{/* Multi-line sliding item with icon options on both sides */}
 				<IonItemSliding id='item100' ref={archiveRef}>
 					<IonItem
 						routerLink={`/chatroom/${props.chatroom.chatroom_id}`}>
@@ -66,7 +58,6 @@ export default function Chats(props: { chatroom: Chatroom }) {
 							<p>{props.chatroom.text}</p>
 						</IonLabel>
 						<IonNote slot='end'>
-							{/* {chatroom.lastUpdateTime} */}
 						</IonNote>
 					</IonItem>
 

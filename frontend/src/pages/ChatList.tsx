@@ -8,22 +8,15 @@ import {
 	IonTitle,
 	IonContent,
 	IonHeader,
-	IonItem,
-	IonList,
-	IonMenu,
 	IonPage,
-	IonIcon,
-	IonLabel,
-	IonListHeader,
 	IonMenuToggle,
 	IonButton,
 
 } from '@ionic/react'
 import { IoMenuSharp } from 'react-icons/io5'
-import React, { useContext, useEffect, useState } from 'react'
+import React from 'react'
 import ChatTab from '../components/ChatTab'
 import ClientTabBar from '../nav/ClientTabBar'
-import { WebSocketContext } from '../context/WebScoketContext'
 import { useAppSelector } from '../store'
 import WorkerTabBar from '../nav/WorkerTabBar'
 
