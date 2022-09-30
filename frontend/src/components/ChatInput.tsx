@@ -1,16 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { VscSmiley } from 'react-icons/vsc'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Picker from 'emoji-picker-react'
-
-import { WebSocketContext } from '../context/WebScoketContext'
 import { useParams } from 'react-router'
 import { useAppSelector } from '../store'
 import { useIonAlert } from '@ionic/react'
-import { useSocket } from '../hooks/useSocket'
 import SocketContext from '../socket/SocketContext'
-import Button from 'react-bootstrap/Button'
 import { IoMdSend } from 'react-icons/io'
 
 export interface Message {
@@ -23,66 +19,36 @@ const ChatInput: React.FC = () => {
 	const [showEmojiPicker, setShowEmojiPicker] = useState(false)
 	const [message, setMessage] = useState('')
 
-	// const socket = useContext(WebSocketContext)
 	const params = useParams<{ chatroomId: string }>()
 	const chatroomId = parseInt(params.chatroomId)
 	const userId = useAppSelector((state) => state.auth.user!.id)
 	const textareaRef =
 		React.useRef() as React.MutableRefObject<HTMLTextAreaElement>
-	const pickerRef = React.useRef() as React.MutableRefObject<HTMLDivElement>
-	const [presentAlert] = useIonAlert()
+	const [pickerRef, setPickerRef] = React.useState<HTMLDivElement | null>(
+		null
+	)
+
 	const { socket } = useContext(SocketContext)
 
 	useEffect(() => {
 		const closePicker = (e: any) => {
-			console.log(e.path[0].tagName)
-			console.dir(pickerRef.current, {depth: 3})
-			// if (!pickerRef.current.contains(e.target.path[0].tagName)) {
-			if(e.path[0].tagName === 'UL' || e.path[0].tagName === 'BUTTON' || e.path[0].tagName ==='IMG' ){
-				setShowEmojiPicker(()=>true)
-				console.log(showEmojiPicker)
-				console.log('clicked inside')
-				return
-			}
-		// 	else if (e.path[0].tagName !== 'svg.css-1f1bq7v-ChatInput'){
-			setShowEmojiPicker(()=>false)
-			console.log(showEmojiPicker)
+			setShowEmojiPicker(() => false)
 			console.log('clicked outside')
-		// }
-	}
+		}
 
-		// pickerRef.current?.addEventListener('mousedown', (event) => { event.stopPropagation(); });
+		pickerRef?.addEventListener('mousedown', (event) => {
+			event.stopPropagation()
+		})
 
 		document.body.addEventListener('mousedown', closePicker)
 
 		return () => {
 			document.body.removeEventListener('mousedown', closePicker)
+			pickerRef?.removeEventListener('mousedown', (event) => {
+				event.stopPropagation()
+			})
 		}
-	}, [])
-
-	// useEffect(() => {
-	// 	const onMessage =() => {
-
-	// 	}
-	// 	socket?.on('', onMessage);
-
-	// 	return () => {
-	// 		socket?.off('', onMessage)
-	// 	}
-	// }, [socket]
-
-	// useEffect(() => {
-
-	// 	socket.on('connect', ()=>{
-	// 		console.log('Connected')
-	// 	})
-
-	// 	return () => {
-	// 		console.log('Unregistering Event')
-	// 		socket.off('connect')
-	// 		socket.off('onMessage')
-	// 	}
-	// }, [])
+	}, [pickerRef, setShowEmojiPicker])
 
 	const handleEmojiPickerHideShow = (e: any) => {
 		setShowEmojiPicker(() => true)
@@ -93,45 +59,10 @@ const ChatInput: React.FC = () => {
 		setMessage(message + emojiObject.emoji)
 	}
 
-	const token = localStorage.getItem('token')
-
-	const handleSendMessage = async (message: string, formData: FormData) => {
-		// const blob = new Blob(
-		// 	[JSON.stringify({ sender_id: 1, text: message })],
-		// 	{ type: 'application/json' }
-		// )
-		// formData.append('blob', blob)
-
-		// const res = await fetch(
-		// 	`${process.env.REACT_APP_BACKEND_URL}/chatroom/${chatroomId}/message`,
-		// 	{
-		// 		method: 'POST',
-		// 		headers: {
-		// 			'Content-Type': 'application/json; charset=utf-8',
-		// 			Authorization: `Bearer ${token}`
-		// 		},
-		// 		body: JSON.stringify({ sender_id: userId, text: message })
-		// 	}
-		// )
-		console.log('message has been sent')
-
-		// if (res.status === 400) {
-		// 	presentAlert({
-		// 		header: '訊息錯誤',
-		// 		message: '聊天室已被刪除',
-		// 		buttons: ['確定']
-		// 	})
-		// }
-	}
-
 	const handleFormSubmit = (event: any) => {
 		event.preventDefault()
-		let form = event.currentTarget
-		let formData = new FormData(form)
 
 		if (message.length > 0) {
-			console.log(formData)
-			handleSendMessage(message, formData)
 			socket?.emit('newMessage', {
 				chatroom_id: chatroomId,
 				sender_id: userId,
@@ -224,12 +155,9 @@ const ChatInput: React.FC = () => {
 					}}
 				/>
 			</label>
-			{/* <input type='text'		
-			placeholder='Type something here...' value={message} 
-			onChange={(e)=>setMessage(e.target.value)} /> */}
 			<div
 				className='emojiButton'
-				ref={pickerRef}
+				ref={(el) => setPickerRef(el)}
 				onClick={(e) => handleEmojiPickerHideShow(e)}
 				css={css`
 					background: transparent;
@@ -256,7 +184,6 @@ const ChatInput: React.FC = () => {
 					/>
 				)}
 			</div>
-			{/*<Button type='submit'>*/}
 			<button type='submit'>
 				<IoMdSend
 					size={'1.5rem'}
@@ -268,7 +195,6 @@ const ChatInput: React.FC = () => {
 					`}
 				/>
 			</button>
-			{/*</Button>*/}
 		</form>
 	)
 }

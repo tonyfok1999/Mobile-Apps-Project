@@ -1,11 +1,10 @@
-import { HttpException, HttpStatus, Logger, UnauthorizedException } from '@nestjs/common';
+import { Logger, UnauthorizedException } from '@nestjs/common';
 import { MessageBody, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
 import { AuthService } from 'src/auth/auth.service';
 import { CreateUserDto } from 'src/user/dto/create-user.dto';
 import { UserService } from 'src/user/user.service';
 import { ChatroomService } from 'src/chatroom/chatroom.service';
-import { Attendees } from './dto/attendees.dto';
 import { ConnectedUserService } from 'src/chatroom/socket-connected-user/connected-user.service';
 import { Message } from './dto/message.dto';
 
@@ -67,7 +66,6 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
         await this.connectedUserService.createUser({ socketId: socket.id, userId: userId });
       } else {
         Logger.warn(`user fail to connect from websocket gateway since he is the new user `, 'SocketGateway//handleConnection');
-        // this.disconnect(socket)
       }
     } catch (e) {
       Logger.error(e, 'SocketGateway');
@@ -91,9 +89,7 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
       const attendeeSocket = await this.connectedUserService.getSocketIdByUserId(attendee.user_id);
       console.log('socket id: ' + JSON.stringify(attendeeSocket));
 
-      if (attendeeSocket.length === 0) {
-        connections.push(0);
-      } else {
+      if (attendeeSocket.length > 0) {
         connections.push({ userId: attendee.user_id, userSocket: attendeeSocket[0].socket_id });
       }
     }
@@ -140,9 +136,6 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
     Logger.debug({ connections: connections }, 'SocketGateway//onCreateRoom');
 
     for (let i = 0; i < connections.length; i++) {
-      if (connections[i] === 0) {
-        continue;
-      }
       const chatrooms = await this.chatroomService.getAllChatroomsbyUserId(connections[i].userId);
       connections[i]['chatrooms'] = chatrooms;
     }
@@ -150,13 +143,9 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
     Logger.debug({ connections: connections }, 'SocketGateway//onCreateRoom');
 
     for (let i = 0; i < connections.length; i++) {
-      if (connections[i] === 0) {
-        continue;
-      }
       for (let j = 0; j < connections[i].chatrooms.length; j++) {
         Logger.debug({ chatroom_id: connections[i].chatrooms[j].chatroom_id }, 'SocketGateway//onCreateRoom');
         const attendees = await this.chatroomService.getAllUserIdByChatroomId(connections[i].chatrooms[j].chatroom_id);
-        // attendees = [{user_id: number, nickname: string}, {user_id: number, nickname: string}]
         connections[i]['chatrooms'][j]['attendees'] = attendees;
       }
     }
@@ -179,9 +168,6 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
 
     for (let i = 0; i < connections.length; i++) {
       Logger.debug(`use ID ${connections[i].userId} of chat room`, 'SocketGateway//onDeleteChat');
-      if (connections[i] === 0) {
-        continue;
-      }
       const chatrooms = await this.chatroomService.getAllChatroomsbyUserId(connections[i].userId);
       connections[i]['chatrooms'] = chatrooms;
     }
@@ -189,13 +175,9 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
     Logger.debug({ connections }, 'SocketGateway//onDeleteChat');
 
     for (let i = 0; i < connections.length; i++) {
-      if (connections[i] === 0) {
-        continue;
-      }
       for (let j = 0; j < connections[i].chatrooms.length; j++) {
         Logger.debug({ chatroom_id: connections[i].chatrooms[j].chatroom_id }, 'SocketGateway//onDeleteChat');
         const attendees = await this.chatroomService.getAllUserIdByChatroomId(connections[i].chatrooms[j].chatroom_id);
-        // attendees = [{user_id: number, nickname: string}, {user_id: number, nickname: string}]
         connections[i]['chatrooms'][j]['attendees'] = attendees;
       }
     }
@@ -210,7 +192,6 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('bookmarkChat')
   async bookmarkChat(@MessageBody() obj: { chatroomId: number; userId: number }) {
-    // Logger.debug({userId: this.userIdfromSocket}, 'SocketGateway')
     const chatroomId = obj.chatroomId;
     const userId = obj.userId;
     await this.chatroomService.bookmarkChat(chatroomId, userId);
@@ -223,28 +204,6 @@ export class MyWebSocket implements OnGatewayConnection, OnGatewayDisconnect {
     }
 
     const socketId = await this.connectedUserService.getSocketIdByUserId(userId);
-    // Logger.debug({socketId: socketId[0].socket_id}, 'SocketGateway')
-    // Logger.debug({chatrooms: chatrooms}, 'SocketGateway')
     this.server.to(socketId[0].socket_id).emit('onChatroom', chatrooms);
   }
-
-  // @SubscribeMessage('createChatroom')
-  // async createChatroom(@MessageBody() chatroomId: number){
-  // const newChatroom = await this.chatroomService.getSpecificChatroombyUserId(chatroomId, this.userIdfromSocket)
-  // Logger.debug({newChatroom: newChatroom}, 'SocketGateway')
-
-  // const attendees = await this.chatroomService.getAllUserIdByChatroomId(chatroomId)
-  // Logger.debug({attendees: attendees}, 'SocketGateway')
-
-  // newChatroom[0]['attendees']= attendees
-
-  // Logger.debug({newChatroom: newChatroom}, 'SocketGateway')
-  // this.server.to(this.socketId).emit('newChatroom', newChatroom)
-  // this.server.emit('setChatroom', chatroomId)
-  // }
-
-  // @SubscribeMessage('restartSocket')
-  // restartSocket(socket: Socket){
-  //   socket.emit('startSocket')
-  // }
 }

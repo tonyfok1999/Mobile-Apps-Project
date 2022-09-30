@@ -3,29 +3,16 @@ import { css } from '@emotion/react'
 import {
 	IonToolbar,
 	IonButtons,
-	IonTitle,
 	IonContent,
 	IonHeader,
 	IonPage,
-	IonButton,
-	IonAvatar,
-	IonImg,
-	IonBackButton,
-	IonLabel,
 	IonFooter
 } from '@ionic/react'
-import React, { useContext, useEffect, useRef, useState } from 'react'
-import { IoArrowBackSharp } from 'react-icons/io5'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import ChatInput from '../components/ChatInput'
-import { useVirtualizer } from '@tanstack/react-virtual'
-import Chats from '../components/Chats'
-import ChatContainer from '../components/ChatContainer'
-import { useAppDispatch, useAppSelector } from '../store'
+import { useAppSelector } from '../store'
 import MessageBubble from '../components/MessageBubble'
-import { WebSocketContext } from '../context/WebScoketContext'
-import { loadChatrooms } from '../redux/chatroom/action'
-import { useSocket } from '../hooks/useSocket'
 import SocketContext from '../socket/SocketContext'
 import profilepic from '../srcImage/blank-profile-picture.png'
 import { useIonAlert } from '@ionic/react'
@@ -41,14 +28,12 @@ const Chatroom: React.FC = () => {
 	const chatrooms = useAppSelector((state) => state.chatroom.chatrooms)
 	const userId = useAppSelector((state) => state.auth.user!.id)
 	const chatroomId = parseInt(params.chatroomId)
-	const dispatch = useAppDispatch()
 
 	const initialState: Message[] | null = []
 
 	const [messages, setMessages] = useState<Message[]>(initialState)
 	const [chats, setChats] = useState(chatrooms)
 
-	// const socket = useContext(WebSocketContext)
 	const { socket } = useContext(SocketContext)
 
 	const token = localStorage.getItem('token')
@@ -77,7 +62,7 @@ const Chatroom: React.FC = () => {
 
 		console.log('container lifecycle starting')
 
-		socket?.on('onMessage', (data) => {
+		const onMessage = (data: any) => {
 			console.log(data)
 			if (data.status === '400') {
 			presentAlert({
@@ -90,16 +75,13 @@ const Chatroom: React.FC = () => {
 			console.log('onMessage event received')
 			console.log(data)
 			setMessages((prev) => [...prev, data])
-		})
+		}
 
-		// socket.on('newChatroom', (chatroom) => {
-		// 	setChats((prev)=>[...prev, chatroom])
-		// 	console.log({chatroom: chats})
-		// })
+		socket?.on('onMessage', onMessage)
 
 		return () => {
 			console.log('Unregistering Event')
-			socket?.off('onMessage')
+			socket?.off('onMessage', onMessage)
 		}
 	}, [token, chatroomId])
 
@@ -149,10 +131,6 @@ const Chatroom: React.FC = () => {
 						<IonButtons slot='start'>
 							<BackIcon thisPath={'/tabs/chatlist'}/>
 						</IonButtons>
-						{/* <IonAvatar>
-							<IonImg src='https://picsum.photos/id/237/64/64'></IonImg>
-							<div className='username'>陳師傅</div>
-						</IonAvatar> */}
 
 						<div className='avatar'>
 							<img src={profilepic}></img>

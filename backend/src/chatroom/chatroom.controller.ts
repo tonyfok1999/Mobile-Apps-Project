@@ -2,28 +2,15 @@ import {
   Controller,
   Get,
   Post,
-  Body,
-  Patch,
   Param,
-  Delete,
   HttpException,
   HttpStatus,
-  UseInterceptors,
-  UploadedFile,
   ParseIntPipe,
-  UseGuards,
   Query,
   Logger,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
 import { ChatroomService } from './chatroom.service';
 import { UserService } from 'src/user/user.service';
-import { Message } from './dto/message.dto';
-import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { get } from 'http';
-import console from 'console';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { Attendees } from './dto/attendees.dto';
 
 @Controller('chatroom')
@@ -33,18 +20,13 @@ export class ChatroomController {
   @Get('/:userId')
   async getAllChatrooms(@Param('userId', ParseIntPipe) userId: number) {
     if (typeof userId !== 'number') {
-      throw new HttpException('user_id need to be a number', HttpStatus.NOT_FOUND);
+      throw new HttpException('user_id need to be a number', HttpStatus.BAD_REQUEST);
     }
 
     try {
       const result = await this.chatroomService.getAllChatroomsbyUserId(userId);
 
-      if (result.length < 0) {
-        return [];
-      }
-
       for(let i = 0; i < result.length; i++) {
-      // attendees = [{user_id: number, nickname: string}, {user_id: number, nickname: string}]
       const attendees = await this.chatroomService.getAllUserIdByChatroomId(result[i].chatroom_id)
       
       result[i]['attendees'] = attendees
@@ -61,7 +43,6 @@ export class ChatroomController {
     const orderId = parseInt(query.orderId)
     const userId = parseInt(query.userId)
     const workerId = parseInt(query.workerId)
-    // Logger.debug({ orderId: orderId, userId: userId, workerId: workerId },'ChatroomController')
 
     if (typeof(orderId) !== 'number' || typeof(userId) !== 'number' || typeof(workerId) !== 'number') {
       throw new HttpException('query params need to be a number', HttpStatus.NOT_FOUND);
@@ -85,19 +66,6 @@ export class ChatroomController {
     }
   }
 
-  // @Get('/:chatroomId')
-  // async getChatroom(@Param("chatroomId", ParseIntPipe) chatroomId: number){
-  //   const newChatroom = await this.chatroomService.getSpecificChatroombyUserId(chatroomId, this.userIdfromSocket)
-  //   Logger.debug({newChatroom: newChatroom}, 'SocketGateway')
-
-  //   const attendees = await this.chatroomService.getAllUserIdByChatroomId(chatroomId)
-  //   Logger.debug({attendees: attendees}, 'SocketGateway')
-    
-  //   newChatroom[0]['attendees']= attendees
-
-  //   Logger.debug({newChatroom: newChatroom}, 'SocketGateway')
-  // }
-
   @Get('/:chatroomId/message')
   async getMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number) {
     if (typeof chatroomId !== 'number') {
@@ -113,22 +81,6 @@ export class ChatroomController {
     }
   }
 
-  // @Post('/:chatroomId/message')
-  // async postMessage(@Param('chatroomId', ParseIntPipe) chatroomId: number, @Body() message: Message, @UploadedFile() file?: Express.Multer.File) {
-  //   if (chatroomId === undefined || message.sender_id === undefined) {
-  //     throw new HttpException('sender_id and chatroom_id are required', HttpStatus.NOT_FOUND);
-  //   } else if (message.text === undefined || (message.text === '' && file === undefined)) {
-  //     throw new HttpException('both message and file are missing', HttpStatus.NOT_FOUND);
-  //   }
-
-  //   try {
-  //     await this.chatroomService.postMessageByAPI(message);
-  //     Logger.log(`messsage is posted`,'ChatroomController//postMessage')
-  //   } catch {
-  //     throw new HttpException('message cannot be posted', HttpStatus.BAD_REQUEST);
-  //   }
-  // }
-
   @Get('/find-by-nickname')
   async findAllByNickname(@Query() query: { nickname: string }) {
     const nickname = query.nickname;
@@ -139,31 +91,4 @@ export class ChatroomController {
     }
     return user;
   }
-
-  // @Get()
-  // findAll(@Req() req: Request, @Res() res: Response) {
-  //   req.params;
-  //   req.header;
-  //   res.send;
-  //   return this.chatroomService.findAll();
-  // }
-
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.chatroomService.findOne(+id);
-  // }
-
-  // @Get(':id')
-  // findOne(@Param('id', ParseIntPipe) id: number) {
-  //   return this.chatroomService.findOne(+id);
-  // }
-
-  // @Patch(':id')
-  // update(@Param('id') id: string, @Body() updateChatroomDto: UpdateChatroomDto) {
-  //   return this.chatroomService.update(+id, updateChatroomDto);
-  // }
-
-  // @Delete(':id')
-  // remove(@Param('id') id: string) {
-  //   return this.chatroomService.remove(+id);
 }
