@@ -167,7 +167,6 @@ export default function LoginBox() {
 			</form>
 			<div>
 				<div>或</div>
-				<LoginMethods />
 			</div>
 		</div>
 	)

@@ -12,7 +12,7 @@ import {
 	IonContent,
 	useIonRouter
 } from '@ionic/react'
-import { Preferences } from '@capacitor/preferences';
+import { Preferences } from '@capacitor/preferences'
 import ClientTabBar from '../nav/ClientTabBar'
 import { useEffect } from 'react'
 import { async } from 'rxjs'
@@ -50,7 +50,7 @@ const HomePage: React.FC = () => {
 					{ headers: { Authorization: `Bearer ${token}` } }
 				)
 				const userinfo = await res.json()
-				console.log(userinfo);
+				console.log(userinfo)
 				dispatch(loggedIn(userinfo[0], token))
 				dispatch(loadToken(token))
 
@@ -80,8 +80,11 @@ const HomePage: React.FC = () => {
 		<IonPage
 			css={css`
 				img {
-					width: 60%;
-					/* height: 60%; */
+					display: block;
+					margin-left: auto;
+					margin-right: auto;
+					margin-bottom: 1rem;
+					max-width: 40%;
 				}
 				h1 {
 					max-width: 70%;

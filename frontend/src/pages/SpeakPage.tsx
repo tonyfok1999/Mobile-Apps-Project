@@ -105,8 +105,13 @@ export default function SpeakPage() {
 		<IonPage
 			css={css`
 				img {
-					width: 60%;
+					display: block;
+					margin-left: auto;
+					margin-right: auto;
+					margin-bottom: 1rem;
+					max-width: 40%;
 				}
+
 				.center {
 					display: flex;
 					justify-content: center;
@@ -157,18 +162,14 @@ export default function SpeakPage() {
 							<TopBar thisBackPath={'/'} />
 						</IonCol>
 					</IonRow>
-					<IonRow className='logoCol'>
-						<IonCol className='center'>
 							<Logo />
-						</IonCol>
-					</IonRow>
-					<IonRow className='infoCol'>
-						<IonCol className='center DetailsOfRecordingContent'>
+					<div className='infoCol'>
+						<div className='center DetailsOfRecordingContent'>
 							<DetailsOfRecordingContent />
-						</IonCol>
-					</IonRow>
+						</div>
+					</div>
 
-					<IonRow className='buttonRow '>
+					<div className='buttonRow '>
 						{recordState ? (
 							<>
 								<IonCol></IonCol>
@@ -213,7 +214,7 @@ export default function SpeakPage() {
 								</IonCol>
 							</>
 						)}
-					</IonRow>
+					</div>
 				</IonGrid>
 			</IonContent>
 		</IonPage>

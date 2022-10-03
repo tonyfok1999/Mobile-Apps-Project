@@ -6,7 +6,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: repair-matching-platform
+      POSTGRES_DB: repair_matching_platform
     ports:
       - '5432:5432'
     volumes:
@@ -16,11 +16,11 @@ services:
     environment:
       DB_USERNAME: postgres
       DB_PASSWORD: postgres
-      DB_NAME: repair-matching-platform
+      DB_NAME: repair_matching_platform
       DB_HOST: postgres
       POSTGRES_HOST: postgres
 
-      REACT_URL : http://localhost:8100
+      REACT_URL : "https://repairmatching.tonyfok.me"
       GOOGLE_APPLICATION_CREDENTIALS : "./google_api_key/eastern-thinker-361503-923321a085d0.json"
       
       NODE_ENV: test
@@ -30,6 +30,6 @@ services:
     build:
       context: ./
       dockerfile: ./Dockerfile
-    image: 'lokyin2004/matching-platform:V15'
+    image: 'tonyfok1999/repair_matching:latest'
     ports:
       - '8000:8000'
