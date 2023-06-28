@@ -1,6 +1,12 @@
-### Hi there👋 I am Tony Fok
-Welcome to my coding project. Since I mainly focused on the chat function, if you are particularly interested in my work, you may kindly checkout the below files which I am fully responsible for. Cheers! 😉
+# Mobile Apps to Match Users and Handymen
+Welcome to my coding project. This is a collaborated work with a team of 3, and my role lies in the frontend and backend development of the chatroom feature. Check out more about our project below. Cheers! 😉
 
-![image](https://user-images.githubusercontent.com/99062097/194806351-fc6604f0-d543-495c-aaa4-e6dc1628ce4c.png)
+## Features
 
-![image](https://user-images.githubusercontent.com/99062097/194806324-37a2dd7a-1f6f-45ad-9dc1-20415f7c1ac7.png)
+## Tech Stack
+
+## ERD
+![ERDD-PhotoRoom png-PhotoRoom](https://github.com/tonyfok1999/Mobile-Apps-Project/assets/99062097/c6c409f6-e3fd-4636-860e-ab777bc9e9d3)
+
+## Architecture
+![architecture](https://github.com/tonyfok1999/Mobile-Apps-Project/assets/99062097/7c055d0b-e2af-43dc-a519-18724a4f7d7f)
