@@ -2,6 +2,13 @@
 Welcome to my coding project. This is a collaborated work with a team of 3, and my role lies in the frontend and backend development of the chatroom feature. Check out more about our project below. Cheers! 😉
 
 ## Features
+We have business logic for general users and handymen separately:
+
+### General Users
+
+
+### Handymen
+
 
 ## Tech Stack
 
