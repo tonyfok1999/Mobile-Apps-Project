@@ -1,9 +1,9 @@
 # Mobile Apps to Match Users and Handymen
-Welcome to my coding project. This is a collaborated work with a team of 3, and my role lies in the frontend and backend development of the chatroom feature. Check out more about our project below. Cheers! 😉
+Welcome to my coding project.  This is a collaborated work with a team of 3, and my role lies in the frontend and backend development of the chatroom feature. Check out more about our project below. Cheers! 😉
 
 ## Tech Stack
-Frontend: JavaScript, React, Redux, Ionic Framework, HTML, CSS<br />
-Backend: JavaScript, Nest.js, Socket.io<br />
+Frontend: JavaScript | React | Redux | Ionic Framework | HTML | CSS<br />
+Backend: JavaScript | Nest.js | Socket.io<br />
 Database: Postgres SQL<br />
 
 ## User Stories
